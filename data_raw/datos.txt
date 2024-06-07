@@ -1,0 +1,5 @@
+Fuentes de datos:
+
+Chile_comunas_20230405
+https://github.com/santiagofh/dhis2-georeferenciacion/blob/main/geojson/Chile_comunas_20230405.geojson
+
