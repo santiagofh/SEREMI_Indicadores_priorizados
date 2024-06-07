@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 streamlit
 pandas
 plotly
@@ -7,16 +6,6 @@ geopandas
 matplotlib
 folium
 streamlit-folium
+streamlit_folium
 statsmodels
-=======
-streamlit
-pandas
-plotly
-numpy
-geopandas
-matplotlib
-folium
-streamlit-folium
-statsmodels
->>>>>>> 302f8115ceab385e33c9bdd07147e0dbc2a704fc
 shapely

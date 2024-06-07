@@ -18,7 +18,6 @@ paths = {
     "ine_proy": 'data_clean/INE_Proyecciones_RM.csv',
     "ine_proy_urb_rur": 'data_clean/INE_Proyecciones_urbano_rural_RM.csv',
     'casen_mideso':'data_clean/casen_17_22.csv',
-    # 'nacimientos':'data_clean/nacimientos.csv',
 }
 
 #%%
@@ -28,7 +27,6 @@ ine17_urb_rur = pd.read_csv(paths["ine_proy_urb_rur"])
 censo17 = pd.read_csv(paths["censo17"])
 gdf = gpd.read_file(paths["geo"])
 casen = pd.read_csv(paths["casen_mideso"])
-# nac = pd.read_csv(paths["nacimientos"])
 
 # Listado comunas
 lista_comunas = [
@@ -168,9 +166,7 @@ indice_dependencia = ((pop_0_14 + pop_65_mas) / pop_15_64) * 100
 indice_renovacion_vejez = (pop_65_mas / pop_0_14) * 100
 
 # Calcula la Tasa Bruta de Natalidad 2020
-# nacimientos_2020 = nac[nac['ANO_NAC'] == 2020].shape[0]
 poblacion_2020 = ine17_comuna['Poblacion 2020'].sum()
-tasa_bruta_natalidad_2020 = (nacimientos_2020 / poblacion_2020) * 1000
 
 # Calcula la Tasa Específica de Fecundidad por Edad
 def age_group(age):
@@ -193,16 +189,9 @@ def age_group(age):
     else:
         return "MENORES 15 AÑOS"
 
-# nacimientos_2020_grupo_etario = nac[nac['ANO_NAC'] == 2020].groupby('GRUPO_ETARIO_MADRE').size().reset_index(name='Nacimientos')
 poblacion_2020_grupo_etario = ine17_comuna[ine17_comuna['Sexo (1=Hombre 2=Mujer)'] == 2].groupby('Edad')['Poblacion 2020'].sum().reset_index()
 poblacion_2020_grupo_etario['GRUPO_ETARIO_MADRE'] = poblacion_2020_grupo_etario['Edad'].apply(age_group)
 poblacion_2020_grupo_etario = poblacion_2020_grupo_etario.groupby('GRUPO_ETARIO_MADRE')['Poblacion 2020'].sum().reset_index()
-# fecundidad_2020 = pd.merge(nacimientos_2020_grupo_etario, poblacion_2020_grupo_etario, on='GRUPO_ETARIO_MADRE')
-# fecundidad_2020['Tasa Fecundidad'] = (fecundidad_2020['Nacimientos'] / fecundidad_2020['Poblacion 2020']) * 1000
-
-# Calcula la Tasa Bruta de Reproducción
-# nacimientos_hijas_2020 = nac[(nac['ANO_NAC'] == 2020) & (nac['SEXO'] == 2)].shape[0]
-# tasa_bruta_reproduccion_2020 = (nacimientos_hijas_2020 / poblacion_2020) * 1000
 
 # Población nacida fuera de Chile y Pueblos originarios del 2022
 poblacion_total_2022 = casen[casen['Año'] == 2022]['Población nacida fuera de Chile'].sum()
@@ -278,7 +267,7 @@ formatted_values = {
     "pop_proy_rur_comuna": f"{int(pop_proy_rur_comuna):,}".replace(',', '.'),
     "indice_dependencia": "{:.2f}".format(indice_dependencia).replace('.', ','),
     "indice_renovacion_vejez": "{:.2f}".format(indice_renovacion_vejez).replace('.', ','),
-    "tasa_bruta_natalidad_2020": "{:.2f}".format(tasa_bruta_natalidad_2020).replace('.', ','),
+    # "tasa_bruta_natalidad_2020": "{:.2f}".format(tasa_bruta_natalidad_2020).replace('.', ','),
     # 'Tasa Fecundidad': (fecundidad_2020['Nacimientos'] / fecundidad_2020['Poblacion 2020']) * 1000,
     # "tasa_bruta_reproduccion_2020": "{:.2f}".format(tasa_bruta_reproduccion_2020).replace('.', ','),
     "poblacion_nacida_fuera_de_chile_2022" : f"{poblacion_nacida_fuera_de_chile_2022_percent:.2f}%".replace('.', ','),
@@ -352,7 +341,7 @@ data = {
         formatted_values["pop_proy_rur_comuna"],
         formatted_values["indice_dependencia"],
         formatted_values["indice_renovacion_vejez"],
-        formatted_values["tasa_bruta_natalidad_2020"],
+        "",
         "",
         "",
         "",
@@ -636,3 +625,10 @@ st.plotly_chart(fig_etnias)
 
 st.write('_Fuente: Elaboración propia a partir de encusta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
+
+#%%
+import streamlit as st
+url = "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false"
+st.title("Datos de nacimiento")
+st.write("Haz clic en el siguiente enlace para abrir la página en una nueva pestaña:")
+st.markdown(f"[Abrir página web]({url})")
