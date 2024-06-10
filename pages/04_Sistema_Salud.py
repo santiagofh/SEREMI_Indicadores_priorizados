@@ -46,6 +46,7 @@ lista_comunas = [
 # INICIO DE LA PAGINA
 st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana", layout='wide', initial_sidebar_state='expanded')
 # TITULO INTRODUCCION
+st.image('img/seremi-100-años.png', width=300)
 st.write('# Región Metropolitana y sus comunas: Sistema de Salud')
 st.write('Este tablero interactivo presenta indicadores de Sistema de Salud de la Región Metropolitana de Santiago y sus comunas.')
 

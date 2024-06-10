@@ -48,6 +48,7 @@ st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana", l
 
 #%%
 # Sidebar
+st.image('img/seremi-100-años.png', width=300)
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 st.sidebar.write("Selección de Comuna")
 default_index = lista_comunas.index("Todas las comunas") if "Todas las comunas" in lista_comunas else 0

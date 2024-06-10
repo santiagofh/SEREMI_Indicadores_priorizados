@@ -52,6 +52,7 @@ select_year_int = st.sidebar.slider("Año:", min_value=2002, max_value=2035, val
 select_year = f'Poblacion {select_year_int}'
 
 # TITULO INTRODUCCION
+st.image('img/seremi-100-años.png', width=300)
 st.write('# Región Metropolitana y sus comunas: Territorio y demografía')
 st.write('A continuación, se presenta un análisis detallado de la distribución territorial y demográfica de las comunas de la Región Metropolitana, incluyendo proyecciones de población, densidad poblacional, y otros indicadores clave que permiten una visión integral del desarrollo y cambios en la población regional.')
 def filtrar_comuna(df, column_name, comuna):
