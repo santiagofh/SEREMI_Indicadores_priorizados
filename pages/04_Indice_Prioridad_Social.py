@@ -10,7 +10,7 @@ st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana", l
 st.sidebar.write("## Índice de prioridad social")
 
 # URL del PDF
-pdf_url = "https://www.desarrollosocialyfamilia.gob.cl/storage/docs/INDICE-DE-PRIORIDAD-SOCIAL-2022_V2.pdf"
+pdf_url = "data_raw/ÍNDICE DE PRIORIDAD SOCIAL 2022.pdf"
 
 # Función para mostrar el PDF
 def show_pdf(file_url):
