@@ -28,6 +28,7 @@ df_edad['Category'] = 'TRAMO EDAD'
 
 # Concatenar los DataFrames
 df_concatenado = pd.concat([df_sexo, df_tramo, df_edad], ignore_index=True)
+df_concatenado.loc[df_concatenado['CODIGO'] == 'Total general', 'COMUNA'] = 'Región Metropolitana'
 
 # Guardar el DataFrame concatenado a un archivo CSV
 df_concatenado.to_csv('data_clean/fonasa_2024.csv', index=False)

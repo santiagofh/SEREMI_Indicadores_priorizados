@@ -13,7 +13,7 @@ import numpy as np
 
 #%%
 # LECTURA DE ARCHIVOS
-fonsa=pd.read_csv('data_clean/fonasa_2024.csv')
+fonasa=pd.read_csv('data_clean/fonasa_2024.csv')
 casen_csv = pd.read_csv('data_clean/casen_17_22.csv')
 casen_csv.rename(columns={'Ponlación nacida en Chile':'Población nacida en Chile'}, inplace=True)
 #%%
@@ -148,3 +148,61 @@ st.write("El R² es una medida de qué tan bien los valores observados son repli
 st.write('_Fuente: Elaboración propia a partir de encusta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 #%%
+# Gráfico de Sexo
+st.write(f"### Sexo en {comuna_seleccionada} 2024")
+
+# Convertir filtro_comuna a mayúsculas
+filtro_comuna = filtro_comuna.upper()
+
+# Asegurarse de que los valores en la columna 'COMUNA' de 'fonasa' estén en mayúsculas
+fonasa['COMUNA'] = fonasa['COMUNA'].str.upper()
+
+# Filtrar datos si no es "TODAS LAS COMUNAS"
+if filtro_comuna != "REGIÓN METROPOLITANA":
+    df_sexo = fonasa[(fonasa['Category'] == 'SEXO') & (fonasa['COMUNA'] == filtro_comuna)]
+else:
+    df_sexo = fonasa[fonasa['Category'] == 'SEXO']
+
+df_sexo = df_sexo.dropna(axis=1)
+df_sexo
+
+# %%
+# Gráfico de Sexo
+st.write(f"### Tramo en {comuna_seleccionada} 2024")
+
+# Convertir filtro_comuna a mayúsculas
+filtro_comuna = filtro_comuna.upper()
+
+# Asegurarse de que los valores en la columna 'COMUNA' de 'fonasa' estén en mayúsculas
+fonasa['COMUNA'] = fonasa['COMUNA'].str.upper()
+
+# Filtrar datos si no es "TODAS LAS COMUNAS"
+if filtro_comuna != "REGIÓN METROPOLITANA":
+    df_tramo = fonasa[(fonasa['Category'] == 'TRAMO FONASA') & (fonasa['COMUNA'] == filtro_comuna)]
+else:
+    df_tramo = fonasa[fonasa['Category'] == 'TRAMO FONASA']
+
+df_tramo = df_tramo.dropna(axis=1)
+df_tramo
+
+# %%
+# %%
+# Gráfico de Sexo
+st.write(f"### Rango etario en {comuna_seleccionada} 2024")
+
+# Convertir filtro_comuna a mayúsculas
+filtro_comuna = filtro_comuna.upper()
+
+# Asegurarse de que los valores en la columna 'COMUNA' de 'fonasa' estén en mayúsculas
+fonasa['COMUNA'] = fonasa['COMUNA'].str.upper()
+
+# Filtrar datos si no es "TODAS LAS COMUNAS"
+if filtro_comuna != "REGIÓN METROPOLITANA":
+    df_edad = fonasa[(fonasa['Category'] == 'TRAMO EDAD') & (fonasa['COMUNA'] == filtro_comuna)]
+else:
+    df_edad = fonasa[fonasa['Category'] == 'TRAMO EDAD']
+
+df_edad = df_edad.dropna(axis=1)
+df_edad
+
+# %%
