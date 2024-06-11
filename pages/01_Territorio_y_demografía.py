@@ -584,26 +584,31 @@ st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.g
 
 #%%
 # Población nacida fuera de Chile
-
 st.write('## Porcentaje de población nacida fuera de Chile')
 
 casen_migrantes_comuna['Total'] = casen_migrantes_comuna['Población nacida en Chile'] + casen_migrantes_comuna['Población nacida fuera de Chile']
 casen_migrantes_comuna['% Nacida en Chile'] = (casen_migrantes_comuna['Población nacida en Chile'] / casen_migrantes_comuna['Total']) * 100
 casen_migrantes_comuna['% Nacida fuera de Chile'] = (casen_migrantes_comuna['Población nacida fuera de Chile'] / casen_migrantes_comuna['Total']) * 100
 
-fig_migrantes = px.bar(
-    casen_migrantes_comuna, 
-    x='Año', 
-    y=['% Nacida en Chile', '% Nacida fuera de Chile'], 
-    title=f'Porcentaje de población nacida fuera de Chile en {comuna_seleccionada}',
-    labels={'value': 'Porcentaje', 'variable': 'Origen'},
-    text_auto=True
-)
-fig_migrantes.update_layout(yaxis=dict(range=[0, 110]))
-st.plotly_chart(fig_migrantes)
-st.write('_Fuente: Elaboración propia a partir de encusta CASEN 2017, 2020 y 2022_')
-st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
+df_melted = casen_migrantes_comuna.melt(id_vars=['Año', 'Comuna'], value_vars=['% Nacida en Chile', '% Nacida fuera de Chile'],
+                                         var_name='Origen', value_name='Porcentaje')
 
+fig_migrantes = px.bar(
+    df_melted,
+    x='Año',
+    y='Porcentaje',
+    color='Origen',
+    text=df_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
+    title=f'Porcentaje de población nacida fuera de Chile en {comuna_seleccionada}',
+    labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
+)
+
+fig_migrantes.update_traces(texttemplate='%{text}', textposition='outside')
+fig_migrantes.update_yaxes(range=[0, 110],ticksuffix="%")
+
+st.plotly_chart(fig_migrantes)
+st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
+st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
 # %%
 st.write('## Porcentaje de población perteneciente a una etnia')

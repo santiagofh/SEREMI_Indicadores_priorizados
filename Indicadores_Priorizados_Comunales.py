@@ -1,14 +1,5 @@
 #%%
 import streamlit as st
-import pandas as pd
-import plotly.express as px
-import geopandas as gpd
-import folium
-from streamlit_folium import folium_static
-from datetime import datetime
-import json
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
 
 #%%
 # TITULO INTRODUCCION
