@@ -44,11 +44,6 @@ st.sidebar.write("Selección de Comuna")
 default_index = lista_comunas.index("Todas las comunas") if "Todas las comunas" in lista_comunas else 0
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=default_index)
 
-st.sidebar.header("Selección año de proyección de población del INE")
-current_year = datetime.now().year
-select_year_int = st.sidebar.slider("Año:", min_value=2002, max_value=2035, value=current_year)
-select_year = f'Poblacion {select_year_int}'
-
 #%%
 # Filtrar DataFrame según comuna seleccionada
 if comuna_seleccionada == "Todas las comunas":
