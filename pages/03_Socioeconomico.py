@@ -74,6 +74,14 @@ st.write('Este tablero interactivo presenta indicadores socioeconomicos prioriza
 st.markdown('<a name="indicadores-socioeconomicos"></a>', unsafe_allow_html=True)
 st.write("## Indicadores Socioeconómicos")
 
+# Lista de categorías con columnas en porcentaje
+percentage_categories = [
+    'Pobreza De Ingresos', 'Pobreza Multidimensional', 'Escolaridad Mayores 15', 'Escolaridad Mayores 18',
+    'Tasas Participación Laboral', 'Tasas De Ocupación', 'Jefes De Hogar', 'Previsión De Salud',
+    'Índice De Saneamiento', 'Materialidad De La Vivienda', 'Hacinamiento', 'Migrantes', 'Etnias',
+    'Discapacidad', 'Participación'
+]
+
 # Obtener las categorías únicas
 categories = casen_csv['Category'].unique()
 
@@ -95,7 +103,7 @@ for category in categories:
     
     # Convertir la columna 'Año' a enteros
     if 'Año' in df_cat.columns:
-        df_cat['Año'] = df_cat['Año'].astype(str)
+        df_cat['Año'] = df_cat['Año'].astype(int)
     
     # Guardar la tabla en el diccionario
     tables[category] = df_cat
@@ -108,7 +116,11 @@ for category, table in tables.items():
     # Formatear las columnas excepto 'Año'
     formatted_table = table.copy()
     for col in formatted_table.columns:
-        if col != 'Año':
+        if col == 'Año':
+            continue
+        if category in percentage_categories:
+            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x*100:,.2f}%".replace(",", "X").replace(".", ",").replace("X", "."))
+        else:
             formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
     
     st.dataframe(formatted_table.reset_index(drop=True))
