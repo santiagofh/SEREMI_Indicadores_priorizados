@@ -26,17 +26,10 @@ lista_comunas = [
 # INICIO DE LA PÁGINA
 st.set_page_config(page_title="Ambiental", layout='wide', initial_sidebar_state='expanded')
 
-# Sidebar
-st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
-comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=lista_comunas.index("Todas las comunas"))
-current_year = datetime.now().year
-select_year_int = st.sidebar.slider("Año:", min_value=2002, max_value=2035, value=current_year)
-select_year = f'Poblacion {select_year_int}'
-
 # TITULO INTRODUCCION
 st.image('img/seremi-100-años.png', width=300)
 st.write('# Región Metropolitana y sus comunas: Ambiental')
-st.write('Este tablero interactivo presenta indicadores ambientales priorizados de la Región Metropolitana de Santiago y sus comunas, proporcionando una visión detallada sobre las emisiones, el consumo de agua, y otros aspectos relevantes para la gestión ambiental y la salud pública.')
+st.write('Este tablero interactivo presenta indicadores ambientales priorizados de la Región Metropolitana de Santiago, proporcionando una visión detallada sobre las emisiones, el consumo de agua, y otros aspectos relevantes para la gestión ambiental y la salud pública.')
 
 
 #%%
@@ -44,18 +37,21 @@ st.write('Este tablero interactivo presenta indicadores ambientales priorizados 
 # Emisiones de dióxido de carbono para fuentes puntuales
 st.write('## Emisiones de dióxido de carbono para fuentes puntuales')
 st.write('Las emisiones de dióxido de carbono (CO₂) son un indicador clave para evaluar la contribución de diferentes fuentes a la contaminación del aire y al cambio climático. Este gráfico muestra las emisiones de CO₂ por fuentes puntuales de las regiones.')
+st.write('### Emisiones de dióxido de carbono (CO2) desagregadas por región para fuentes puntuales por rubro, 2019')
 infogram_url1 = "https://infogram.com/1prdpmyp12vd2xugvp1n53lre1smzy7prrw"
 st.components.v1.iframe(infogram_url1, width=800, height=600, scrolling=True)
 st.write('fuente: https://retc.mma.gob.cl/indicadores/emisiones-al-aire/')
+
 # Emisiones de material particulado respirable fino para fuentes puntuales
 st.write('## Emisiones de material particulado respirable fino para fuentes puntuales')
 st.write('El material particulado respirable fino (PM2.5) es una de las principales preocupaciones ambientales debido a sus efectos adversos en la salud humana. Este gráfico muestra las emisiones de PM2.5 por fuentes puntuales en la Región Metropolitana.')
+
+st.write('### Emisiones de material particulado respirable (MP10) desagregadas por región para fuentes puntuales por rubro, 2019.')
 infogram_url2 = "https://infogram.com/1pyxvngg60xnvwt3m51k5g1wv5tyw2xll29"
 st.components.v1.iframe(infogram_url2, width=800, height=600, scrolling=True)
 st.write('fuente: https://retc.mma.gob.cl/indicadores/emisiones-al-aire/')
-infogram_url3 = "https://infogram.com/1pyxvngg60xnvwt3m51k5g1wv5tyw2xll29"
-st.components.v1.iframe(infogram_url3, width=800, height=600, scrolling=True)
-st.write('fuente: https://retc.mma.gob.cl/indicadores/emisiones-al-aire/')
+
+st.write('### Emisiones de material particulado respirable fino (MP2,5) desagregadas por región para fuentes puntuales por rubro, 2019.')
 infogram_url4 = 'https://infogram.com/1p0lpr29w29en1fex16ylp3wr9fnd9r0l1l'
 st.components.v1.iframe(infogram_url4, width=800, height=600, scrolling=True)
 st.write('fuente: https://retc.mma.gob.cl/indicadores/emisiones-al-aire/')
