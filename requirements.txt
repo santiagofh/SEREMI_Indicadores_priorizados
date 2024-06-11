@@ -10,3 +10,4 @@ statsmodels
 shapely
 pdfplumber
 requests
+openpyxl
