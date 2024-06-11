@@ -578,7 +578,9 @@ fig.update_layout(
     xaxis2=dict(range=[0, max_population])
 )
 
-st.plotly_chart(fig)
+st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
+st.plotly_chart(fig, use_container_width=False)
+st.markdown("</div>", unsafe_allow_html=True)
 st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.gob.cl/estadisticas/sociales/demografia-y-vitales/proyecciones-de-poblacion)_')
 
 
@@ -632,7 +634,9 @@ fig_etnias = px.bar(
 )
 fig_etnias.update_layout(yaxis=dict(range=[0, 110]))
 
-st.plotly_chart(fig_etnias)
+st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
+st.plotly_chart(fig_etnias, use_container_width=False)
+st.markdown("</div>", unsafe_allow_html=True)
 
 st.write('_Fuente: Elaboración propia a partir de encusta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
