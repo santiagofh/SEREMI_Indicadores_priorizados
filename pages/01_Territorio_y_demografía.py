@@ -601,6 +601,8 @@ fig_migrantes = px.bar(
     text=df_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
     title=f'Porcentaje de población nacida fuera de Chile en {comuna_seleccionada}',
     labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
+    width=800,  # Ajustar el ancho del gráfico
+    height=600  # Ajustar la altura del gráfico si es necesario
 )
 
 fig_migrantes.update_traces(texttemplate='%{text}', textposition='outside')
