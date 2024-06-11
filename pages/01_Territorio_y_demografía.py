@@ -608,7 +608,10 @@ fig_migrantes = px.bar(
 fig_migrantes.update_traces(texttemplate='%{text}', textposition='outside')
 fig_migrantes.update_yaxes(range=[0, 110],ticksuffix="%")
 
+# Centrar el gráfico en Streamlit
+st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_migrantes, use_container_width=False)
+st.markdown("</div>", unsafe_allow_html=True)
 st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
