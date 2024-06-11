@@ -93,6 +93,10 @@ for category in categories:
     if 'Comuna' in df_cat.columns:
         df_cat = df_cat.drop(columns=['Comuna'])
     
+    # Convertir la columna 'Año' a enteros
+    if 'Año' in df_cat.columns:
+        df_cat['Año'] = df_cat['Año'].astype(int)
+    
     # Guardar la tabla en el diccionario
     tables[category] = df_cat
 
@@ -100,7 +104,14 @@ for category in categories:
 for category, table in tables.items():
     category_title = ' '.join(word.capitalize() for word in category.split())
     st.write(f"### {category_title}")
-    st.dataframe(table.reset_index(drop=True))
+    
+    # Formatear las columnas excepto 'Año'
+    formatted_table = table.copy()
+    for col in formatted_table.columns:
+        if col != 'Año':
+            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    
+    st.dataframe(formatted_table.reset_index(drop=True))
 
 
 #%%
