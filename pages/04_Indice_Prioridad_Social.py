@@ -16,10 +16,10 @@ from PIL import Image
 st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana", layout='wide', initial_sidebar_state='expanded')
 
 # Sidebar
-st.sidebar.write("## Índice de prioridad social")
+st.write("## Índice de prioridad social")
 
 # URL del PDF (solo para referencia)
-pdf_url = "https://github.com/santiagofh/SEREMI_Indicadores_priorizados/blob/main/data_raw/%C3%8DNDICE%20DE%20PRIORIDAD%20SOCIAL%202022.pdf"
+pdf_url = "https://www.desarrollosocialyfamilia.gob.cl/storage/docs/INDICE-DE-PRIORIDAD-SOCIAL-2022_V2.pdf"
 
 # Función para mostrar el PDF
 def show_pdf(file_path):
