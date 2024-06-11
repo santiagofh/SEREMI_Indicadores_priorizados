@@ -624,27 +624,41 @@ st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen
 # %%
 st.write('## Porcentaje de población perteneciente a una etnia')
 
+# Calcular los porcentajes
 casen_etnias_comuna['Total'] = casen_etnias_comuna['Pertenece a algún pueblo originario'] + casen_etnias_comuna['No pertenece a ningún pueblo originario']
 casen_etnias_comuna['% Pertenece a algún pueblo originario'] = (casen_etnias_comuna['Pertenece a algún pueblo originario'] / casen_etnias_comuna['Total']) * 100
 casen_etnias_comuna['% No pertenece a ningún pueblo originario'] = (casen_etnias_comuna['No pertenece a ningún pueblo originario'] / casen_etnias_comuna['Total']) * 100
 
+# Transformar los datos para adecuarlos al gráfico
+df_etnias_melted = casen_etnias_comuna.melt(id_vars=['Año'], value_vars=['% Pertenece a algún pueblo originario', '% No pertenece a ningún pueblo originario'],
+                                            var_name='Origen', value_name='Porcentaje')
+
+# Crear el gráfico de barras
 fig_etnias = px.bar(
-    casen_etnias_comuna, 
+    df_etnias_melted, 
     x='Año', 
-    y=[ '% No pertenece a ningún pueblo originario','% Pertenece a algún pueblo originario'], 
+    y='Porcentaje', 
+    color='Origen', 
+    text=df_etnias_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
     title=f'Porcentaje de población perteneciente a una etnia en {comuna_seleccionada}',
-    labels={'value': 'Porcentaje', 'variable': 'Origen'},
-    text_auto=True,
+    labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
     width=800,  # Ajustar el ancho del gráfico
     height=600  # Ajustar la altura del gráfico si es necesario
 )
+
+# Ajustar el layout para que las etiquetas de texto incluyan el símbolo de porcentaje
+fig_etnias.update_traces(texttemplate='%{text}', textposition='outside')
+
+# Ajustar el rango del eje Y
 fig_etnias.update_layout(yaxis=dict(range=[0, 110]))
 
+# Centrar el gráfico en Streamlit
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_etnias, use_container_width=False)
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.write('_Fuente: Elaboración propia a partir de encusta CASEN 2017, 2020 y 2022_')
+# Fuente de los datos
+st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
 #%%
