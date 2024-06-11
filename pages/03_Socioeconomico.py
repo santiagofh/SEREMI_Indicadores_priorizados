@@ -10,7 +10,11 @@ import json
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
-
+#%%
+def display_centered_chart(fig):
+    col1, col2, col3 = st.columns([1, 4, 1])
+    with col2:
+        st.plotly_chart(fig, use_container_width=True)
 #%%
 # Path o rutas para archivos
 paths = {
@@ -53,6 +57,8 @@ st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 st.sidebar.write("Selección de Comuna")
 default_index = lista_comunas.index("Todas las comunas") if "Todas las comunas" in lista_comunas else 0
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=default_index)
+
+
 
 #%%
 # Filtrar DataFrame según comuna seleccionada
@@ -148,6 +154,10 @@ fig_pobreza_ingresos.update_traces(texttemplate='%{text}', textposition='outside
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_pobreza_ingresos, use_container_width=False)
 st.markdown("</div>", unsafe_allow_html=True)
+
+
+# display_centered_chart(fig_pobreza_ingresos)
+
 st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
