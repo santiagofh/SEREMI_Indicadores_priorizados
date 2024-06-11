@@ -87,12 +87,19 @@ for category in categories:
     # Identificar y eliminar las columnas con valores nulos
     df_cat = df_cat.dropna(axis=1, how='any')
     
+    # Eliminar las columnas 'Category' y 'Comuna'
+    if 'Category' in df_cat.columns:
+        df_cat = df_cat.drop(columns=['Category'])
+    if 'Comuna' in df_cat.columns:
+        df_cat = df_cat.drop(columns=['Comuna'])
+    
     # Guardar la tabla en el diccionario
     tables[category] = df_cat
 
 # Mostrar las tablas en Streamlit
 for category, table in tables.items():
     category_title = ' '.join(word.capitalize() for word in category.split())
+    st.write(f"### {category_title}")
     st.dataframe(table.reset_index(drop=True))
 
 
