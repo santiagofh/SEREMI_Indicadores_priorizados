@@ -41,7 +41,7 @@ fig = px.bar(df_ips,
                  'MEDIA ALTA PRIORIDAD': 'orange',
                  'MEDIA BAJA PRIORIDAD': 'yellow',
                  'BAJA PRIORIDAD': 'green',
-                 'SIN PRIORIDAD': 'blue'
+                 'SIN PRIORIDAD': 'green'
              })
 
 # Personalizar el gráfico
