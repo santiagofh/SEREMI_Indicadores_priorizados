@@ -95,7 +95,7 @@ for category in categories:
     
     # Convertir la columna 'Año' a enteros
     if 'Año' in df_cat.columns:
-        df_cat['Año'] = df_cat['Año'].astype(int)
+        df_cat['Año'] = df_cat['Año'].astype(str)
     
     # Guardar la tabla en el diccionario
     tables[category] = df_cat
