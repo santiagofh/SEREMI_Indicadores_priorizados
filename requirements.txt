@@ -6,6 +6,6 @@ geopandas
 matplotlib
 folium
 streamlit-folium
-streamlit_folium
 statsmodels
 shapely
+pdfplumber
