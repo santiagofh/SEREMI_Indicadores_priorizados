@@ -110,7 +110,9 @@ fig_pobreza_ingresos = px.bar(
     y='Pobres',
     title=f"Pobreza de ingresos en {comuna_seleccionada}",
     labels={'Pobres': 'Porcentaje de Pobreza de Ingresos', 'Año': 'Año'},
-    text=casen_pobrezai_comuna['Pobres'].apply(lambda x: '{0:1.2f}%'.format(x*100))
+    text=casen_pobrezai_comuna['Pobres'].apply(lambda x: '{0:1.2f}%'.format(x*100)),
+    width=800,  # Ajustar el ancho del gráfico
+    height=600  # Ajustar la altura del gráfico si es necesario
 )
 fig_pobreza_ingresos.update_layout(
     yaxis_tickformat=",.2%",
@@ -136,7 +138,9 @@ fig_pobreza_multidimensional = px.bar(
     y='Pobres',
     title=f"Pobreza multidimensional en {comuna_seleccionada}",
     labels={'Pobres': 'Porcentaje de Pobreza Multidimensional', 'Año': 'Año'},
-    text=casen_pobrezam_comuna['Pobres'].apply(lambda x: '{0:1.2f}%'.format(x*100))
+    text=casen_pobrezam_comuna['Pobres'].apply(lambda x: '{0:1.2f}%'.format(x*100)),
+    width=800,  # Ajustar el ancho del gráfico
+    height=600  # Ajustar la altura del gráfico si es necesario
 )
 fig_pobreza_multidimensional.update_layout(
     yaxis_tickformat=",.2%",
@@ -172,7 +176,9 @@ fig_ingresos = px.bar(
     color='Tipo de Ingreso',
     barmode='group',
     title=f"Distribución de Ingresos en {comuna_seleccionada}",
-    labels={'Monto': 'Monto de Ingreso', 'Año': 'Año'}
+    labels={'Monto': 'Monto de Ingreso', 'Año': 'Año'},
+    width=800,  # Ajustar el ancho del gráfico
+    height=600  # Ajustar la altura del gráfico si es necesario
 )
 fig_ingresos.update_layout(
     yaxis_tickformat=".0f"
@@ -206,7 +212,9 @@ fig_participacion_laboral = px.bar(
     barmode='group',
     title=f"Tasas de participación laboral en {comuna_seleccionada}",
     labels={'Porcentaje': 'Porcentaje de Participación', 'Año': 'Año'},
-    text=casen_tasas_participacion_comuna_long['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x*100))
+    text=casen_tasas_participacion_comuna_long['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x*100)),
+    width=800,  # Ajustar el ancho del gráfico
+    height=600  # Ajustar la altura del gráfico si es necesario
 )
 fig_participacion_laboral.update_layout(
     yaxis_tickformat=".2%",
