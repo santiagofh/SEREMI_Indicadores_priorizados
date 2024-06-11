@@ -467,7 +467,9 @@ fig = px.line(
     y='Población',
     color='Sexo (1=Hombre 2=Mujer)',
     title='Total población proyectada ' + comuna_seleccionada,
-    labels={'Sexo (1=Hombre 2=Mujer)': 'Sexo', 'Año': 'Año', 'Población': 'Población'}
+    labels={'Sexo (1=Hombre 2=Mujer)': 'Sexo', 'Año': 'Año', 'Población': 'Población'},
+    width=800,  # Ajustar el ancho del gráfico
+    height=600  # Ajustar la altura del gráfico si es necesario
 )
 fig.add_vline(x=select_year_int, line_width=2, line_dash="dash", line_color="red")
 fig.add_annotation(
@@ -575,7 +577,9 @@ fig.update_layout(
     yaxis_title="Rango Etario",
     showlegend=False,
     xaxis=dict(range=[-max_population, 0]),
-    xaxis2=dict(range=[0, max_population])
+    xaxis2=dict(range=[0, max_population]),
+    width=800,  # Ajustar el ancho del gráfico
+    height=600  # Ajustar la altura del gráfico si es necesario
 )
 
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
@@ -630,7 +634,9 @@ fig_etnias = px.bar(
     y=[ '% No pertenece a ningún pueblo originario','% Pertenece a algún pueblo originario'], 
     title=f'Porcentaje de población perteneciente a una etnia en {comuna_seleccionada}',
     labels={'value': 'Porcentaje', 'variable': 'Origen'},
-    text_auto=True
+    text_auto=True,
+    width=800,  # Ajustar el ancho del gráfico
+    height=600  # Ajustar la altura del gráfico si es necesario
 )
 fig_etnias.update_layout(yaxis=dict(range=[0, 110]))
 
