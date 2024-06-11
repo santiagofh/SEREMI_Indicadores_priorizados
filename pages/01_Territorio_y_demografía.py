@@ -606,7 +606,7 @@ fig_migrantes = px.bar(
 fig_migrantes.update_traces(texttemplate='%{text}', textposition='outside')
 fig_migrantes.update_yaxes(range=[0, 110],ticksuffix="%")
 
-st.plotly_chart(fig_migrantes)
+st.plotly_chart(fig_migrantes, use_container_width=False)
 st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
