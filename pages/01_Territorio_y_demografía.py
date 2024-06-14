@@ -43,9 +43,9 @@ lista_comunas = [
 #%%
 # INICIO DE LA PÁGINA
 st.set_page_config(page_title="Territorio y demografía", layout='wide', initial_sidebar_state='expanded')
-# logo1 = "img/logo_seremi.png"
-# logo4 = 'img/SEREMI Rergión Metropolitana (1).png'
-# st.logo(logo4, icon_image=logo1)
+logo_horizontal = 'img/horizontal_remolino_blue.png'
+logo_icono = 'img/icon_remolino_blue.png'
+st.logo(logo_horizontal, icon_image=logo_icono)
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=lista_comunas.index("Todas las comunas"))

@@ -1,9 +1,9 @@
 import streamlit as st
 
 st.set_page_config(page_title="Descarga de archivos", layout='wide', initial_sidebar_state='expanded')
-logo1 = "img/logo_seremi.png"
-# logo4 = 'img/SEREMI Rergión Metropolitana (1).png'
-# st.logo(logo4, icon_image=logo1)
+logo_horizontal = 'img/horizontal_remolino_blue.png'
+logo_icono = 'img/icon_remolino_blue.png'
+st.logo(logo_horizontal, icon_image=logo_icono)
 #%%
 # TITULO INTRODUCCION
 st.image('img/seremi-100-años.png', width=300)

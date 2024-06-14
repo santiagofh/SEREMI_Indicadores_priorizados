@@ -4,10 +4,9 @@ import streamlit as st
 #%%
 # TITULO INTRODUCCION
 import streamlit as st
-
-# logo1 = "img/logo_seremi.png"
-# logo4 = 'img/SEREMI Rergión Metropolitana (1).png'
-# st.logo(logo4, icon_image=logo1)
+logo_horizontal = 'img/horizontal_remolino_blue.png'
+logo_icono = 'img/icon_remolino_blue.png'
+st.logo(logo_horizontal, icon_image=logo_icono)
 
 st.image('img/seremi-100-años.png', width=300)
 st.markdown('# Región Metropolitana y sus comunas: Indicadores priorizados')

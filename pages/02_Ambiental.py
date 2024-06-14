@@ -25,9 +25,9 @@ lista_comunas = [
 #%%
 # INICIO DE LA PÁGINA
 st.set_page_config(page_title="Ambiental", layout='wide', initial_sidebar_state='expanded')
-# logo1 = "img/logo_seremi.png"
-# logo4 = 'img/SEREMI Rergión Metropolitana (1).png'
-# st.logo(logo4, icon_image=logo1)
+logo_horizontal = 'img/horizontal_remolino_blue.png'
+logo_icono = 'img/icon_remolino_blue.png'
+st.logo(logo_horizontal, icon_image=logo_icono)
 # TITULO INTRODUCCION
 st.image('img/seremi-100-años.png', width=300)
 st.write('# Región Metropolitana y sus comunas: Ambiental')
@@ -102,10 +102,10 @@ map_url = "https://umap.openstreetmap.fr/es/map/declaracion-jurada-anual-2018-to
 st.components.v1.iframe(map_url, width=800, height=600, scrolling=True)
 
 
-st.write('## Incidencia de intoxicaciones agudas por plaguicidas (IAP)')
-st.write('La incidencia de intoxicaciones agudas por plaguicidas es un importante indicador de los riesgos asociados al uso de estos productos químicos en la agricultura y otros sectores.')
-st.write('## Riesgo de impactos de salud a consecuencias de olas de calor')
-st.write('## Consumo promedio de agua por comuna')
-st.write('## Decretos de Zonas de Escasez Hídrica 2008-2023')
-st.write('## Nº de VIRS (instalaciones de interés sanitario) por comuna + MAPA')
-# %%
+# st.write('## Incidencia de intoxicaciones agudas por plaguicidas (IAP)')
+# st.write('La incidencia de intoxicaciones agudas por plaguicidas es un importante indicador de los riesgos asociados al uso de estos productos químicos en la agricultura y otros sectores.')
+# st.write('## Riesgo de impactos de salud a consecuencias de olas de calor')
+# st.write('## Consumo promedio de agua por comuna')
+# st.write('## Decretos de Zonas de Escasez Hídrica 2008-2023')
+# st.write('## Nº de VIRS (instalaciones de interés sanitario) por comuna + MAPA')
+#  %%
