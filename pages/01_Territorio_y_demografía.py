@@ -302,8 +302,8 @@ data = {
         "Tasa específica de Fecundidad por edad",
         "Tasa bruta de reproducción",
         "Indice de desarrollo humano (IDH)",
-        "% Pueblos Indigenas/Originarios",
-        "Personas nacidas en el extranjero"
+        "Personas nacidas en el extranjero",
+        "% Pueblos Indigenas/Originarios"
     ],
     "Fuente de dato": [
         "INE, CENSO 2017 (proyección)", 
