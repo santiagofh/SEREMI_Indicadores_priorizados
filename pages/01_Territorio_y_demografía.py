@@ -265,7 +265,7 @@ formatted_values = {
     "porcentaje_0_14": "{:.2f}%".format(porcentaje_0_14).replace('.', ','),
     "porcentaje_15_64": "{:.2f}%".format(porcentaje_15_64).replace('.', ','),
     "porcentaje_65_mas": "{:.2f}%".format(porcentaje_65_mas).replace('.', ','),
-    "indice_masculinidad": "{:.2f}".format(indice_masculinidad).replace('.', ','),
+    "indice_masculinidad": "{:.2f}%".format(indice_masculinidad).replace('.', ','),
     "pop_proy_urb_comuna": f"{int(pop_proy_urb_comuna):,}".replace(',', '.'),
     "pop_proy_rur_comuna": f"{int(pop_proy_rur_comuna):,}".replace(',', '.'),
     "indice_dependencia": "{:.2f}".format(indice_dependencia).replace('.', ','),

@@ -51,7 +51,7 @@ lista_comunas = [
 st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana", layout='wide', initial_sidebar_state='expanded')
 logo_horizontal = 'img/horizontal_remolino_blue.png'
 logo_icono = 'img/icon_remolino_blue.png'
-st.logo(logo_horizontal, icon_image=logo_horizontal)
+st.logo(logo_horizontal, icon_image=logo_icono)
 #%%
 # Sidebar
 st.image('img/seremi-100-años.png', width=300)
