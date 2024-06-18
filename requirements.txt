@@ -11,3 +11,4 @@ shapely
 pdfplumber
 requests
 openpyxl
+streamlit_authenticator
