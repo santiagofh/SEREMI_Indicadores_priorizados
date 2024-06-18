@@ -10,7 +10,11 @@ import json
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
+import streamlit_authenticator as stauth
 
+if not st.session_state.authentication_status:
+    st.info('Please Login from the Home page and try again.')
+    st.stop()
 #%%
 # LECTURA DE ARCHIVOS
 fonasa=pd.read_csv('data_clean/fonasa_2024.csv')

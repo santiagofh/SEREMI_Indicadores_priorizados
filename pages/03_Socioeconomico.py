@@ -10,6 +10,11 @@ import json
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
+import streamlit_authenticator as stauth
+
+if not st.session_state.authentication_status:
+    st.info('Please Login from the Home page and try again.')
+    st.stop()
 #%%
 def display_centered_chart(fig):
     col1, col2, col3 = st.columns([1, 4, 1])

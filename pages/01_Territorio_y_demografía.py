@@ -9,7 +9,11 @@ from datetime import datetime
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from shapely.geometry import Point
+import streamlit_authenticator as stauth
 
+if not st.session_state.authentication_status:
+    st.info('Please Login from the Home page and try again.')
+    st.stop()
 #%%
 # Path o rutas para archivos
 paths = {
@@ -46,6 +50,8 @@ st.set_page_config(page_title="Territorio y demografía", layout='wide', initial
 logo_horizontal = 'img/horizontal_remolino_blue.png'
 logo_icono = 'img/icon_remolino_blue.png'
 st.logo(logo_horizontal, icon_image=logo_icono)
+
+
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=lista_comunas.index("Todas las comunas"))

@@ -9,7 +9,12 @@ from datetime import datetime
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from shapely.geometry import Point
+import streamlit_authenticator as stauth
 
+if not st.session_state.authentication_status:
+    st.info('Please Login from the Home page and try again.')
+    st.stop()
+    
 # Listado comunas
 lista_comunas = [
     'Todas las comunas', 'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia', 'Colina', 

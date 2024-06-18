@@ -1,5 +1,10 @@
 #%%
 import streamlit as st
+import streamlit_authenticator as stauth
+
+if not st.session_state.authentication_status:
+    st.info('Please Login from the Home page and try again.')
+    st.stop()
 # INICIO DE LA PAGINA
 st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana", layout='wide', initial_sidebar_state='expanded')
 logo_horizontal = 'img/horizontal_remolino_blue.png'
