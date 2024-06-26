@@ -1,0 +1,2 @@
+import os
+os.chdir(r'C:\Users\fariass\OneDrive - SUBSECRETARIA DE SALUD PUBLICA\Escritorio\Salud Pública\SEREMI_Indicadores_priorizados')

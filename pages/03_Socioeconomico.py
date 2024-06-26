@@ -269,3 +269,7 @@ st.plotly_chart(fig_participacion_laboral, use_container_width=False)
 st.markdown("</div>", unsafe_allow_html=True)
 st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
+
+st.write('MAPA')
+map_url = "https://arcgis.mma.gob.cl/portal/apps/webappviewer/index.html?id=9a61283f66bf4ad5b4f22c60122d4737"
+st.markdown(f'<iframe src="{map_url}" width="100%" height="600"></iframe>', unsafe_allow_html=True)
