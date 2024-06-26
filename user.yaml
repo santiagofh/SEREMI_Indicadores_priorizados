@@ -8,6 +8,9 @@ credentials:
       email: constanza.adrian@redsalud.gob.cl
       name: Constanza Adrian
       password: '$2b$12$MvKFfYu5nX4XPScyh8KkAuOeEvcIRQnIv8wJv0lXWDJELSjlq72Ui'
+    equidad:
+      name: Usuario perteneciente a la comisión de equidad
+      password: '$2b$12$w3vyPyMpUXj4WY3JnlP2d.5ahzZJasugG9LjycQUqIqZ19vYyJltu'
 cookie:
   expiry_days: 30
   key: random_signature_key
