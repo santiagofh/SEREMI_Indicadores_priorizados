@@ -6,7 +6,7 @@ from yaml.loader import SafeLoader
 #%%
 st.image('img/seremi-100-años.png', width=300)
 logo_horizontal = 'img/horizontal_SEREMIRM_blue.png'
-logo_icono = 'img/icon_remolino_blue.png'
+logo_icono = 'img/icon_SEREMIRM.png'
 st.logo(logo_horizontal, icon_image=logo_icono)
 
 #%%
