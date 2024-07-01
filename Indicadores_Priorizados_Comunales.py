@@ -51,22 +51,22 @@ if authentication_status:
     authenticator.logout('Logout', 'main')
     pages = {
         "Menu principal":[
-            st.Page(home, default=True, title="Pagina de inicio")
+            st.Page(home, default=True, title="Pagina de inicio", icon=":material/home:")
         ],
         "Indicadores" : [
-            st.Page("01_Territorio_y_demografía.py", title="Territorio y demografía"),
-            st.Page("02_Ambiental.py", title="Ambiental"),
-            st.Page("03_Socioeconomico.py", title="Socioeconomico"),
-            st.Page("04_Fecundidad_y_natalidad.py", title="Fecundidad y natalidad"),
-            st.Page("04_Indice_Prioridad_Social.py", title="Indice Prioridad Social"),
-            st.Page("05_Sistema_Salud.py", title="Sistema Salud"),
-            st.Page("06_Estilos_de_vida‍.py", title="Estilos de vida‍"),
-            st.Page("07_Morbilidad.py", title="Morbilidad"),
-            st.Page("08_Estratificacion.py", title="Estratificacion"),
-            st.Page("09_Mortalidad.py", title="_Mortalidad"),
+            st.Page("01_Territorio_y_demografía.py", title="Territorio y demografía", icon=":material/public:"),
+            st.Page("02_Ambiental.py", title="Ambiental", icon=":material/eco:"),
+            st.Page("03_Socioeconomico.py", title="Socioeconomico", icon=":material/attach_money:"),
+            st.Page("04_Fecundidad_y_natalidad.py", title="Fecundidad y natalidad", icon=":material/pregnant_woman:"),
+            st.Page("04_Indice_Prioridad_Social.py", title="Indice Prioridad Social", icon=":material/monitoring:"),
+            st.Page("05_Sistema_Salud.py", title="Sistema Salud", icon=":material/health_and_safety:"),
+            st.Page("06_Estilos_de_vida‍.py", title="Estilos de vida‍", icon=":material/close:"),
+            st.Page("07_Morbilidad.py", title="Morbilidad", icon=":material/close:"),
+            st.Page("08_Estratificacion.py", title="Estratificacion", icon=":material/close:"),
+            st.Page("09_Mortalidad.py", title="_Mortalidad", icon=":material/close:"),
         ],
         "Recursos" : [
-            st.Page("99_Fuentes_archivos.py", title="Fuentes y archivos")
+            st.Page("99_Fuentes_archivos.py", title="Fuentes y archivos", icon=":material/description:")
         ]
     }
     pg = st.navigation(pages)
