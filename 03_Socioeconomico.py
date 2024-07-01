@@ -12,14 +12,6 @@ import plotly.graph_objects as go
 import numpy as np
 import streamlit_authenticator as stauth
 
-if not st.session_state.authentication_status:
-    st.info('Please Login from the Home page and try again.')
-    st.stop()
-#%%
-def display_centered_chart(fig):
-    col1, col2, col3 = st.columns([1, 4, 1])
-    with col2:
-        st.plotly_chart(fig, use_container_width=True)
 #%%
 # Path o rutas para archivos
 paths = {
@@ -53,19 +45,12 @@ lista_comunas = [
 
 #%%
 # INICIO DE LA PAGINA
-st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana", layout='wide', initial_sidebar_state='expanded')
-logo_horizontal = 'img/horizontal_remolino_blue.png'
-logo_icono = 'img/icon_remolino_blue.png'
-st.logo(logo_horizontal, icon_image=logo_icono)
 #%%
 # Sidebar
-st.image('img/seremi-100-años.png', width=300)
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 st.sidebar.write("Selección de Comuna")
 default_index = lista_comunas.index("Todas las comunas") if "Todas las comunas" in lista_comunas else 0
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=default_index)
-
-
 
 #%%
 # Filtrar DataFrame según comuna seleccionada

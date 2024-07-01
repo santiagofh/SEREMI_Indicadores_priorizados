@@ -3,10 +3,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit_authenticator as stauth
 
-# Autenticación
-if not st.session_state.authentication_status:
-    st.info('Please Login from the Home page and try again.')
-    st.stop()
 
 # LECTURA DE ARCHIVOS
 df_fec = pd.read_csv('data_clean/tasa_fecundidad.csv')
@@ -24,9 +20,6 @@ lista_comunas = [
 ]
 lista_años = ['Todos los años', '2013-2015', '2016-2018', '2019-2021']
 
-# Configuración de la página
-st.set_page_config(page_title="Fecundidad y natalidad", layout='wide', initial_sidebar_state='expanded')
-st.image('img/seremi-100-años.png', width=300)
 
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")

@@ -12,9 +12,6 @@ import plotly.graph_objects as go
 import numpy as np
 import streamlit_authenticator as stauth
 
-if not st.session_state.authentication_status:
-    st.info('Please Login from the Home page and try again.')
-    st.stop()
 #%%
 # LECTURA DE ARCHIVOS
 fonasa=pd.read_csv('data_clean/fonasa_2024.csv')
@@ -34,13 +31,7 @@ lista_comunas = [
 ]
 
 #%%
-# INICIO DE LA PAGINA
-st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana", layout='wide', initial_sidebar_state='expanded')
-logo_horizontal = 'img/horizontal_remolino_blue.png'
-logo_icono = 'img/icon_remolino_blue.png'
-st.logo(logo_horizontal, icon_image=logo_icono)
 # TITULO INTRODUCCION
-st.image('img/seremi-100-años.png', width=300)
 st.write('# Región Metropolitana y sus comunas: Sistema de Salud')
 st.write('Este tablero interactivo presenta indicadores de Sistema de Salud de la Región Metropolitana de Santiago y sus comunas.')
 

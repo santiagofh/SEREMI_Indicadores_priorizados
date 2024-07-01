@@ -1,17 +1,8 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 
-if not st.session_state.authentication_status:
-    st.info('Please Login from the Home page and try again.')
-    st.stop()
-    
-st.set_page_config(page_title="Descarga de archivos", layout='wide', initial_sidebar_state='expanded')
-logo_horizontal = 'img/horizontal_remolino_blue.png'
-logo_icono = 'img/icon_remolino_blue.png'
-st.logo(logo_horizontal, icon_image=logo_icono)
 #%%
 # TITULO INTRODUCCION
-st.image('img/seremi-100-años.png', width=300)
 st.write('# Región Metropolitana y sus comunas: Descarga de archivos')
 
 # Definimos los datos de los enlaces en una lista de diccionarios

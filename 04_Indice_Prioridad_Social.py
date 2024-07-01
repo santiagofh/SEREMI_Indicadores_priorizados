@@ -4,18 +4,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit_authenticator as stauth
 
-if not st.session_state.authentication_status:
-    st.info('Please Login from the Home page and try again.')
-    st.stop()
-#%%
-# Configuración de la página
-st.set_page_config(page_title="Análisis de Comunas en Región Metropolitana: IPS", layout='wide', initial_sidebar_state='expanded')
-logo_horizontal = 'img/horizontal_remolino_blue.png'
-logo_icono = 'img/icon_remolino_blue.png'
-st.logo(logo_horizontal, icon_image=logo_icono)
 #%%
 
-st.image('img/seremi-100-años.png', width=300)
 st.title("Análisis de Comunas en Región Metropolitana: Indice de prioridad social (IPS)")
 st.write("""
     Bienvenido al dashboard de análisis de comunas en la Región Metropolitana. 

@@ -11,9 +11,7 @@ import plotly.graph_objects as go
 from shapely.geometry import Point
 import streamlit_authenticator as stauth
 
-if not st.session_state.authentication_status:
-    st.info('Please Login from the Home page and try again.')
-    st.stop()
+
 #%%
 # Path o rutas para archivos
 paths = {
@@ -45,12 +43,6 @@ lista_comunas = [
 ]
 
 #%%
-# INICIO DE LA PÁGINA
-st.set_page_config(page_title="Territorio y demografía", layout='wide', initial_sidebar_state='expanded')
-logo_horizontal = 'img/horizontal_remolino_blue.png'
-logo_icono = 'img/icon_remolino_blue.png'
-st.logo(logo_horizontal, icon_image=logo_icono)
-
 
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
@@ -60,7 +52,6 @@ select_year_int = st.sidebar.slider("Año:", min_value=2002, max_value=2035, val
 select_year = f'Poblacion {select_year_int}'
 
 # TITULO INTRODUCCION
-st.image('img/seremi-100-años.png', width=300)
 st.write('# Región Metropolitana y sus comunas: Territorio y demografía')
 st.write('A continuación, se presenta un análisis detallado de la distribución territorial y demográfica de las comunas de la Región Metropolitana, incluyendo proyecciones de población, densidad poblacional, y otros indicadores clave que permiten una visión integral del desarrollo y cambios en la población regional.')
 def filtrar_comuna(df, column_name, comuna):
@@ -311,29 +302,6 @@ data = {
         "Personas nacidas en el extranjero",
         "% Pueblos Indigenas/Originarios"
     ],
-    "Fuente de dato": [
-        "INE, CENSO 2017 (proyección)", 
-        "INE, CENSO 2017 (proyección)", 
-        "INE, CENSO 2017 (proyección)",
-        "base de datos Epi MINSAL, en base a CENSO 2017",
-        "base de datos Epi MINSAL, en base a CENSO 2017",
-        "base de datos Epi MINSAL, en base a CENSO 2017",
-        "base de datos Epi MINSAL, en base a CENSO 2017",
-        "INE, CENSO 2017 (proyección)",
-        "INE, CENSO 2017 (proyección)",
-        "INE, CENSO 2017 (proyección)",
-        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
-        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
-        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
-        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
-        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
-        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
-        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
-        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
-        "Informe universidad Autonoma",
-        "CASEN 2022",
-        "CASEN 2022"
-    ],
     "Valor": [
         formatted_values["pop_proy_total"],
         formatted_values["pop_proy_total_rm"],
@@ -356,6 +324,29 @@ data = {
         "",
         formatted_values["poblacion_nacida_fuera_de_chile_2022"],
         formatted_values["poblacion_pertenece_pueblos_2022"]
+    ],
+    "Fuente de dato": [
+        "INE, CENSO 2017 (proyección)", 
+        "INE, CENSO 2017 (proyección)", 
+        "INE, CENSO 2017 (proyección)",
+        "base de datos Epi MINSAL, en base a CENSO 2017",
+        "base de datos Epi MINSAL, en base a CENSO 2017",
+        "base de datos Epi MINSAL, en base a CENSO 2017",
+        "base de datos Epi MINSAL, en base a CENSO 2017",
+        "INE, CENSO 2017 (proyección)",
+        "INE, CENSO 2017 (proyección)",
+        "INE, CENSO 2017 (proyección)",
+        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
+        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
+        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
+        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
+        "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
+        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
+        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
+        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
+        "Informe universidad Autonoma",
+        "CASEN 2022",
+        "CASEN 2022"
     ],
     "Enlace": [
         "",
@@ -387,8 +378,8 @@ df_indicadores = pd.DataFrame(data)
 # Configuración de columnas
 columns_config = {
     "Indicador": st.column_config.TextColumn("Indicador"),
-    "Fuente de dato": st.column_config.TextColumn("Fuente de dato"),
     "Valor": st.column_config.TextColumn("Valor"),
+    "Fuente de dato": st.column_config.TextColumn("Fuente de dato"),
     "Enlace": st.column_config.LinkColumn("Enlace", width=300)
 }
 
@@ -399,22 +390,22 @@ st.dataframe(df_indicadores, column_config=columns_config)
 
 #%%
 # Indicadores territoriales y de población
+##  Población censada y proyectada
 st.markdown('## Indicadores de población')
-cols = st.columns(5)
+cols = st.columns(4)
+cols[0].metric("Población censada 2017", formatted_values["pop_censada"])
+cols[1].metric(f"Población pryectada{select_year[-4:]}", formatted_values["pop_proy_total"])
 
-#%%
-# Población censada y proyectada
-cols[0].metric("Población efectivamente censada 2017", formatted_values["pop_censada"])
-cols[1].metric("Total hombres (censo 2017)", formatted_values["pop_h"])
-cols[2].metric("Total mujeres (censo 2017)", formatted_values["pop_m"])
-cols[3].metric("Porcentaje de hombres (censo 2017)", formatted_values["pop_h_percentaje"])
-cols[4].metric("Porcentaje de mujeres (censo 2017)", formatted_values["pop_m_percentaje"])
+cols = st.columns(4)
+cols[0].metric("Total hombres (2017)", formatted_values["pop_h"])
+cols[1].metric("Total mujeres (2017)", formatted_values["pop_m"])
+cols[2].metric("\% hombres (2017)", formatted_values["pop_h_percentaje"])
+cols[3].metric("\% mujeres (2017)", formatted_values["pop_m_percentaje"])
 
-cols[0].metric(f"Población proyectada ({select_year})", formatted_values["pop_proy_total"])
-cols[1].metric(f"Total hombres ({select_year})", formatted_values["pop_proy_h"])
-cols[2].metric(f"Total mujeres ({select_year})", formatted_values["pop_proy_m"])
-cols[3].metric(f"Porcentaje de hombres ({select_year})", formatted_values["pop_proy_h_percentaje"])
-cols[4].metric(f"Porcentaje de mujeres ({select_year})", formatted_values["pop_proy_m_percentaje"])
+cols[0].metric(f"Total hombres ({select_year[-4:]})", formatted_values["pop_proy_h"])
+cols[1].metric(f"Total mujeres ({select_year[-4:]})", formatted_values["pop_proy_m"])
+cols[2].metric(f"\% hombres ({select_year[-4:]})", formatted_values["pop_proy_h_percentaje"])
+cols[3].metric(f"\% mujeres ({select_year[-4:]})", formatted_values["pop_proy_m_percentaje"])
 
 st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.gob.cl/estadisticas/sociales/demografia-y-vitales/proyecciones-de-poblacion)_')
 
@@ -450,9 +441,9 @@ else:
 
 #%%
 # Datos adicionales de la comuna
-cols = st.columns(4)
-cols[0].metric("Área total de la comuna (población proyectada 2024)", formatted_values["area_comuna"])
-cols[1].metric("Densidad poblacional de la comuna (población proyectada)", formatted_values["densidad_pop_comuna"])
+cols = st.columns(2)
+cols[0].metric("Área total de la comuna (2024)", formatted_values["area_comuna"])
+cols[1].metric(f"Densidad poblacional de la comuna ({select_year[-4:]})", formatted_values["densidad_pop_comuna"])
 cols[0].metric("Porcentaje área urbana (censo 2017)", formatted_values["pop_urb_percentage"])
 cols[1].metric("Porcentaje área rural (censo 2017)", formatted_values["pop_rur_percentage"])
 
@@ -476,8 +467,8 @@ fig = px.line(
     color='Sexo (1=Hombre 2=Mujer)',
     title='Total población proyectada ' + comuna_seleccionada,
     labels={'Sexo (1=Hombre 2=Mujer)': 'Sexo', 'Año': 'Año', 'Población': 'Población'},
-    width=800,  # Ajustar el ancho del gráfico
-    height=600  # Ajustar la altura del gráfico si es necesario
+    # width=800,  # Ajustar el ancho del gráfico
+    # height=600  # Ajustar la altura del gráfico si es necesario
 )
 fig.add_vline(x=select_year_int, line_width=2, line_dash="dash", line_color="red")
 fig.add_annotation(
@@ -586,8 +577,6 @@ fig.update_layout(
     showlegend=False,
     xaxis=dict(range=[-max_population, 0]),
     xaxis2=dict(range=[0, max_population]),
-    width=800,  # Ajustar el ancho del gráfico
-    height=600  # Ajustar la altura del gráfico si es necesario
 )
 
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
@@ -615,8 +604,8 @@ fig_migrantes = px.bar(
     text=df_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
     title=f'Porcentaje de población nacida fuera de Chile en {comuna_seleccionada}',
     labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
-    width=800,  # Ajustar el ancho del gráfico
-    height=600  # Ajustar la altura del gráfico si es necesario
+    # width=800,  # Ajustar el ancho del gráfico
+    # height=600  # Ajustar la altura del gráfico si es necesario
 )
 
 fig_migrantes.update_traces(texttemplate='%{text}', textposition='outside')
@@ -650,8 +639,8 @@ fig_etnias = px.bar(
     text=df_etnias_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
     title=f'Porcentaje de población perteneciente a una etnia en {comuna_seleccionada}',
     labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
-    width=800,  # Ajustar el ancho del gráfico
-    height=600  # Ajustar la altura del gráfico si es necesario
+    # width=800,  # Ajustar el ancho del gráfico
+    # height=600  # Ajustar la altura del gráfico si es necesario
 )
 
 # Ajustar el layout para que las etiquetas de texto incluyan el símbolo de porcentaje

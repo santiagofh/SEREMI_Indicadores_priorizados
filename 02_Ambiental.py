@@ -28,13 +28,8 @@ lista_comunas = [
 ]
 
 #%%
-# INICIO DE LA PÁGINA
-st.set_page_config(page_title="Ambiental", layout='wide', initial_sidebar_state='expanded')
-logo_horizontal = 'img/horizontal_remolino_blue.png'
-logo_icono = 'img/icon_remolino_blue.png'
-st.logo(logo_horizontal, icon_image=logo_icono)
+
 # TITULO INTRODUCCION
-st.image('img/seremi-100-años.png', width=300)
 st.write('# Región Metropolitana y sus comunas: Ambiental')
 st.write('Este tablero interactivo presenta indicadores ambientales priorizados de la Región Metropolitana de Santiago, proporcionando una visión detallada sobre las emisiones, el consumo de agua, y otros aspectos relevantes para la gestión ambiental y la salud pública.')
 
