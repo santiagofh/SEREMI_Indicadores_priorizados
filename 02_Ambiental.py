@@ -19,17 +19,27 @@ from bs4 import BeautifulSoup
 st.write('# Región Metropolitana y sus comunas: Ambiental')
 st.write('Este tablero interactivo presenta indicadores ambientales priorizados de la Región Metropolitana de Santiago, proporcionando una visión detallada sobre las emisiones, el consumo de agua, y otros aspectos relevantes para la gestión ambiental y la salud pública.')
 #%%
-
 # Función para obtener datos de calidad del aire
 def obtener_datos_calidad_aire():
     url = "https://airechile.mma.gob.cl/comunas/santiago"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    # Ajustar el scraping según la estructura de la página
-    calidad_aire = {}
-    calidad_aire['estado'] = soup.find('div', {'class': 'estado-aire'}).text.strip()
-    calidad_aire['detalles'] = soup.find('div', {'class': 'detalles-estado'}).text.strip()
+    # Intentar extraer la información, manejando posibles errores
+    try:
+        estado = soup.find('div', {'class': 'estado-aire'}).text.strip()
+    except AttributeError:
+        estado = "No se pudo obtener el estado del aire."
+    
+    try:
+        detalles = soup.find('div', {'class': 'detalles-estado'}).text.strip()
+    except AttributeError:
+        detalles = "No se pudieron obtener los detalles del estado del aire."
+
+    calidad_aire = {
+        'estado': estado,
+        'detalles': detalles
+    }
 
     return calidad_aire
 
