@@ -19,27 +19,32 @@ from bs4 import BeautifulSoup
 st.write('# Región Metropolitana y sus comunas: Ambiental')
 st.write('Este tablero interactivo presenta indicadores ambientales priorizados de la Región Metropolitana de Santiago, proporcionando una visión detallada sobre las emisiones, el consumo de agua, y otros aspectos relevantes para la gestión ambiental y la salud pública.')
 #%%
+
 # Función para obtener datos de calidad del aire
 def obtener_datos_calidad_aire():
     url = "https://airechile.mma.gob.cl/comunas/santiago"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-
-    # Intentar extraer la información, manejando posibles errores
     try:
-        estado = soup.find('div', {'class': 'estado-aire'}).text.strip()
-    except AttributeError:
-        estado = "No se pudo obtener el estado del aire."
-    
-    try:
-        detalles = soup.find('div', {'class': 'detalles-estado'}).text.strip()
-    except AttributeError:
-        detalles = "No se pudieron obtener los detalles del estado del aire."
+        response = requests.get(url, verify=False)  # Desactivar verificación SSL
+        soup = BeautifulSoup(response.content, 'html.parser')
 
-    calidad_aire = {
-        'estado': estado,
-        'detalles': detalles
-    }
+        # Extraer el contenido del panel completo
+        try:
+            panel = soup.find('div', {'class': 'panel panel-medidas'})
+            if panel:
+                contenido_panel = panel.prettify()
+            else:
+                contenido_panel = "No se pudo encontrar el panel de medidas."
+        except Exception as e:
+            contenido_panel = f"Error al obtener el panel: {str(e)}"
+
+        calidad_aire = {
+            'contenido_panel': contenido_panel,
+        }
+
+    except requests.exceptions.RequestException as e:
+        calidad_aire = {
+            'contenido_panel': f"Error al realizar la solicitud: {str(e)}"
+        }
 
     return calidad_aire
 
@@ -52,14 +57,71 @@ Este dashboard proporciona información en tiempo real sobre la calidad del aire
 incluyendo estados de emergencia y preemergencia. Los datos son obtenidos del sitio oficial Aire Chile.
 """)
 
+# Mostrar la fecha actual
+st.write(f"### {datetime.now().strftime('%d/%m/%Y')}")
+
 # Obtener datos de calidad del aire
 datos_calidad_aire = obtener_datos_calidad_aire()
 
+# Estilos CSS personalizados
+st.markdown("""
+    <style>
+    .panel-heading {
+        background-color: #f57223;
+        padding: 15px;
+        border-radius: 5px 5px 0 0;
+        font-size: 1.5em;
+        color: white;
+    }
+    .panel-body {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
+        margin-top: 0;
+    }
+    .list-block {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .list-block li {
+        display: table;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .list-block li img {
+        display: table-cell;
+        vertical-align: top;
+        width: 40px;
+        height: 40px;
+        margin-right: 20px;
+    }
+    .list-block li p {
+        display: table-cell;
+        vertical-align: top;
+        margin: 0;
+        line-height: 1.5;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 # Mostrar información de calidad del aire
 st.subheader("Información en tiempo real sobre la calidad del aire en Santiago")
-st.write(f"Estado actual: {datos_calidad_aire['estado']}")
-st.write(f"Detalles: {datos_calidad_aire['detalles']}")
+st.markdown(datos_calidad_aire['contenido_panel'], unsafe_allow_html=True)
+# Agregar enlace para más información
+st.markdown("[Más información sobre la calidad del aire y detalles de la alerta](https://airechile.mma.gob.cl/comunas/santiago)")
+st.write("_Fuente: Ministerio de medio ambiente https://airechile.mma.gob.cl/comunas/santiago_")
+#%%
+# Agregar el mapa interactivo
+st.markdown("""
+    <iframe width="100%" height="600" src="https://sinca.mma.gob.cl/mapainteractivo/index.html?q=1719931520&z=0" frameborder="0" allowfullscreen></iframe>
+    """, unsafe_allow_html=True)
 
+st.write("_Fuente: Mapa desarrollado por el Ministerio de medio ambiente https://sinca.mma.gob.cl/_")
 #%%
 
 # Emisiones de dióxido de carbono para fuentes puntuales
