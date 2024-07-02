@@ -12,3 +12,5 @@ pdfplumber
 requests
 openpyxl
 streamlit_authenticator
+bs4
+requests
