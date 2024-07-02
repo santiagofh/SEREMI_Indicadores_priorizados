@@ -10,29 +10,45 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from shapely.geometry import Point
 import streamlit_authenticator as stauth
-
-if not st.session_state.authentication_status:
-    st.info('Please Login from the Home page and try again.')
-    st.stop()
-    
-# Listado comunas
-lista_comunas = [
-    'Todas las comunas', 'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia', 'Colina', 
-    'Conchalí', 'Curacaví', 'El Bosque', 'El Monte', 'Estación Central', 'Huechuraba', 'Independencia', 
-    'Isla de Maipo', 'La Cisterna', 'La Florida', 'La Granja', 'La Pintana', 'La Reina', 'Lampa', 
-    'Las Condes', 'Lo Barnechea', 'Lo Espejo', 'Lo Prado', 'Macul', 'Maipú', 'María Pinto', 'Melipilla', 
-    'Padre Hurtado', 'Paine', 'Pedro Aguirre Cerda', 'Peñaflor', 'Peñalolén', 'Pirque', 'Providencia', 
-    'Pudahuel', 'Puente Alto', 'Quilicura', 'Quinta Normal', 'Recoleta', 'Renca', 'San Bernardo', 
-    'San Joaquín', 'San José de Maipo', 'San Miguel', 'San Pedro', 'San Ramón', 'Santiago', 'Talagante', 
-    'Tiltil', 'Vitacura', 'Ñuñoa'
-]
+import requests
+from bs4 import BeautifulSoup
 
 #%%
 
 # TITULO INTRODUCCION
 st.write('# Región Metropolitana y sus comunas: Ambiental')
 st.write('Este tablero interactivo presenta indicadores ambientales priorizados de la Región Metropolitana de Santiago, proporcionando una visión detallada sobre las emisiones, el consumo de agua, y otros aspectos relevantes para la gestión ambiental y la salud pública.')
+#%%
 
+# Función para obtener datos de calidad del aire
+def obtener_datos_calidad_aire():
+    url = "https://airechile.mma.gob.cl/comunas/santiago"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Ajustar el scraping según la estructura de la página
+    calidad_aire = {}
+    calidad_aire['estado'] = soup.find('div', {'class': 'estado-aire'}).text.strip()
+    calidad_aire['detalles'] = soup.find('div', {'class': 'detalles-estado'}).text.strip()
+
+    return calidad_aire
+
+# Título del Dashboard
+st.title("Calidad del Aire en Santiago")
+
+# Descripción introductoria
+st.write("""
+Este dashboard proporciona información en tiempo real sobre la calidad del aire en Santiago,
+incluyendo estados de emergencia y preemergencia. Los datos son obtenidos del sitio oficial Aire Chile.
+""")
+
+# Obtener datos de calidad del aire
+datos_calidad_aire = obtener_datos_calidad_aire()
+
+# Mostrar información de calidad del aire
+st.subheader("Información en tiempo real sobre la calidad del aire en Santiago")
+st.write(f"Estado actual: {datos_calidad_aire['estado']}")
+st.write(f"Detalles: {datos_calidad_aire['detalles']}")
 
 #%%
 
