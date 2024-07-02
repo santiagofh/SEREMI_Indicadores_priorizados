@@ -258,7 +258,8 @@ st.write('# Mapa Socioeconómico')
 
 # URL del mapa
 map_url = "https://arcgis.mma.gob.cl/portal/apps/webappviewer/index.html?id=9a61283f66bf4ad5b4f22c60122d4737"
-
+map_img_url="https://sinia.mma.gob.cl/wp-content/uploads/2022/07/logo-sinia.png"
 # Inserta el mapa en la aplicación Streamlit
+st.image(map_img_url)
 st.markdown(f'<iframe src="{map_url}" width="150%" height="1000" style="border:none;"></iframe>', unsafe_allow_html=True)
-st.write('_Fuente: MMA')
+st.write('_Fuente: Ministerio de Medio Ambiente: Sistema Nacional de Información Ambiental https://sinia.mma.gob.cl/_')
