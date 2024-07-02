@@ -658,9 +658,3 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
-#%%
-import streamlit as st
-url = "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false"
-st.title("Datos de nacimiento")
-st.write("Haz clic en el siguiente enlace para abrir la página en una nueva pestaña:")
-st.markdown(f"[Abrir página web]({url})")

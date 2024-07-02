@@ -65,3 +65,17 @@ fig.update_layout(xaxis_title='Año', yaxis_title='Tasa de Fecundidad',
 
 # Mostrar el gráfico en Streamlit
 st.plotly_chart(fig)
+st.write("_Fuente: SEREMI DE SALUD - Subdepartamento de Epidemiología_")
+#%%
+url = "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false"
+
+# Título del Dashboard
+st.write("## DEIS Minsal - Dashboard de Nacimientos")
+
+# Descripción introductoria
+st.write("""
+Este dashboard proporciona acceso a información detallada sobre los nacimientos en Chile, utilizando los datos proporcionados por el Departamento de Estadísticas e Información de Salud (DEIS) del Ministerio de Salud (Minsal). A través del enlace proporcionado, puedes explorar visualizaciones interactivas que abarcan diversas estadísticas y tendencias sobre los nacimientos en el país.
+""")
+
+# Enlace al Dashboard externo
+st.markdown(f"[Abrir página web del Dashboard de Nacimientos]({url})")
