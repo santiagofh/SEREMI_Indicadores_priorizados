@@ -65,7 +65,20 @@ fig.update_layout(xaxis_title='Año', yaxis_title='Tasa de Fecundidad',
 
 # Mostrar el gráfico en Streamlit
 st.plotly_chart(fig)
+st.write("""
+Las tasas de fecundidad fueron elaboradas a partir de los datos de nacidos vivos obtenidos de la página de DEIS-MINSAL y de las proyecciones de población de INE obtenidos de su página web. Se calcularon tasas específicas de fecundidad para las madres en los grupos etarios de 10 a 14 años, 15 a 19 años, 20 a 34 años y 35 y más años (considera a 35 a 49 años). Y para el cálculo de la tasa específica del último grupo, se consideró a los nacidos vivos de madres de hasta 50 a 54 años de edad dentro del rango de 35 a 49 años. 
+
+A continuación, se incluyen los links de las fuentes desde donde se obtuvieron los datos.
+
+Datos de nacidos vivos descargados de "Estadísticas de Nacimiento y Natalidad", pestaña "Tasa Específica de Fecundidad".
+https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false
+
+Proyecciones de población > Proyección base 2017 > estimaciones-y-proyecciones-2002-2035-comuna-y-área-urbana-y-rural
+https://www.ine.gob.cl/estadisticas/sociales/demografia-y-vitales/proyecciones-de-poblacion
+""")
+
 st.write("_Fuente: SEREMI DE SALUD - Subdepartamento de Epidemiología_")
+
 #%%
 url = "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false"
 
