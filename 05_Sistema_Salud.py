@@ -66,7 +66,7 @@ color_map = {
     'Isapre': '#83c9ff',
     'FF.AA. y del Orden': '#29b09d',
     'Otro Sistema': '#7defa1',
-    'No Sabe': '#ffabab',
+    'No Sabe': 'gray',
     'Ninguno (Particular)': '#ff2b2b'
 }
 casen_prevision_salud = casen_csv[casen_csv['Category'] == 'PREVISIÓN DE SALUD']
