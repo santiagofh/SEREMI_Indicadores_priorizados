@@ -66,8 +66,8 @@ color_map = {
     'Isapre': '#83c9ff',
     'FF.AA. y del Orden': '#29b09d',
     'Otro Sistema': '#7defa1',
-    'No Sabe': 'gray',
-    'Ninguno (Particular)': '#ff2b2b'
+    'No Sabe': '#ffabab',
+    'Ninguno (Particular)': 'gray'
 }
 casen_prevision_salud = casen_csv[casen_csv['Category'] == 'PREVISIÓN DE SALUD']
 casen_prevision_salud_comuna = casen_prevision_salud[casen_prevision_salud['Comuna'] == filtro_comuna]
