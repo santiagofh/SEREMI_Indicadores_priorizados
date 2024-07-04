@@ -73,6 +73,10 @@ else:
 #%%
 
 # Pobreza de ingresos
+
+st.write(f"## Tabla de indicadores socioeconomicos")
+
+
 st.write(f"### Pobreza de ingresos para {comuna_seleccionada}")
 
 
