@@ -48,8 +48,18 @@ def filtrar_datos_grafico(df, comuna, year):
 df_filtrado = filtrar_datos_grafico(df_fec, comuna_seleccionada, select_year)
 
 # Comprobación de los datos filtrados
-st.write("### Datos filtrados")
-st.write(df_filtrado)
+st.write("### Tabla de datos de fecundidad")
+dict_col = {
+    'comuna': 'Comuna',
+    'tasas_10_14': 'Tasa Fecundidad 10-14 años',
+    'tasas_15_19': 'Tasa Fecundidad 15-19 años',
+    'tasas_20_34': 'Tasa Fecundidad 20-34 años',
+    'tasas_35_mas': 'Tasa Fecundidad 35+ años',
+    'tasa_general': 'Tasa General de Fecundidad',
+    'año': 'Año'
+}
+df_filtrado=df_filtrado[list(dict_col.keys())]
+st.write(df_filtrado.rename(columns=dict_col))
 
 # Convertir la columna 'año' a categoría para ordenar correctamente
 orden_años = ['2013-2015', '2016-2018', '2019-2021']
