@@ -124,8 +124,8 @@ fig = fig_bar.add_traces(fig_trend.data[1:])
 fig.update_layout(
     yaxis_tickformat=".2%",
     yaxis_title='Porcentaje de la Población',
-    width=1200,  # Ancho del gráfico
-    height=600,  # Altura del gráfico
+    # width=1200,  # Ancho del gráfico
+    # height=600,  # Altura del gráfico
     margin=dict(l=50, r=50, t=50, b=50)  # Margen para centrar
 )
 

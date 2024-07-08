@@ -66,8 +66,8 @@ fig = px.line(df_filtrado, x='año', y=['tasas_10_14', 'tasas_15_19', 'tasas_20_
 fig.update_layout(xaxis_title='Año', yaxis_title='Tasa de Fecundidad',
                   legend_title="Grupos de Edad", 
                   hovermode='x unified',
-                  width=800,  # Ajustar el ancho del gráfico
-                  height=600  # Ajustar la altura del gráfico si es necesario
+                #   width=800,  # Ajustar el ancho del gráfico
+                #   height=600  # Ajustar la altura del gráfico si es necesario
 )
 
 # Mostrar el gráfico en Streamlit
