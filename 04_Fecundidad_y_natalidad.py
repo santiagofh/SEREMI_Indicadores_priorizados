@@ -51,11 +51,11 @@ df_filtrado = filtrar_datos_grafico(df_fec, comuna_seleccionada, select_year)
 st.write("### Tabla de datos de fecundidad")
 dict_col = {
     'comuna': 'Comuna',
-    'tasas_10_14': 'Tasa Fecundidad 10-14 años',
-    'tasas_15_19': 'Tasa Fecundidad 15-19 años',
-    'tasas_20_34': 'Tasa Fecundidad 20-34 años',
-    'tasas_35_mas': 'Tasa Fecundidad 35+ años',
-    'tasa_general': 'Tasa General de Fecundidad',
+    'tasas_10_14': '10-14 años',
+    'tasas_15_19': '15-19 años',
+    'tasas_20_34': '20-34 años',
+    'tasas_35_mas': '35+ años',
+    'tasa_general': 'Tasa General',
     'año': 'Año'
 }
 df_filtrado=df_filtrado[list(dict_col.keys())]
