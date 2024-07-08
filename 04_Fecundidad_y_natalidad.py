@@ -20,7 +20,6 @@ lista_comunas = [
 ]
 lista_años = ['Todos los años', '2013-2015', '2016-2018', '2019-2021']
 
-
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=0)
@@ -48,6 +47,14 @@ def filtrar_datos_grafico(df, comuna, year):
 # Filtrar datos según la comuna y años seleccionados
 df_filtrado = filtrar_datos_grafico(df_fec, comuna_seleccionada, select_year)
 
+# Comprobación de los datos filtrados
+st.write("### Datos filtrados")
+st.write(df_filtrado)
+
+# Convertir la columna 'año' a categoría para ordenar correctamente
+orden_años = ['2013-2015', '2016-2018', '2019-2021']
+df_filtrado['año'] = pd.Categorical(df_filtrado['año'], categories=orden_años, ordered=True)
+
 # Crear el gráfico con Plotly Express
 fig = px.line(df_filtrado, x='año', y=['tasas_10_14', 'tasas_15_19', 'tasas_20_34', 'tasas_35_mas', 'tasa_general'],
               title="Tasas de Fecundidad por Grupo de Edad",
@@ -57,7 +64,7 @@ fig = px.line(df_filtrado, x='año', y=['tasas_10_14', 'tasas_15_19', 'tasas_20_
 
 # Configuración adicional del gráfico
 fig.update_layout(xaxis_title='Año', yaxis_title='Tasa de Fecundidad',
-                  legend_title="Grupos de Edad", xaxis={'categoryorder':'total descending'},
+                  legend_title="Grupos de Edad", 
                   hovermode='x unified',
                   width=800,  # Ajustar el ancho del gráfico
                   height=600  # Ajustar la altura del gráfico si es necesario
@@ -70,25 +77,19 @@ Las tasas de fecundidad fueron elaboradas a partir de los datos de nacidos vivos
 
 A continuación, se incluyen los links de las fuentes desde donde se obtuvieron los datos.
 
-Datos de nacidos vivos descargados de "Estadísticas de Nacimiento y Natalidad", pestaña "Tasa Específica de Fecundidad".
+- Datos de nacidos vivos descargados de "Estadísticas de Nacimiento y Natalidad", pestaña "Tasa Específica de Fecundidad".
 https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false
 
-Proyecciones de población > Proyección base 2017 > estimaciones-y-proyecciones-2002-2035-comuna-y-área-urbana-y-rural
+- Proyecciones de población > Proyección base 2017 > estimaciones-y-proyecciones-2002-2035-comuna-y-área-urbana-y-rural
 https://www.ine.gob.cl/estadisticas/sociales/demografia-y-vitales/proyecciones-de-poblacion
 """)
 
 st.write("_Fuente: SEREMI DE SALUD - Subdepartamento de Epidemiología_")
 
-#%%
+# Enlace al Dashboard externo
 url = "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false"
-
-# Título del Dashboard
 st.write("## DEIS Minsal - Dashboard de Nacimientos")
-
-# Descripción introductoria
 st.write("""
 Este dashboard proporciona acceso a información detallada sobre los nacimientos en Chile, utilizando los datos proporcionados por el Departamento de Estadísticas e Información de Salud (DEIS) del Ministerio de Salud (Minsal). A través del enlace proporcionado, puedes explorar visualizaciones interactivas que abarcan diversas estadísticas y tendencias sobre los nacimientos en el país.
 """)
-
-# Enlace al Dashboard externo
 st.markdown(f"[Abrir página web del Dashboard de Nacimientos]({url})")
