@@ -65,6 +65,7 @@ ine17_urb_rur['Nombre Comuna'] = ine17_urb_rur['Nombre Comuna'].astype(str)
 censo17['NOMBRE COMUNA'] = censo17['NOMBRE COMUNA'].astype(str)
 casen['Comuna'] = casen['Comuna'].astype(str)
 
+#%%
 # Filtra por comuna seleccionada
 comuna_seleccionada_upper = comuna_seleccionada.upper()
 gdf_comuna = gdf if comuna_seleccionada == 'Todas las comunas' else filtrar_comuna(gdf, 'NOM_COMUNA', comuna_seleccionada_upper)
@@ -73,6 +74,7 @@ censo17_comuna = filtrar_comuna(censo17, 'NOMBRE COMUNA', comuna_seleccionada_up
 ine17_urb_rur_comuna = filtrar_comuna(ine17_urb_rur, 'Nombre Comuna', comuna_seleccionada_upper)
 casen_comuna = filtrar_comuna(casen, 'Comuna', comuna_seleccionada_upper)
 
+#%%
 # Región
 gdf_rm = gdf
 ine17_rm = filtrar_comuna(ine17, 'Nombre Comuna', 'Todas las comunas')
@@ -145,8 +147,8 @@ pop_h_rm = censo17_rm_pop['HOMBRES '].values[0]
 pop_m_rm = censo17_rm_pop['MUJERES'].values[0]
 pop_h_percentaje_rm = (pop_h_rm / pop_censada_rm) * 100
 pop_m_percentaje_rm = (pop_m_rm / pop_censada_rm) * 100
-pop_urb_percentage = (censo17_rm_pop['TOTAL ÁREA URBANA'] / censo17_rm_pop['TOTAL POBLACIÓN EFECTIVAMENTE CENSADA'] * 100).iloc[0]
-pop_rur_percentage = (censo17_rm_pop['TOTAL ÁREA RURAL'] / censo17_rm_pop['TOTAL POBLACIÓN EFECTIVAMENTE CENSADA'] * 100).iloc[0]
+pop_rm_urb_percentage = (censo17_rm_pop['TOTAL ÁREA URBANA'] / censo17_rm_pop['TOTAL POBLACIÓN EFECTIVAMENTE CENSADA'] * 100).iloc[0]
+pop_rm_rur_percentage = (censo17_rm_pop['TOTAL ÁREA RURAL'] / censo17_rm_pop['TOTAL POBLACIÓN EFECTIVAMENTE CENSADA'] * 100).iloc[0]
 
 pop_proy_h_rm = ine17_rm.loc[ine17_rm['Sexo (1=Hombre 2=Mujer)'] == 1, select_year].sum()
 pop_proy_m_rm = ine17_rm.loc[ine17_rm['Sexo (1=Hombre 2=Mujer)'] == 2, select_year].sum()

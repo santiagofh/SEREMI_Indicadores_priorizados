@@ -142,7 +142,7 @@ st.write('_Fuente: Elaboración propia a partir de encusta CASEN 2017, 2020 y 20
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 #%%
 # Gráfico de Sexo
-st.write(f"### Sexo en {comuna_seleccionada} 2024")
+st.write(f"### Poblacion FONASA por Sexo en {comuna_seleccionada} 2024")
 
 # Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()
@@ -161,7 +161,7 @@ df_sexo
 
 # %%
 # Gráfico de Sexo
-st.write(f"### Tramo en {comuna_seleccionada} 2024")
+st.write(f"### Poblacion FONASA por Tramo en {comuna_seleccionada} 2024")
 
 # Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()
@@ -181,7 +181,7 @@ df_tramo
 # %%
 # %%
 # Gráfico de Sexo
-st.write(f"### Rango etario en {comuna_seleccionada} 2024")
+st.write(f"### Poblacion FONASA por rango etario en {comuna_seleccionada} 2024")
 
 # Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()

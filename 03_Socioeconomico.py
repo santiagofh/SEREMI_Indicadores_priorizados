@@ -71,11 +71,53 @@ else:
 
 
 #%%
+import streamlit as st
+import pandas as pd
 
-# Pobreza de ingresos
+st.write(f"## Visor de variables socioeconómicas para la {comuna_seleccionada}")
 
-st.write(f"## Tabla de indicadores socioeconomicos")
+# Asumiendo que 'casen_csv' y 'filtro_comuna' ya están definidos
+# Convertir 'Comuna' y 'Category' a mayúsculas para asegurar la consistencia en el filtrado
+casen_csv['Comuna'] = casen_csv['Comuna'].str.upper()
+casen_csv['Category'] = casen_csv['Category'].str.upper()
 
+# Convertir 'filtro_comuna' a mayúsculas para asegurar la consistencia en el filtrado
+filtro_comuna = filtro_comuna.upper()
+
+casen_comuna = casen_csv.loc[casen_csv['Comuna'] == filtro_comuna]
+
+# Filtrar cada categoría de indicadores
+categorias = [
+    'POBREZA DE INGRESOS', 'POBREZA MULTIDIMENSIONAL', 'ESCOLARIDAD MAYORES 15', 
+    'ESCOLARIDAD MAYORES 18', 'TASAS PARTICIPACIÓN LABORAL', 'TASAS DE OCUPACIÓN', 
+    'JEFES DE HOGAR', 'PREVISIÓN DE SALUD', 'ÍNDICE DE SANEAMIENTO', 
+    'MATERIALIDAD DE LA VIVIENDA', 'HACINAMIENTO', 'MIGRANTES', 
+    'ETNIAS', 'DISCAPACIDAD', 'PARTICIPACIÓN'
+]
+
+# Crear un diccionario para almacenar los DataFrames filtrados
+df_dict = {}
+
+for categoria in categorias:
+    df_dict[categoria] = casen_comuna.loc[casen_comuna['Category'] == categoria].dropna(axis=1, how='all')
+
+# Menú desplegable para seleccionar la categoría
+categoria_seleccionada = st.selectbox("Seleccione la categoría de indicadores socioeconómicos:", [cat.capitalize() for cat in categorias])
+
+# Convertir la categoría seleccionada a mayúsculas para el filtrado
+categoria_seleccionada_upper = categoria_seleccionada.upper()
+
+# Mostrar la tabla correspondiente a la categoría seleccionada
+if categoria_seleccionada_upper:
+    st.write(f"### {categoria_seleccionada.capitalize()}")
+    df_seleccionado = df_dict[categoria_seleccionada_upper].applymap(lambda x: x if isinstance(x, str) else '{:.0f}'.format(x))
+    st.dataframe(df_seleccionado)
+
+
+#%%
+
+
+st.write(f"## Graficos socioeconomicos en: {comuna_seleccionada}")
 
 st.write(f"### Pobreza de ingresos para {comuna_seleccionada}")
 
@@ -254,16 +296,3 @@ st.plotly_chart(fig_participacion_laboral, use_container_width=False)
 st.markdown("</div>", unsafe_allow_html=True)
 st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
-#%%
-import streamlit as st
-
-# Muestra el título del mapa
-st.write('# Mapa Socioeconómico')
-
-# URL del mapa
-map_url = "https://arcgis.mma.gob.cl/portal/apps/webappviewer/index.html?id=9a61283f66bf4ad5b4f22c60122d4737"
-map_img_url="https://sinia.mma.gob.cl/wp-content/uploads/2022/07/logo-sinia.png"
-# Inserta el mapa en la aplicación Streamlit
-st.image(map_img_url)
-st.markdown(f'<iframe src="{map_url}" width="150%" height="1000" style="border:none;"></iframe>', unsafe_allow_html=True)
-st.write('_Fuente: Ministerio de Medio Ambiente: Sistema Nacional de Información Ambiental https://sinia.mma.gob.cl/_')
