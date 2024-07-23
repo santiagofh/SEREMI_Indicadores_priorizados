@@ -59,7 +59,7 @@ if authentication_status:
             st.Page("03_Socioeconomico.py", title="Socioeconomico", icon=":material/attach_money:"),
             st.Page("04_Fecundidad_y_natalidad.py", title="Fecundidad y natalidad", icon=":material/pregnant_woman:"),
             st.Page("04_Indicadores_sociales.py", title="Indice Prioridad Social", icon=":material/monitoring:"),
-            st.Page("05_Sistema_salud.py", title="Sistema Salud", icon=":material/health_and_safety:"),
+            st.Page("05_Sistema_Salud.py", title="Sistema Salud", icon=":material/health_and_safety:"),
             st.Page("06_Estilos_de_vida‍.py", title="Estilos de vida‍", icon=":material/close:"),
             st.Page("07_Morbilidad.py", title="Morbilidad", icon=":material/close:"),
             st.Page("08_Estratificacion.py", title="Estratificacion", icon=":material/close:"),
