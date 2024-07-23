@@ -74,7 +74,7 @@ else:
 import streamlit as st
 import pandas as pd
 
-st.write(f"## Visor de variables socioeconómicas para la {comuna_seleccionada}")
+st.write(f"## Visor de variables socioeconómicas para {comuna_seleccionada}")
 
 # Asumiendo que 'casen_csv' y 'filtro_comuna' ya están definidos
 # Convertir 'Comuna' y 'Category' a mayúsculas para asegurar la consistencia en el filtrado
