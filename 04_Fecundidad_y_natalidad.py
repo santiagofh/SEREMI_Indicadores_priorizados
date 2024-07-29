@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import streamlit_authenticator as stauth
-
 
 # LECTURA DE ARCHIVOS
 df_fec = pd.read_csv('data_clean/tasa_fecundidad.csv')
@@ -58,30 +56,40 @@ dict_col = {
     'tasa_general': 'Tasa General',
     'año': 'Año'
 }
-df_filtrado=df_filtrado[list(dict_col.keys())]
+df_filtrado = df_filtrado[list(dict_col.keys())]
 st.write(df_filtrado.rename(columns=dict_col))
 
 # Convertir la columna 'año' a categoría para ordenar correctamente
 orden_años = ['2013-2015', '2016-2018', '2019-2021']
 df_filtrado['año'] = pd.Categorical(df_filtrado['año'], categories=orden_años, ordered=True)
 
+# Preparar los datos para el gráfico
+df_long = df_filtrado.melt(id_vars=['comuna', 'año'], 
+                           value_vars=['tasas_10_14', 'tasas_15_19', 'tasas_20_34', 'tasas_35_mas'],
+                           var_name='Grupo de Edad', value_name='Tasa de Fecundidad')
+
+# Ajustar los nombres de los grupos de edad
+df_long['Grupo de Edad'] = df_long['Grupo de Edad'].replace({
+    'tasas_10_14': '10-14 años',
+    'tasas_15_19': '15-19 años',
+    'tasas_20_34': '20-34 años',
+    'tasas_35_mas': '35+ años'
+})
+
 # Crear el gráfico con Plotly Express
-fig = px.line(df_filtrado, x='año', y=['tasas_10_14', 'tasas_15_19', 'tasas_20_34', 'tasas_35_mas', 'tasa_general'],
+fig = px.line(df_long, x='Grupo de Edad', y='Tasa de Fecundidad', color='año', line_group='año',
               title="Tasas de Fecundidad por Grupo de Edad",
-              labels={"value": "Tasa", "variable": "Grupo de Edad"},
-              color_discrete_sequence=px.colors.qualitative.Set1,
+              labels={"value": "Tasa de Fecundidad", "variable": "Grupo de Edad"},
               markers=True)
 
 # Configuración adicional del gráfico
-fig.update_layout(xaxis_title='Año', yaxis_title='Tasa de Fecundidad',
-                  legend_title="Grupos de Edad", 
-                  hovermode='x unified',
-                #   width=800,  # Ajustar el ancho del gráfico
-                #   height=600  # Ajustar la altura del gráfico si es necesario
-)
+fig.update_layout(xaxis_title='Grupo de Edad', yaxis_title='Tasa de Fecundidad',
+                  legend_title="Año", 
+                  hovermode='x unified')
 
 # Mostrar el gráfico en Streamlit
 st.plotly_chart(fig)
+
 st.write("""
 Las tasas de fecundidad fueron elaboradas a partir de los datos de nacidos vivos obtenidos de la página de DEIS-MINSAL y de las proyecciones de población de INE obtenidos de su página web. Se calcularon tasas específicas de fecundidad para las madres en los grupos etarios de 10 a 14 años, 15 a 19 años, 20 a 34 años y 35 y más años (considera a 35 a 49 años). Y para el cálculo de la tasa específica del último grupo, se consideró a los nacidos vivos de madres de hasta 50 a 54 años de edad dentro del rango de 35 a 49 años. 
 
