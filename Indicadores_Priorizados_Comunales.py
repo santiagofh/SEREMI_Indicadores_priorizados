@@ -63,7 +63,7 @@ if authentication_status:
             # st.Page("06_Estilos_de_vida‍.py", title="Estilos de vida‍", icon=":material/close:"),
             # st.Page("07_Morbilidad.py", title="Morbilidad", icon=":material/close:"),
             # st.Page("08_Estratificacion.py", title="Estratificacion", icon=":material/close:"),
-            st.Page("09_Mortalidad.py", title="_Mortalidad", icon=":material/Deceased:"),
+            st.Page("09_Mortalidad.py", title="_Mortalidad", icon=":material/deceased:"),
         ],
         "Recursos" : [
             st.Page("99_Fuentes_archivos.py", title="Fuentes y archivos", icon=":material/description:")
