@@ -55,7 +55,7 @@ comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=0)
 
 # Selección de Género
 st.sidebar.write("Selección de Género")
-genero_seleccionado = st.sidebar.radio('Selecciona el género:', ('Hombres', 'Mujeres', 'Ambos'))
+genero_seleccionado = st.sidebar.radio('Selecciona el género:', ('Ambos', 'Hombres', 'Mujeres'))
 
 # Selección única de Mortalidad
 st.sidebar.write("Selección de Mortalidades")
@@ -86,15 +86,15 @@ filtered_df['Comuna_Sexo'] = filtered_df['COMUNA DE RESIDENCIA'] + ' (' + filter
 
 # Concatenar con el DataFrame de todas las comunas
 filtered_df = pd.concat([filtered_df, df_todas_comunas], ignore_index=True)
-
+filtered_df = filtered_df.drop_duplicates(subset=['Mortalidad','Sexo','COMUNA DE RESIDENCIA'])
 # Mostrar el DataFrame filtrado
 st.write(filtered_df)
 
 # Crear un gráfico de líneas
-years = [col for col in filtered_df.columns if col.endswith('.0')]
-df_long = filtered_df.melt(id_vars=['Mortalidad', 'COMUNA DE RESIDENCIA', 'Sexo', 'Comuna_Sexo'], value_vars=years, var_name='Year', value_name='Deaths')
+Años = [col for col in filtered_df.columns if col.endswith('.0')]
+df_long = filtered_df.melt(id_vars=['Mortalidad', 'COMUNA DE RESIDENCIA', 'Sexo', 'Comuna_Sexo'], value_vars=Años, var_name='Año', value_name='Tasa de Mortalidad Ajustada')
 
-fig = px.line(df_long, x='Year', y='Deaths', color='Comuna_Sexo', line_group='Comuna_Sexo', title=f'{mortalidad_seleccionada_humana}')
+fig = px.line(df_long, x='Año', y='Tasa de Mortalidad Ajustada', color='Comuna_Sexo', line_group='Comuna_Sexo', title=f'{mortalidad_seleccionada_humana}')
 
 # Mostrar el gráfico
 st.plotly_chart(fig)

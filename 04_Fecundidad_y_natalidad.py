@@ -80,7 +80,9 @@ df_long['Grupo de Edad'] = df_long['Grupo de Edad'].replace({
 fig = px.line(df_long, x='Grupo de Edad', y='Tasa de Fecundidad', color='año', line_group='año',
               title="Tasas de Fecundidad por Grupo de Edad",
               labels={"value": "Tasa de Fecundidad", "variable": "Grupo de Edad"},
-              markers=True)
+              markers=True,
+              line_shape='spline')  # Añadir esta opción para líneas suaves
+
 
 # Configuración adicional del gráfico
 fig.update_layout(xaxis_title='Grupo de Edad', yaxis_title='Tasa de Fecundidad',
