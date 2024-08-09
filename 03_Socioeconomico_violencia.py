@@ -122,6 +122,8 @@ import streamlit as st
 import pandas as pd
 
 st.write(f"## Visor de tasas de violencia para {comuna_seleccionada}")
+tabla_violencia=violencia_2023_comuna[['Comuna','Tasa de denuncia de violencia intrafamiliar','Tasa de denuncia de delitos de mayor connotación']]
+st.write(tabla_violencia)
 
 st.write(f"### Tasa de denuncia de violencia intrafamiliar para {comuna_seleccionada}")
 
@@ -157,6 +159,10 @@ fig_violencia_intra.add_shape(
     yref='y'
 )
 st.write(fig_violencia_intra)
+st.write(f'''
+- Azul: Comunas con tasas menores a la de la Región Metropolitana
+- Rojo: Comunas con tasas mayores a la de la Región Metropolitana
+''')
 # %%
 st.write(f"### Tasa de denuncia de delitos de mayor connotación para {comuna_seleccionada}")
 
@@ -192,3 +198,7 @@ fig_violencia_delit.add_shape(
     yref='y'
 )
 st.write(fig_violencia_delit)
+st.write(f'''
+- Azul: Comunas con tasas menores a la de la Región Metropolitana
+- Rojo: Comunas con tasas mayores a la de la Región Metropolitana
+''')
