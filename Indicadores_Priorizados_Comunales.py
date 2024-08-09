@@ -57,6 +57,7 @@ if authentication_status:
             st.Page("01_Territorio_y_demografía.py", title="Territorio y demografía", icon=":material/public:"),
             st.Page("02_Ambiental.py", title="Ambiental", icon=":material/eco:"),
             st.Page("03_Socioeconomico.py", title="Socioeconomico", icon=":material/attach_money:"),
+            st.Page("03_Socioeconomico_violencia.py", title="Socioeconomico - Tasas de violencia", icon=":material/attach_money:"),
             st.Page("04_Fecundidad_y_natalidad.py", title="Fecundidad y natalidad", icon=":material/pregnant_woman:"),
             st.Page("04_Indicadores_sociales.py", title="Indice Prioridad Social", icon=":material/monitoring:"),
             st.Page("05_Sistema_Salud.py", title="Sistema Salud", icon=":material/health_and_safety:"),
