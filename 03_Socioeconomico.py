@@ -33,42 +33,77 @@ casen_csv.rename(columns={'Ponlación nacida en Chile':'Población nacida en Chi
 #%%
 # Listado comunas
 lista_comunas = [
-    'Todas las comunas', 'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia', 'Colina', 
-    'Conchalí', 'Curacaví', 'El Bosque', 'El Monte', 'Estación Central', 'Huechuraba', 'Independencia', 
-    'Isla de Maipo', 'La Cisterna', 'La Florida', 'La Granja', 'La Pintana', 'La Reina', 'Lampa', 
-    'Las Condes', 'Lo Barnechea', 'Lo Espejo', 'Lo Prado', 'Macul', 'Maipú', 'María Pinto', 'Melipilla', 
-    'Padre Hurtado', 'Paine', 'Pedro Aguirre Cerda', 'Peñaflor', 'Peñalolén', 'Pirque', 'Providencia', 
-    'Pudahuel', 'Puente Alto', 'Quilicura', 'Quinta Normal', 'Recoleta', 'Renca', 'San Bernardo', 
-    'San Joaquín', 'San José de Maipo', 'San Miguel', 'San Pedro', 'San Ramón', 'Santiago', 'Talagante', 
-    'Tiltil', 'Vitacura', 'Ñuñoa'
+    'Región Metropolitana', 
+    'Alhué', 
+    'Buin', 
+    'Calera de Tango', 
+    'Cerrillos', 
+    'Cerro Navia', 
+    'Colina', 
+    'Conchalí', 
+    'Curacaví', 
+    'El Bosque', 
+    'El Monte', 
+    'Estación Central', 
+    'Huechuraba', 
+    'Independencia', 
+    'Isla de Maipo',
+    'La Cisterna',
+    'La Florida',
+    'La Granja',
+    'La Pintana',
+    'La Reina',
+    'Lampa', 
+    'Las Condes',
+    'Lo Barnechea',
+    'Lo Espejo',
+    'Lo Prado',
+    'Macul',
+    'Maipú',
+    'María Pinto',
+    'Melipilla',
+    'Ñuñoa',
+    'Padre Hurtado',
+    'Paine',
+    'Pedro Aguirre Cerda',
+    'Peñaflor',
+    'Peñalolén',
+    'Pirque',
+    'Providencia', 
+    'Pudahuel',
+    'Puente Alto',
+    'Quilicura',
+    'Quinta Normal',
+    'Recoleta',
+    'Renca',
+    'San Bernardo', 
+    'San Joaquín',
+    'San José de Maipo',
+    'San Miguel',
+    'San Pedro',
+    'San Ramón',
+    'Santiago',
+    'Talagante', 
+    'Tiltil',
+    'Vitacura'
 ]
-
 #%%
 # INICIO DE LA PAGINA
 #%%
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 st.sidebar.write("Selección de Comuna")
-default_index = lista_comunas.index("Todas las comunas") if "Todas las comunas" in lista_comunas else 0
+default_index = lista_comunas.index("Región Metropolitana") if "Región Metropolitana" in lista_comunas else 0
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=default_index)
 
 #%%
 # Filtrar DataFrame según comuna seleccionada
-if comuna_seleccionada == "Todas las comunas":
+if comuna_seleccionada == "Región Metropolitana":
     filtro_comuna = "Región Metropolitana"
 else:
     filtro_comuna = comuna_seleccionada
 
 #%%
-
-# percentage_categories = [
-#     'Pobreza De Ingresos', 'Pobreza Multidimensional', 'Escolaridad Mayores 15', 'Escolaridad Mayores 18',
-#     'Tasas Participación Laboral', 'Tasas De Ocupación', 'Jefes De Hogar', 'Previsión De Salud',
-#     'Índice De Saneamiento', 'Materialidad De La Vivienda', 'Hacinamiento', 'Migrantes', 'Etnias',
-#     'Discapacidad', 'Participación'
-# ]
-
-
 
 #%%
 import streamlit as st
@@ -76,23 +111,26 @@ import pandas as pd
 
 st.write(f"## Visor de variables socioeconómicas para {comuna_seleccionada}")
 
-# Asumiendo que 'casen_csv' y 'filtro_comuna' ya están definidos
-# Convertir 'Comuna' y 'Category' a mayúsculas para asegurar la consistencia en el filtrado
 casen_csv['Comuna'] = casen_csv['Comuna'].str.upper()
 casen_csv['Category'] = casen_csv['Category'].str.upper()
-
-# Convertir 'filtro_comuna' a mayúsculas para asegurar la consistencia en el filtrado
 filtro_comuna = filtro_comuna.upper()
-
 casen_comuna = casen_csv.loc[casen_csv['Comuna'] == filtro_comuna]
-
-# Filtrar cada categoría de indicadores
 categorias = [
-    'POBREZA DE INGRESOS', 'POBREZA MULTIDIMENSIONAL', 'ESCOLARIDAD MAYORES 15', 
-    'ESCOLARIDAD MAYORES 18', 'TASAS PARTICIPACIÓN LABORAL', 'TASAS DE OCUPACIÓN', 
-    'JEFES DE HOGAR', 'PREVISIÓN DE SALUD', 'ÍNDICE DE SANEAMIENTO', 
-    'MATERIALIDAD DE LA VIVIENDA', 'HACINAMIENTO', 'MIGRANTES', 
-    'ETNIAS', 'DISCAPACIDAD', 'PARTICIPACIÓN'
+    'POBREZA DE INGRESOS', 
+    'POBREZA MULTIDIMENSIONAL', 
+    'ESCOLARIDAD MAYORES 15', 
+    'ESCOLARIDAD MAYORES 18', 
+    'TASAS PARTICIPACIÓN LABORAL', 
+    'TASAS DE OCUPACIÓN', 
+    'JEFES DE HOGAR', 
+    'PREVISIÓN DE SALUD', 
+    'ÍNDICE DE SANEAMIENTO', 
+    'MATERIALIDAD DE LA VIVIENDA', 
+    'HACINAMIENTO', 
+    'MIGRANTES', 
+    'ETNIAS', 
+    'DISCAPACIDAD', 
+    'PARTICIPACIÓN'
 ]
 
 # Crear un diccionario para almacenar los DataFrames filtrados

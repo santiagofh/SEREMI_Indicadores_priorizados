@@ -87,35 +87,38 @@ st.sidebar.write("## Tablero Interactivo de Comunas: Tasas de violencia")
 st.sidebar.write("Selección de Comuna")
 
 default_index = lista_comunas.index("Región Metropolitana") if "Región Metropolitana" in lista_comunas else 0
-comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=default_index)
+comuna_seleccionada = st.sidebar.multiselect("Comuna:", lista_comunas, default=[lista_comunas[default_index]])
 
-#%%
 # Trabajo del DF
-filtro_comuna = comuna_seleccionada
-violencia_2023['Comuna'] = violencia_2023['Comuna']
-violencia_intra_rm=(violencia_2023['Tasa de denuncia de violencia intrafamiliar'].loc[violencia_2023['Comuna']=='Región Metropolitana']).iloc[0]
-violencia_delit_rm=(violencia_2023['Tasa de denuncia de delitos de mayor connotación'].loc[violencia_2023['Comuna']=='Región Metropolitana']).iloc[0]
+filtro_comuna = [comuna.upper() for comuna in comuna_seleccionada]  # Convertir a mayúsculas
+
+violencia_2023['Comuna'] = violencia_2023['Comuna'].str.upper()  # Asegúrate de que la columna 'Comuna' esté en mayúsculas
+violencia_intra_rm = violencia_2023['Tasa de denuncia de violencia intrafamiliar'].loc[violencia_2023['Comuna'] == 'REGIÓN METROPOLITANA'].iloc[0]
+violencia_delit_rm = violencia_2023['Tasa de denuncia de delitos de mayor connotación'].loc[violencia_2023['Comuna'] == 'REGIÓN METROPOLITANA'].iloc[0]
 
 violencia_2023['comuna_rm_intra'] = np.where(
-    violencia_2023['Tasa de denuncia de violencia intrafamiliar']>violencia_intra_rm,
+    violencia_2023['Tasa de denuncia de violencia intrafamiliar'] > violencia_intra_rm,
     'Tasa sobre la RM',
     'Tasa bajo de la RM'
 )
 violencia_2023['comuna_rm_delit'] = np.where(
-        violencia_2023['Tasa de denuncia de delitos de mayor connotación']>violencia_delit_rm,
+    violencia_2023['Tasa de denuncia de delitos de mayor connotación'] > violencia_delit_rm,
     'Tasa sobre la RM',
     'Tasa bajo de la RM'
 )
-filtro_comuna = filtro_comuna.upper()
-if filtro_comuna == 'REGIÓN METROPOLITANA':
+
+if 'REGIÓN METROPOLITANA' in filtro_comuna:
     violencia_2023_comuna = violencia_2023
 else:
-    violencia_2023_comuna = violencia_2023.loc[(violencia_2023['Comuna'].str.upper() == filtro_comuna)
-                                            |
-                                            (violencia_2023['Comuna'].str.upper() == 'REGIÓN METROPOLITANA')]
+    violencia_2023_comuna = violencia_2023.loc[violencia_2023['Comuna'].isin(filtro_comuna) |
+                                               (violencia_2023['Comuna'] == 'REGIÓN METROPOLITANA')]
 
-violencia_2023_comuna['Comuna']=pd.Categorical(violencia_2023_comuna['Comuna'], categories=lista_comunas,ordered=True)
+# Ordenar por 'Comuna'
+violencia_2023_comuna['Comuna'] = pd.Categorical(violencia_2023_comuna['Comuna'], categories=[c.upper() for c in lista_comunas], ordered=True)
 violencia_2023_comuna = violencia_2023_comuna.sort_values('Comuna')
+
+# Mostrar la tabla en Streamlit
+st.write(violencia_2023_comuna)
 
 #%%
 import streamlit as st
@@ -123,6 +126,9 @@ import pandas as pd
 
 st.write(f"## Visor de tasas de violencia para {comuna_seleccionada}")
 tabla_violencia=violencia_2023_comuna[['Comuna','Tasa de denuncia de violencia intrafamiliar','Tasa de denuncia de delitos de mayor connotación']]
+tabla_violencia['Tasa de denuncia de violencia intrafamiliar'] = tabla_violencia['Tasa de denuncia de violencia intrafamiliar'].apply(lambda x: f"{x:,.2f}".replace('.',',').replace(',',''))
+tabla_violencia['Tasa de denuncia de delitos de mayor connotación'] = tabla_violencia['Tasa de denuncia de delitos de mayor connotación'].apply(lambda x: f"{x:,.2f}".replace('.',',').replace(',',''))
+
 st.write(tabla_violencia)
 
 st.write(f"### Tasa de denuncia de violencia intrafamiliar para {comuna_seleccionada}")
