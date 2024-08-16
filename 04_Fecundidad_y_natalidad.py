@@ -56,7 +56,7 @@ dict_col = {
     'tasa_general': 'Tasa General',
     'año': 'Año'
 }
-df_filtrado = df_filtrado[list(dict_col.keys())]
+df_filtrado = df_filtrado[list(dict_col.keys())].reset_index(drop=True)
 st.write(df_filtrado.rename(columns=dict_col))
 
 # Convertir la columna 'año' a categoría para ordenar correctamente
