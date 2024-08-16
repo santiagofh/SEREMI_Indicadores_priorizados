@@ -98,10 +98,7 @@ comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=defau
 
 #%%
 # Filtrar DataFrame según comuna seleccionada
-if comuna_seleccionada == "Región Metropolitana":
-    filtro_comuna = "Región Metropolitana"
-else:
-    filtro_comuna = comuna_seleccionada
+filtro_comuna = comuna_seleccionada
 
 #%%
 
@@ -149,7 +146,7 @@ categoria_seleccionada_upper = categoria_seleccionada.upper()
 if categoria_seleccionada_upper:
     st.write(f"### {categoria_seleccionada.capitalize()}")
     df_seleccionado = df_dict[categoria_seleccionada_upper].applymap(lambda x: x if isinstance(x, str) else '{:.0f}'.format(x))
-    st.dataframe(df_seleccionado)
+    st.dataframe(df_seleccionado.reset_index())
 
 
 #%%
@@ -162,7 +159,6 @@ st.write(f"### Pobreza de ingresos para {comuna_seleccionada}")
 
 casen_pobrezai = casen_csv.loc[casen_csv.Category == 'POBREZA DE INGRESOS']
 casen_pobrezai_comuna = casen_pobrezai[casen_pobrezai['Comuna'] == filtro_comuna]
-casen_pobrezai_comuna['Pobres'].fillna(casen_pobrezai_comuna['Pobres 2020'], inplace=True)
 casen_pobrezai_comuna['Pobres'] = casen_pobrezai_comuna['Pobres'] / 100
 casen_pobrezai_comuna['No pobres'] = casen_pobrezai_comuna['No pobres'] / 100
 
@@ -220,7 +216,7 @@ fig_pobreza_ingresos = px.scatter(
     casen_pobrezam_comuna, 
     x='Año',
     y='Pobres',
-    title=f"Pobreza de ingresos en {comuna_seleccionada}",
+    title=f"Pobreza de multidimensional en {comuna_seleccionada}",
     labels={'Pobres': 'Porcentaje de Pobreza de Ingresos', 'Año': 'Año'},
     text=casen_pobrezam_comuna['Pobres'].apply(lambda x: '{0:1.2f}%'.format(x*100)),
 )
@@ -279,7 +275,7 @@ fig_ingresos = px.bar(
 fig_ingresos.update_layout(
     yaxis_tickformat=".0f"
 )
-df_casen_ingresos_comuna = casen_ingresos_comuna[['Año','Ingreso Autónomo','Ingreso Monetario','Ingresos del trabajo','Ingreso Total']]
+df_casen_ingresos_comuna = casen_ingresos_comuna[['Año','Ingreso Autónomo','Ingreso Monetario','Ingresos del trabajo','Ingreso Total']].reset_index(drop=True)
 df_casen_ingresos_comuna = df_casen_ingresos_comuna.style.format(
     {
         'Año': '{:d}',  
@@ -328,9 +324,6 @@ fig_participacion_laboral.update_layout(
     yaxis_title='Porcentaje de Participación'
 )
 fig_participacion_laboral.update_traces(texttemplate='%{text}', textposition='outside')
-
-st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_participacion_laboral, use_container_width=False)
-st.markdown("</div>", unsafe_allow_html=True)
 st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')

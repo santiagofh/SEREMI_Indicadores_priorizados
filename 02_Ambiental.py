@@ -165,7 +165,13 @@ Contiene el resumen de las declaraciones de los Establecimientos industriales y/
 - Sistema de Declaración y Seguimiento de Residuos Peligrosos (SIDREP)
 - Declaración de Emisiones Atmosféricas (Formulario F138)
 - Sistema Nacional de Declaración de Residuos (SINADER)
+""")
 
+# Incrustar el mapa de OpenStreetMap usando un iframe
+map_url = "https://umap.openstreetmap.fr/es/map/declaracion-jurada-anual-2018-toneladas_517111?scaleControl=true&miniMap=true&scrollWheelZoom=true&zoomControl=true&allowEdit=false&moreControl=false&searchControl=true&tilelayersControl=true&embedControl=null&datalayersControl=null&onLoadPanel=undefined&captionBar=false&fullscreenControl=true#11/-33.4664/-70.7870"
+st.components.v1.iframe(map_url, width=800, height=600, scrolling=True)
+
+st.write('''
 ### Diccionario de datos:
 
 - **Región**: Región donde se localiza el Establecimiento
@@ -182,14 +188,8 @@ Contiene el resumen de las declaraciones de los Establecimientos industriales y/
 - **NOX**: Emisiones de Óxidos de nitrógeno (NOx) del Establecimiento durante el año 2019 (medida en tonelada/año)
 - **RESPEL**: Generación de Residuos Peligrosos del Establecimiento durante el año 2019 (medida en tonelada/año)
 - **RESNOPEL**: Generación de Residuos No Peligrosos del Establecimiento durante el año 2019 (medida en tonelada/año)
-- **DESTINATAR**: Destinatario de Residuos No Peligrosos del Establecimiento durante el año 2019 (medida en tonelada/año)
-""")
-
-# Incrustar el mapa de OpenStreetMap usando un iframe
-map_url = "https://umap.openstreetmap.fr/es/map/declaracion-jurada-anual-2018-toneladas_517111?scaleControl=true&miniMap=true&scrollWheelZoom=true&zoomControl=true&allowEdit=false&moreControl=false&searchControl=true&tilelayersControl=true&embedControl=null&datalayersControl=null&onLoadPanel=undefined&captionBar=false&fullscreenControl=true#11/-33.4664/-70.7870"
-st.components.v1.iframe(map_url, width=800, height=600, scrolling=True)
-
-
+- **DESTINATAR**: Destinatario de Residuos No Peligrosos del Establecimiento durante el año 2019 (medida en tonelada/año)         
+''')
 # st.write('## Incidencia de intoxicaciones agudas por plaguicidas (IAP)')
 # st.write('La incidencia de intoxicaciones agudas por plaguicidas es un importante indicador de los riesgos asociados al uso de estos productos químicos en la agricultura y otros sectores.')
 # st.write('## Riesgo de impactos de salud a consecuencias de olas de calor')

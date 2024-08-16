@@ -32,21 +32,66 @@ casen = pd.read_csv(paths["casen_mideso"])
 
 # Listado comunas
 lista_comunas = [
-    'Todas las comunas', 'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia', 'Colina', 
-    'Conchalí', 'Curacaví', 'El Bosque', 'El Monte', 'Estación Central', 'Huechuraba', 'Independencia', 
-    'Isla de Maipo', 'La Cisterna', 'La Florida', 'La Granja', 'La Pintana', 'La Reina', 'Lampa', 
-    'Las Condes', 'Lo Barnechea', 'Lo Espejo', 'Lo Prado', 'Macul', 'Maipú', 'María Pinto', 'Melipilla', 
-    'Padre Hurtado', 'Paine', 'Pedro Aguirre Cerda', 'Peñaflor', 'Peñalolén', 'Pirque', 'Providencia', 
-    'Pudahuel', 'Puente Alto', 'Quilicura', 'Quinta Normal', 'Recoleta', 'Renca', 'San Bernardo', 
-    'San Joaquín', 'San José de Maipo', 'San Miguel', 'San Pedro', 'San Ramón', 'Santiago', 'Talagante', 
-    'Tiltil', 'Vitacura', 'Ñuñoa'
+    'Región Metropolitana', 
+    'Alhué', 
+    'Buin', 
+    'Calera de Tango', 
+    'Cerrillos', 
+    'Cerro Navia', 
+    'Colina', 
+    'Conchalí', 
+    'Curacaví', 
+    'El Bosque', 
+    'El Monte', 
+    'Estación Central', 
+    'Huechuraba', 
+    'Independencia', 
+    'Isla de Maipo',
+    'La Cisterna',
+    'La Florida',
+    'La Granja',
+    'La Pintana',
+    'La Reina',
+    'Lampa', 
+    'Las Condes',
+    'Lo Barnechea',
+    'Lo Espejo',
+    'Lo Prado',
+    'Macul',
+    'Maipú',
+    'María Pinto',
+    'Melipilla',
+    'Ñuñoa',
+    'Padre Hurtado',
+    'Paine',
+    'Pedro Aguirre Cerda',
+    'Peñaflor',
+    'Peñalolén',
+    'Pirque',
+    'Providencia', 
+    'Pudahuel',
+    'Puente Alto',
+    'Quilicura',
+    'Quinta Normal',
+    'Recoleta',
+    'Renca',
+    'San Bernardo', 
+    'San Joaquín',
+    'San José de Maipo',
+    'San Miguel',
+    'San Pedro',
+    'San Ramón',
+    'Santiago',
+    'Talagante', 
+    'Tiltil',
+    'Vitacura'
 ]
 
 #%%
 
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
-comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=lista_comunas.index("Todas las comunas"))
+comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=lista_comunas.index("Región Metropolitana"))
 current_year = datetime.now().year
 select_year_int = st.sidebar.slider("Año:", min_value=2002, max_value=2035, value=current_year)
 select_year = f'Poblacion {select_year_int}'
@@ -68,7 +113,7 @@ casen['Comuna'] = casen['Comuna'].astype(str)
 #%%
 # Filtra por comuna seleccionada
 comuna_seleccionada_upper = comuna_seleccionada.upper()
-gdf_comuna = gdf if comuna_seleccionada == 'Todas las comunas' else filtrar_comuna(gdf, 'NOM_COMUNA', comuna_seleccionada_upper)
+gdf_comuna = gdf if comuna_seleccionada == 'Región Metropolitana' else filtrar_comuna(gdf, 'NOM_COMUNA', comuna_seleccionada_upper)
 ine17_comuna = filtrar_comuna(ine17, 'Nombre Comuna', comuna_seleccionada_upper)
 censo17_comuna = filtrar_comuna(censo17, 'NOMBRE COMUNA', comuna_seleccionada_upper)
 ine17_urb_rur_comuna = filtrar_comuna(ine17_urb_rur, 'Nombre Comuna', comuna_seleccionada_upper)
@@ -77,9 +122,9 @@ casen_comuna = filtrar_comuna(casen, 'Comuna', comuna_seleccionada_upper)
 #%%
 # Región
 gdf_rm = gdf
-ine17_rm = filtrar_comuna(ine17, 'Nombre Comuna', 'Todas las comunas')
-censo17_rm = filtrar_comuna(censo17, 'NOMBRE COMUNA', 'Todas las comunas')
-ine17_urb_rur_rm = filtrar_comuna(ine17_urb_rur, 'Nombre Comuna', 'Todas las comunas')
+ine17_rm = filtrar_comuna(ine17, 'Nombre Comuna', 'Región Metropolitana')
+censo17_rm = filtrar_comuna(censo17, 'NOMBRE COMUNA', 'Región Metropolitana')
+ine17_urb_rur_rm = filtrar_comuna(ine17_urb_rur, 'Nombre Comuna', 'Región Metropolitana')
 
 #%%
 # Calculo de Casen REGION
@@ -211,7 +256,7 @@ casen_migrantes.rename(columns=rename_migrantes, inplace=True)
 
 casen_migrantes = casen_migrantes[['Año', 'Comuna', 'Población nacida en Chile', 'Población nacida fuera de Chile']]
 
-if comuna_seleccionada == "Todas las comunas":
+if comuna_seleccionada == "Región Metropolitana":
     casen_migrantes_comuna = casen_migrantes[casen_migrantes['Comuna'] == 'Región Metropolitana']
 else:
     casen_migrantes_comuna = casen_migrantes[casen_migrantes['Comuna'].str.upper() == comuna_seleccionada_upper]
@@ -221,7 +266,7 @@ casen_migrantes_2022 = casen_migrantes_comuna[casen_migrantes_comuna['Año'] == 
 casen_etnias = casen.loc[casen['Category'] == 'ETNIAS']
 casen_etnias = casen_etnias.dropna(axis=1)
 
-if comuna_seleccionada == "Todas las comunas":
+if comuna_seleccionada == "Región Metropolitana":
     casen_etnias_comuna = casen_etnias[casen_etnias['Comuna'] == 'Región Metropolitana']
 else:
     casen_etnias_comuna = casen_etnias[casen_etnias['Comuna'].str.upper() == comuna_seleccionada_upper]
@@ -453,7 +498,10 @@ st.write('_Fuente: Elaboración propia a partir de datos geográficos nacionales
 
 #%%
 # Poblacion proyectada
-st.write('## Poblacion proyectada')
+if comuna_seleccionada =='Región Metropolitana':
+    st.write(f'## Poblacion proyectada de la {comuna_seleccionada}')
+else:
+    st.write(f'## Poblacion proyectada de {comuna_seleccionada}')
 
 population_data = ine17_comuna[['Nombre Comuna', 'Sexo (1=Hombre 2=Mujer)'] + [f'Poblacion {year}' for year in range(2002, 2036)]]
 population_data_melted = population_data.melt(id_vars=['Nombre Comuna', 'Sexo (1=Hombre 2=Mujer)'], var_name='Año', value_name='Población')
@@ -491,7 +539,10 @@ st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.g
 
 #%%
 # Piramide poblacional
-st.write(f'## Piramide poblacional para {comuna_seleccionada}')
+if comuna_seleccionada =='Región Metropolitana':
+    st.write(f'## Piramide poblacional de la {comuna_seleccionada}')
+else:
+    st.write(f'## Piramide poblacional de {comuna_seleccionada}')
 
 ine17_comuna['Sexo'] = ine17_comuna['Sexo (1=Hombre 2=Mujer)'].map({1: 'Hombres', 2: 'Mujeres'})
 years = [f'Poblacion {year}' for year in range(2002, 2036)]
@@ -543,11 +594,18 @@ for year in range(2002, 2036):
     for sexo in ['Hombres', 'Mujeres']:
         subset = grouped_data[(grouped_data['Year'] == year) & (grouped_data['Sexo'] == sexo)]
         subset = subset.sort_values(by='Age Group')
-        fig.add_trace(
-            go.Bar(x=-subset['Population'] if sexo == 'Hombres' else subset['Population'], y=subset['Age Group'],
-                   orientation='h', name=sexo, visible=(year == datetime.now().year)),
-            1, 1 if sexo == 'Hombres' else 2
-        )
+        if sexo == 'Hombres':
+            fig.add_trace(
+                go.Bar(x=subset['Population'], y=subset['Age Group'],
+                       orientation='h', name=sexo, visible=(year == datetime.now().year)),
+                1, 1  # Columna 1 para Hombres
+            )
+        else:
+            fig.add_trace(
+                go.Bar(x=subset['Population'], y=subset['Age Group'],
+                       orientation='h', name=sexo, visible=(year == datetime.now().year)),
+                1, 2  # Columna 2 para Mujeres
+            )
 
 steps = []
 for i, year in enumerate(range(2002, 2036)):
@@ -577,8 +635,8 @@ fig.update_layout(
     xaxis_title="Población",
     yaxis_title="Rango Etario",
     showlegend=False,
-    xaxis=dict(range=[-max_population, 0]),
-    xaxis2=dict(range=[0, max_population]),
+    xaxis=dict(range=[max_population, 0]),  # Invertir el eje X para Hombres
+    xaxis2=dict(range=[0, max_population]),  # Mantener el eje X para Mujeres
 )
 
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
@@ -589,13 +647,16 @@ st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.g
 
 #%%
 # Población nacida fuera de Chile
-st.write('## Porcentaje de población nacida fuera de Chile')
+if comuna_seleccionada =='Región Metropolitana':
+    st.write(f'## Porcentaje de población de la {comuna_seleccionada}, nacida fuera de Chile')
+else:
+    st.write(f'## Porcentaje de población de {comuna_seleccionada}, nacida fuera de Chile')
 
 casen_migrantes_comuna['Total'] = casen_migrantes_comuna['Población nacida en Chile'] + casen_migrantes_comuna['Población nacida fuera de Chile']
-casen_migrantes_comuna['% Nacida en Chile'] = (casen_migrantes_comuna['Población nacida en Chile'] / casen_migrantes_comuna['Total']) * 100
-casen_migrantes_comuna['% Nacida fuera de Chile'] = (casen_migrantes_comuna['Población nacida fuera de Chile'] / casen_migrantes_comuna['Total']) * 100
+casen_migrantes_comuna['Nacida en Chile'] = (casen_migrantes_comuna['Población nacida en Chile'] / casen_migrantes_comuna['Total']) * 100
+casen_migrantes_comuna['Nacida fuera de Chile'] = (casen_migrantes_comuna['Población nacida fuera de Chile'] / casen_migrantes_comuna['Total']) * 100
 
-df_melted = casen_migrantes_comuna.melt(id_vars=['Año', 'Comuna'], value_vars=['% Nacida en Chile', '% Nacida fuera de Chile'],
+df_melted = casen_migrantes_comuna.melt(id_vars=['Año', 'Comuna'], value_vars=['Nacida en Chile', 'Nacida fuera de Chile'],
                                          var_name='Origen', value_name='Porcentaje')
 
 fig_migrantes = px.bar(
@@ -609,10 +670,12 @@ fig_migrantes = px.bar(
     # width=800,  # Ajustar el ancho del gráfico
     # height=600  # Ajustar la altura del gráfico si es necesario
 )
-
 fig_migrantes.update_traces(texttemplate='%{text}', textposition='outside')
 fig_migrantes.update_yaxes(range=[0, 110],ticksuffix="%")
-
+fig_migrantes.update_xaxes(
+    tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
+    dtick=1  # Esto fuerza que cada tick sea un año
+)
 # Centrar el gráfico en Streamlit
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_migrantes, use_container_width=False)
@@ -621,16 +684,23 @@ st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
 # %%
-st.write('## Porcentaje de población perteneciente a una etnia')
+if comuna_seleccionada =='Región Metropolitana':
+    st.write(f'## Porcentaje de población de la {comuna_seleccionada}, perteneciente a un pueblo originario')
+else:
+    st.write(f'## Porcentaje de población de {comuna_seleccionada}, perteneciente a un pueblo originario')
+
 
 # Calcular los porcentajes
 casen_etnias_comuna['Total'] = casen_etnias_comuna['Pertenece a algún pueblo originario'] + casen_etnias_comuna['No pertenece a ningún pueblo originario']
-casen_etnias_comuna['% Pertenece a algún pueblo originario'] = (casen_etnias_comuna['Pertenece a algún pueblo originario'] / casen_etnias_comuna['Total']) * 100
-casen_etnias_comuna['% No pertenece a ningún pueblo originario'] = (casen_etnias_comuna['No pertenece a ningún pueblo originario'] / casen_etnias_comuna['Total']) * 100
+casen_etnias_comuna['Pertenece'] = (casen_etnias_comuna['Pertenece a algún pueblo originario'] / casen_etnias_comuna['Total']) * 100
+casen_etnias_comuna['No pertenece'] = (casen_etnias_comuna['No pertenece a ningún pueblo originario'] / casen_etnias_comuna['Total']) * 100
 
 # Transformar los datos para adecuarlos al gráfico
-df_etnias_melted = casen_etnias_comuna.melt(id_vars=['Año'], value_vars=['% Pertenece a algún pueblo originario', '% No pertenece a ningún pueblo originario'],
+df_etnias_melted = casen_etnias_comuna.melt(id_vars=['Año'], value_vars=['Pertenece', 'No pertenece'],
                                             var_name='Origen', value_name='Porcentaje')
+
+df_etnias_melted['Orden'] = df_etnias_melted['Origen'].apply(lambda x: 1 if "No pertenece" in x else 2)
+df_etnias_melted = df_etnias_melted.sort_values(by=['Año', 'Orden'])
 
 # Crear el gráfico de barras
 fig_etnias = px.bar(
@@ -639,7 +709,7 @@ fig_etnias = px.bar(
     y='Porcentaje', 
     color='Origen', 
     text=df_etnias_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
-    title=f'Porcentaje de población perteneciente a una etnia en {comuna_seleccionada}',
+    title=f'Porcentaje de población en {comuna_seleccionada}, perteneciente a un pueblo originario',
     labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
     # width=800,  # Ajustar el ancho del gráfico
     # height=600  # Ajustar la altura del gráfico si es necesario
@@ -650,6 +720,10 @@ fig_etnias.update_traces(texttemplate='%{text}', textposition='outside')
 
 # Ajustar el rango del eje Y
 fig_etnias.update_layout(yaxis=dict(range=[0, 110]))
+fig_etnias.update_xaxes(
+    tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
+    dtick=1  # Esto fuerza que cada tick sea un año
+)
 
 # Centrar el gráfico en Streamlit
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)

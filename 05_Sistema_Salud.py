@@ -20,14 +20,59 @@ casen_csv.rename(columns={'Ponlación nacida en Chile':'Población nacida en Chi
 #%%
 # Listado comunas
 lista_comunas = [
-    'Todas las comunas', 'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia', 'Colina', 
-    'Conchalí', 'Curacaví', 'El Bosque', 'El Monte', 'Estación Central', 'Huechuraba', 'Independencia', 
-    'Isla de Maipo', 'La Cisterna', 'La Florida', 'La Granja', 'La Pintana', 'La Reina', 'Lampa', 
-    'Las Condes', 'Lo Barnechea', 'Lo Espejo', 'Lo Prado', 'Macul', 'Maipú', 'María Pinto', 'Melipilla', 
-    'Padre Hurtado', 'Paine', 'Pedro Aguirre Cerda', 'Peñaflor', 'Peñalolén', 'Pirque', 'Providencia', 
-    'Pudahuel', 'Puente Alto', 'Quilicura', 'Quinta Normal', 'Recoleta', 'Renca', 'San Bernardo', 
-    'San Joaquín', 'San José de Maipo', 'San Miguel', 'San Pedro', 'San Ramón', 'Santiago', 'Talagante', 
-    'Tiltil', 'Vitacura', 'Ñuñoa'
+    'Región Metropolitana', 
+    'Alhué', 
+    'Buin', 
+    'Calera de Tango', 
+    'Cerrillos', 
+    'Cerro Navia', 
+    'Colina', 
+    'Conchalí', 
+    'Curacaví', 
+    'El Bosque', 
+    'El Monte', 
+    'Estación Central', 
+    'Huechuraba', 
+    'Independencia', 
+    'Isla de Maipo',
+    'La Cisterna',
+    'La Florida',
+    'La Granja',
+    'La Pintana',
+    'La Reina',
+    'Lampa', 
+    'Las Condes',
+    'Lo Barnechea',
+    'Lo Espejo',
+    'Lo Prado',
+    'Macul',
+    'Maipú',
+    'María Pinto',
+    'Melipilla',
+    'Ñuñoa',
+    'Padre Hurtado',
+    'Paine',
+    'Pedro Aguirre Cerda',
+    'Peñaflor',
+    'Peñalolén',
+    'Pirque',
+    'Providencia', 
+    'Pudahuel',
+    'Puente Alto',
+    'Quilicura',
+    'Quinta Normal',
+    'Recoleta',
+    'Renca',
+    'San Bernardo', 
+    'San Joaquín',
+    'San José de Maipo',
+    'San Miguel',
+    'San Pedro',
+    'San Ramón',
+    'Santiago',
+    'Talagante', 
+    'Tiltil',
+    'Vitacura'
 ]
 
 #%%
@@ -43,11 +88,7 @@ default_index = lista_comunas.index("Todas las comunas") if "Todas las comunas" 
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=default_index)
 
 #%%
-# Filtrar DataFrame según comuna seleccionada
-if comuna_seleccionada == "Todas las comunas":
-    filtro_comuna = "Región Metropolitana"
-else:
-    filtro_comuna = comuna_seleccionada
+filtro_comuna = comuna_seleccionada
 #%%
 
 import statsmodels.api as sm
@@ -117,7 +158,7 @@ fig_trend = px.scatter(
     trendline="ols",
     labels={'FONASA': 'Porcentaje de la Población', 'Año': 'Año'}
 )
-fig_trend.data[1].marker.color = 'red'
+fig_trend.data[1].marker.color = 'blue'
 fig_trend.data[1].name = 'Tendencia FONASA'
 fig_trend.data[0].showlegend = False
 fig = fig_bar.add_traces(fig_trend.data[1:])
@@ -142,7 +183,7 @@ st.write('_Fuente: Elaboración propia a partir de encusta CASEN 2017, 2020 y 20
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 #%%
 # Gráfico de Sexo
-st.write(f"### Poblacion FONASA por Sexo en {comuna_seleccionada} 2024")
+st.write(f"### Poblacion de beneficiarios FONASA clasificados por sexo en {comuna_seleccionada} 2024")
 
 # Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()
@@ -161,7 +202,7 @@ df_sexo
 
 # %%
 # Gráfico de Sexo
-st.write(f"### Poblacion FONASA por Tramo en {comuna_seleccionada} 2024")
+st.write(f"### Poblacion de beneficiarios FONASA por Tramo en {comuna_seleccionada} 2024")
 
 # Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()
@@ -181,7 +222,7 @@ df_tramo
 # %%
 # %%
 # Gráfico de Sexo
-st.write(f"### Poblacion FONASA por rango etario en {comuna_seleccionada} 2024")
+st.write(f"### Poblacion de beneficiarios FONASA por rango etario en {comuna_seleccionada} 2024")
 
 # Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()

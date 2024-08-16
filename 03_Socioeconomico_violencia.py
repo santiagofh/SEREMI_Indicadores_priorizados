@@ -92,6 +92,23 @@ comuna_seleccionada = st.sidebar.multiselect("Comuna:", lista_comunas, default=[
 # Trabajo del DF
 filtro_comuna = [comuna.upper() for comuna in comuna_seleccionada]  # Convertir a mayúsculas
 
+def format_comunas(comunas):
+    if not comunas:
+        return None  # Retorna None si la lista está vacía
+    elif len(comunas) == 1:
+        return comunas[0]
+    elif len(comunas) == 2:
+        return f'{comunas[0]} y {comunas[1]}'
+    else:
+        return ', '.join(comunas[:-1]) + f' y {comunas[-1]}'
+
+if not comuna_seleccionada:
+    st.error("Por favor, selecciona al menos una comuna.")
+    st.stop()  # Detiene la ejecución del código de Streamlit en este punto
+
+# Formatear las comunas seleccionadas
+comunas_formateadas = format_comunas(comuna_seleccionada)
+
 violencia_2023['Comuna'] = violencia_2023['Comuna'].str.upper()  # Asegúrate de que la columna 'Comuna' esté en mayúsculas
 violencia_intra_rm = violencia_2023['Tasa de denuncia de violencia intrafamiliar'].loc[violencia_2023['Comuna'] == 'REGIÓN METROPOLITANA'].iloc[0]
 violencia_delit_rm = violencia_2023['Tasa de denuncia de delitos de mayor connotación'].loc[violencia_2023['Comuna'] == 'REGIÓN METROPOLITANA'].iloc[0]
@@ -117,27 +134,24 @@ else:
 violencia_2023_comuna['Comuna'] = pd.Categorical(violencia_2023_comuna['Comuna'], categories=[c.upper() for c in lista_comunas], ordered=True)
 violencia_2023_comuna = violencia_2023_comuna.sort_values('Comuna')
 
-# Mostrar la tabla en Streamlit
-st.write(violencia_2023_comuna)
-
 #%%
 import streamlit as st
 import pandas as pd
 
-st.write(f"## Visor de tasas de violencia para {comuna_seleccionada}")
+st.write(f"## Visor de tasas de violencia para {comunas_formateadas}")
 tabla_violencia=violencia_2023_comuna[['Comuna','Tasa de denuncia de violencia intrafamiliar','Tasa de denuncia de delitos de mayor connotación']]
 tabla_violencia['Tasa de denuncia de violencia intrafamiliar'] = tabla_violencia['Tasa de denuncia de violencia intrafamiliar'].apply(lambda x: f"{x:,.2f}".replace('.',',').replace(',',''))
 tabla_violencia['Tasa de denuncia de delitos de mayor connotación'] = tabla_violencia['Tasa de denuncia de delitos de mayor connotación'].apply(lambda x: f"{x:,.2f}".replace('.',',').replace(',',''))
 
 st.write(tabla_violencia)
 
-st.write(f"### Tasa de denuncia de violencia intrafamiliar para {comuna_seleccionada}")
+st.write(f"### Tasa de denuncia de violencia intrafamiliar para {comunas_formateadas}")
 
 fig_violencia_intra= px.bar(
     violencia_2023_comuna,
     x='Comuna',
     y='Tasa de denuncia de violencia intrafamiliar',
-    title=f"Tasa de denuncia de violencia intrafamiliar en {comuna_seleccionada}",
+    title=f"Tasa de denuncia de violencia intrafamiliar en {comunas_formateadas}",
     color='comuna_rm_intra',
     color_discrete_map={'Tasa sobre la RM': 'red', 'Tasa bajo de la RM': 'blue'},
     labels={'Tasa de denuncia de violencia intrafamiliar': 'Tasa de denuncia', 
@@ -160,7 +174,7 @@ fig_violencia_intra.add_shape(
     x1=1,
     y0=violencia_intra_rm,
     y1=violencia_intra_rm,
-    line=dict(color="red", width=2, dash="dash"),
+    line=dict(color="black", width=2, dash="dash"),
     xref='paper',
     yref='y'
 )
@@ -170,13 +184,13 @@ st.write(f'''
 - Rojo: Comunas con tasas mayores a la de la Región Metropolitana
 ''')
 # %%
-st.write(f"### Tasa de denuncia de delitos de mayor connotación para {comuna_seleccionada}")
+st.write(f"### Tasa de denuncia de delitos de mayor connotación para {comunas_formateadas}")
 
 fig_violencia_delit= px.bar(
     violencia_2023_comuna,
     x='Comuna',
     y='Tasa de denuncia de delitos de mayor connotación',
-    title=f"Tasa de denuncia de delitos de mayor connotación en {comuna_seleccionada}",
+    title=f"Tasa de denuncia de delitos de mayor connotación en {comunas_formateadas}",
     color='comuna_rm_delit',
     color_discrete_map={'Tasa sobre la RM': 'red', 'Tasa bajo de la RM': 'blue'},
     labels={'Tasa de denuncia de delitos de mayor connotación': 'Tasa de denuncia', 

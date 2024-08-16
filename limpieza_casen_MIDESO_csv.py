@@ -62,7 +62,6 @@ combined_df = pd.concat(all_dataframes, ignore_index=True)
 # %%
 # Para la Category 'POBREZA DE INGRESOS', combinar la variable 'Pobres 2020' con 'Pobres'
 combined_df.loc[combined_df['Category'] == 'POBREZA DE INGRESOS', 'Pobres'] = combined_df.loc[combined_df['Category'] == 'POBREZA DE INGRESOS', 'Pobres'].combine_first(combined_df.loc[combined_df['Category'] == 'POBREZA DE INGRESOS', 'Pobres 2020'])
-
 #%%
 # Actualizar las columnas de ingresos con 'No reporta' si son NaN para la categoría 'INGRESOS'
 income_categories = ['Ingreso Autónomo', 'Ingreso Monetario', 'Ingresos del trabajo', 'Ingreso Total']
@@ -74,6 +73,7 @@ ordered_columns = ['Año', 'Category', 'Comuna', 'Pobres', 'No pobres', 'Total']
 # Reordenar el DataFrame
 combined_df = combined_df[ordered_columns]
 combined_df = combined_df.drop(columns=['Pobres 2020','Unnamed: 8'])
+
 # Guardar el DataFrame final en un archivo CSV
 combined_df.to_csv('data_clean/casen_17_22.csv', index=False)
 
