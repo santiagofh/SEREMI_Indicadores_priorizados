@@ -202,7 +202,7 @@ df_sexo
 
 # %%
 # Gráfico de Sexo
-st.write(f"### Poblacion de beneficiarios FONASA por Tramo en {comuna_seleccionada} 2024")
+st.write(f"### Poblacion de beneficiario FONASA por Tramo en {comuna_seleccionada} 2024")
 
 # Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()
