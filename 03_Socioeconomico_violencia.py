@@ -83,7 +83,7 @@ lista_comunas = [
 # INICIO DE LA PAGINA
 #%%
 # Sidebar
-st.sidebar.write("## Tablero Interactivo de Comunas: Tasas de violencia")
+st.sidebar.write("## Tablero Interactivo de Comunas: Tasas de violencia por 100.000 habitantes")
 default_index = lista_comunas.index("Región Metropolitana") if "Región Metropolitana" in lista_comunas else 0
 comuna_seleccionada = st.sidebar.multiselect("Selecciona Comuna o Región:", lista_comunas, default=[lista_comunas[default_index]])
 
@@ -147,7 +147,7 @@ labels_delitos = {
 import streamlit as st
 import pandas as pd
 
-st.write(f"## Visor de tasas de violencia para {comunas_formateadas}")
+st.write(f"## Visor de tasas de violencia por 100.000 habitantes para {comunas_formateadas}")
 tabla_violencia=violencia_2023_comuna[['Comuna','Tasa de denuncia de violencia intrafamiliar','Tasa de denuncia de delitos de mayor connotación']].reset_index(drop=True)
 tabla_violencia['Tasa de denuncia de violencia intrafamiliar'] = tabla_violencia['Tasa de denuncia de violencia intrafamiliar'].apply(lambda x: f"{x:,.2f}".replace(',','').replace('.',','))
 tabla_violencia['Tasa de denuncia de delitos de mayor connotación'] = tabla_violencia['Tasa de denuncia de delitos de mayor connotación'].apply(lambda x: f"{x:,.2f}".replace(',','').replace('.',','))
@@ -193,7 +193,7 @@ st.write(f'''
 - Rojo: Comunas con tasas mayores a la de la Región Metropolitana
 ''')
 # %%
-st.write(f"### Tasa de denuncia de delitos de mayor connotación para {comunas_formateadas}")
+st.write(f"### Tasa de denuncia de delitos de mayor connotación para {comunas_formateadas} por 100.000 habitantes")
 
 fig_violencia_delit= px.bar(
     violencia_2023_comuna,

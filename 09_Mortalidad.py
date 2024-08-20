@@ -51,16 +51,15 @@ mortalidades_ordenadas = [humanize_mortalidad(mortalidad) for mortalidad in orde
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 
 # Selección de Comunas
-st.sidebar.write("Selección de Comunas")
-comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=0)
+comuna_seleccionada = st.sidebar.selectbox("Selecciona la Comuna:", lista_comunas, index=0)
 
-# Selección de Género
-st.sidebar.write("Selección de Género")
-genero_seleccionado = st.sidebar.radio('Selecciona el género:', ('Ambos', 'Hombres', 'Mujeres'))
+# # Selección de Género
+# st.sidebar.write("Selección de Género")
+genero_seleccionado = st.sidebar.radio('Selecciona el Sexo:', ('Ambos', 'Hombres', 'Mujeres'))
 
 # Selección única de Causa de Mortalidad
-st.sidebar.write("Selección de Causa")
-causa_seleccionada_humana = st.sidebar.selectbox('Selecciona la causa de mortalidad:', mortalidades_ordenadas)
+# st.sidebar.write("Selección de Causa")
+causa_seleccionada_humana = st.sidebar.selectbox('Selecciona la Causa de Mortalidad:', mortalidades_ordenadas)
 mortalidad_seleccionada = mortalidad_dict[causa_seleccionada_humana]
 
 # TITULO INTRODUCCION

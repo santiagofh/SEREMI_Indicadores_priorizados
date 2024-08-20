@@ -139,9 +139,12 @@ for categoria in categorias:
     df_filtrado['Comuna'] = df_filtrado['Comuna'].str.title()  # Convertir Comuna a title case
     df_filtrado['Category'] = df_filtrado['Category'].map(traducciones)  # Traducir valores de Category a español
     
-    # Convertir la columna "Año" a números enteros
+    # Asegurarse de que la columna "Año" sea de tipo entero
     df_filtrado['Año'] = df_filtrado['Año'].apply(lambda x: str(int(float(x))))
 
+    # Formatear números con coma como separador decimal en las columnas numéricas
+    df_filtrado = df_filtrado.applymap(lambda x: '{:,.2f}'.format(x).replace(",", "X").replace(".", ",").replace("X", ".") if isinstance(x, (float, int)) else x)
+    
     # Renombrar la columna "Category" a "Categoría"
     df_filtrado.rename(columns={'Category': 'Categoría'}, inplace=True)
     
@@ -158,16 +161,12 @@ if categoria_seleccionada_upper:
     st.write(f"### {categoria_seleccionada}")
     df_seleccionado = df_dict[categoria_seleccionada_upper]
 
-    # Convertir números a formato decimal (excepto la columna "Año") y strings a nombre propio
-    df_seleccionado = df_seleccionado.applymap(lambda x: x if isinstance(x, str) else '{:.2f}'.format(x))
-    
-    # Asegurarse de que la columna "Año" sea de tipo entero y sin comas
+    # Asegurarse de que la columna "Año" sea de tipo entero
     df_seleccionado['Año'] = df_seleccionado['Año'].apply(lambda x: str(int(float(x))))
     
     df_seleccionado.columns = df_seleccionado.columns.str.title()  # Convertir los nombres de las columnas a título
 
     st.dataframe(df_seleccionado.reset_index(drop=True))
-
 
 #%%
 

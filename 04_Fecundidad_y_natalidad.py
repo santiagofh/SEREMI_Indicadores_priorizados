@@ -69,7 +69,7 @@ comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=0)
 select_year = st.sidebar.selectbox("Período:", lista_años, index=0)
 
 # Título e introducción
-st.title('Tasas de Fecundidad por Grupo de Edad en la Región Metropolitana')
+st.title('Tasas trienales de Fecundidad por Grupo de Edad en la Región Metropolitana')
 st.write('## Análisis detallado por comuna y año')
 st.markdown("""
 Este gráfico muestra la tasa de fecundidad por grupo de edad en diferentes comunas de la Región Metropolitana. 
@@ -89,6 +89,17 @@ def filtrar_datos_grafico(df, comuna, year):
 
 # Filtrar datos según la comuna y años seleccionados
 df_filtrado = filtrar_datos_grafico(df_fec, comuna_seleccionada, select_year)
+
+# Formatear los números con coma como separador decimal
+def format_with_comma(value):
+    try:
+        return f"{value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    except ValueError:
+        return value
+
+# Aplicar el formato a las columnas numéricas
+columnas_tasas = ['tasas_10_14', 'tasas_15_19', 'tasas_20_34', 'tasas_35_mas', 'tasa_general']
+df_filtrado[columnas_tasas] = df_filtrado[columnas_tasas].applymap(format_with_comma)
 
 # Comprobación de los datos filtrados
 st.write("### Tabla de datos de fecundidad")
@@ -115,19 +126,18 @@ df_long = df_filtrado.melt(id_vars=['comuna', 'año'],
 
 # Ajustar los nombres de los grupos de edad
 df_long['Grupo de Edad'] = df_long['Grupo de Edad'].replace({
-    'tasas_10_14': '10-14 años',
-    'tasas_15_19': '15-19 años',
-    'tasas_20_34': '20-34 años',
-    'tasas_35_mas': '35+ años'
+    'tasas_10_14': '10-14',
+    'tasas_15_19': '15-19',
+    'tasas_20_34': '20-34',
+    'tasas_35_mas': '35+'
 })
 
 # Crear el gráfico con Plotly Express
 fig = px.line(df_long, x='Grupo de Edad', y='Tasa de Fecundidad', color='año', line_group='año',
-              title="Tasas de Fecundidad por Grupo de Edad",
+              title="Tasas trienales de Fecundidad por Grupo de Edad",
               labels={"value": "Tasa de Fecundidad", "variable": "Grupo de Edad", 'Grupo de Edad':'Grupo de Edad (años)'},
               markers=True,
               line_shape='spline')  # Añadir esta opción para líneas suaves
-
 
 # Configuración adicional del gráfico
 fig.update_layout(xaxis_title='Grupo de Edad (años)', yaxis_title='Tasa de Fecundidad',
@@ -138,7 +148,7 @@ fig.update_layout(xaxis_title='Grupo de Edad (años)', yaxis_title='Tasa de Fecu
 st.plotly_chart(fig)
 
 st.write("""
-Las tasas de fecundidad fueron elaboradas a partir de los datos de nacidos vivos obtenidos de la página de DEIS-MINSAL y de las proyecciones de población de INE obtenidos de su página web. Se calcularon tasas específicas de fecundidad para las madres en los grupos etarios de 10 a 14 años, 15 a 19 años, 20 a 34 años y 35 y más años (considera a 35 a 49 años). Y para el cálculo de la tasa específica del último grupo, se consideró a los nacidos vivos de madres de hasta 50 a 54 años de edad dentro del rango de 35 a 49 años. 
+Las Tasas trienales de Fecundidad fueron elaboradas a partir de los datos de nacidos vivos obtenidos de la página de DEIS-MINSAL y de las proyecciones de población de INE obtenidos de su página web. Se calcularon tasas específicas de fecundidad para las madres en los grupos etarios de 10 a 14 años, 15 a 19 años, 20 a 34 años y 35 y más años (considera a 35 a 49 años). Y para el cálculo de la tasa específica del último grupo, se consideró a los nacidos vivos de madres de hasta 50 a 54 años de edad dentro del rango de 35 a 49 años. 
 
 A continuación, se incluyen los links de las fuentes desde donde se obtuvieron los datos.
 
