@@ -68,7 +68,6 @@ st.write('# Región Metropolitana y sus comunas: Mortalidad')
 
 # Filtrar el DataFrame basado en la selección
 filtered_df = df_mortalidad[df_mortalidad['Mortalidad'] == mortalidad_seleccionada]
-
 filtered_df = filtered_df[filtered_df['COMUNA DE RESIDENCIA'] == comuna_seleccionada]
 
 if genero_seleccionado != 'Ambos':
@@ -95,27 +94,34 @@ filtered_df.columns = filtered_df.columns.str.replace('.0', '', regex=False)
 # Seleccionar solo las columnas de años
 Años = [col for col in filtered_df.columns if col.isdigit()]
 
-# Aplicar el formato a las columnas de años
-def format_number(value):
-    if pd.isna(value):
-        return ""
-    return f"{value:,.2f}".replace(",", ".").replace(".", ",")
-
-filtered_df[Años] = filtered_df[Años].applymap(format_number)
-
-# Eliminar la columna 'Mortalidad'
-filtered_df = filtered_df.drop(columns=['Mortalidad'])
-
-# Mostrar el DataFrame filtrado con el título de la causa de mortalidad
-st.write(f"### {causa_seleccionada_humana} en {comuna_seleccionada}")
-st.write(filtered_df)
-
-# Crear un gráfico de líneas
+# Crear el DataFrame largo para el gráfico
 df_long = filtered_df.melt(id_vars=['COMUNA DE RESIDENCIA', 'Sexo', 'Comuna_Sexo'], value_vars=Años, var_name='Año', value_name='Tasa de Mortalidad Ajustada')
 
-fig = px.line(df_long, x='Año', y='Tasa de Mortalidad Ajustada', color='Comuna_Sexo', line_group='Comuna_Sexo', title=f'{causa_seleccionada_humana}')
+# Asegurarse de que todos los valores sean tratados como cadenas antes de reemplazar y convertir
+df_long['Tasa de Mortalidad Ajustada'] = df_long['Tasa de Mortalidad Ajustada'].astype(str)
+df_long['Tasa de Mortalidad Ajustada'] = df_long['Tasa de Mortalidad Ajustada'].str.replace(',', '.').astype(float)
 
-# Mostrar el gráfico
+# Crear el gráfico de líneas
+fig = px.line(df_long, 
+              x='Año', 
+              y='Tasa de Mortalidad Ajustada', 
+              color='Comuna_Sexo', 
+              line_group='Comuna_Sexo', 
+              title=f'{causa_seleccionada_humana}')
+
+
+# Para la tabla, aplicar el formato a los valores numéricos
+def format_number(value):
+    if pd.isna(value) or value == "":
+        return ""
+    return f"{float(value):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+df_table = filtered_df.copy()
+df_table[Años] = df_table[Años].applymap(format_number)
+
+# Mostrar la tabla con el DataFrame formateado
+st.write(f"### {causa_seleccionada_humana} en {comuna_seleccionada}")
+st.write(df_table)
 st.plotly_chart(fig)
 
 # Agregar la bajada
