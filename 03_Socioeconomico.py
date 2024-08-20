@@ -101,10 +101,27 @@ comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=defau
 filtro_comuna = comuna_seleccionada
 
 #%%
-
-#%%
 import streamlit as st
 import pandas as pd
+
+# Diccionario para traducir las categorías al español
+traducciones = {
+    'POBREZA DE INGRESOS': 'Pobreza de Ingresos', 
+    'POBREZA MULTIDIMENSIONAL': 'Pobreza Multidimensional', 
+    'ESCOLARIDAD MAYORES 15': 'Escolaridad Mayores de 15', 
+    'ESCOLARIDAD MAYORES 18': 'Escolaridad Mayores de 18', 
+    'TASAS PARTICIPACIÓN LABORAL': 'Tasas de Participación Laboral', 
+    'TASAS DE OCUPACIÓN': 'Tasas de Ocupación', 
+    'JEFES DE HOGAR': 'Jefes de Hogar', 
+    'PREVISIÓN DE SALUD': 'Previsión de Salud', 
+    'ÍNDICE DE SANEAMIENTO': 'Índice de Saneamiento', 
+    'MATERIALIDAD DE LA VIVIENDA': 'Materialidad de la Vivienda', 
+    'HACINAMIENTO': 'Hacinamiento', 
+    'MIGRANTES': 'Migrantes', 
+    'ETNIAS': 'Etnias', 
+    'DISCAPACIDAD': 'Discapacidad', 
+    'PARTICIPACIÓN': 'Participación'
+}
 
 st.write(f"## Visor de variables socioeconómicas para {comuna_seleccionada}")
 
@@ -112,41 +129,44 @@ casen_csv['Comuna'] = casen_csv['Comuna'].str.upper()
 casen_csv['Category'] = casen_csv['Category'].str.upper()
 filtro_comuna = filtro_comuna.upper()
 casen_comuna = casen_csv.loc[casen_csv['Comuna'] == filtro_comuna]
-categorias = [
-    'POBREZA DE INGRESOS', 
-    'POBREZA MULTIDIMENSIONAL', 
-    'ESCOLARIDAD MAYORES 15', 
-    'ESCOLARIDAD MAYORES 18', 
-    'TASAS PARTICIPACIÓN LABORAL', 
-    'TASAS DE OCUPACIÓN', 
-    'JEFES DE HOGAR', 
-    'PREVISIÓN DE SALUD', 
-    'ÍNDICE DE SANEAMIENTO', 
-    'MATERIALIDAD DE LA VIVIENDA', 
-    'HACINAMIENTO', 
-    'MIGRANTES', 
-    'ETNIAS', 
-    'DISCAPACIDAD', 
-    'PARTICIPACIÓN'
-]
+categorias = list(traducciones.keys())
 
 # Crear un diccionario para almacenar los DataFrames filtrados
 df_dict = {}
 
 for categoria in categorias:
-    df_dict[categoria] = casen_comuna.loc[casen_comuna['Category'] == categoria].dropna(axis=1, how='all')
+    df_filtrado = casen_comuna.loc[casen_comuna['Category'] == categoria].dropna(axis=1, how='all')
+    df_filtrado['Comuna'] = df_filtrado['Comuna'].str.title()  # Convertir Comuna a title case
+    df_filtrado['Category'] = df_filtrado['Category'].map(traducciones)  # Traducir valores de Category a español
+    
+    # Convertir la columna "Año" a números enteros
+    df_filtrado['Año'] = df_filtrado['Año'].apply(lambda x: str(int(float(x))))
 
-# Menú desplegable para seleccionar la categoría
-categoria_seleccionada = st.selectbox("Seleccione la categoría de indicadores socioeconómicos:", [cat.capitalize() for cat in categorias])
+    # Renombrar la columna "Category" a "Categoría"
+    df_filtrado.rename(columns={'Category': 'Categoría'}, inplace=True)
+    
+    df_dict[categoria] = df_filtrado
+
+# Menú desplegable para seleccionar la categoría (en español)
+categoria_seleccionada = st.selectbox("Seleccione la categoría de indicadores socioeconómicos:", [traducciones[cat] for cat in categorias])
 
 # Convertir la categoría seleccionada a mayúsculas para el filtrado
-categoria_seleccionada_upper = categoria_seleccionada.upper()
+categoria_seleccionada_upper = {v: k for k, v in traducciones.items()}[categoria_seleccionada]
 
 # Mostrar la tabla correspondiente a la categoría seleccionada
 if categoria_seleccionada_upper:
-    st.write(f"### {categoria_seleccionada.capitalize()}")
-    df_seleccionado = df_dict[categoria_seleccionada_upper].applymap(lambda x: x if isinstance(x, str) else '{:.0f}'.format(x))
-    st.dataframe(df_seleccionado.reset_index())
+    st.write(f"### {categoria_seleccionada}")
+    df_seleccionado = df_dict[categoria_seleccionada_upper]
+
+    # Convertir números a formato decimal (excepto la columna "Año") y strings a nombre propio
+    df_seleccionado = df_seleccionado.applymap(lambda x: x if isinstance(x, str) else '{:.2f}'.format(x))
+    
+    # Asegurarse de que la columna "Año" sea de tipo entero y sin comas
+    df_seleccionado['Año'] = df_seleccionado['Año'].apply(lambda x: str(int(float(x))))
+    
+    df_seleccionado.columns = df_seleccionado.columns.str.title()  # Convertir los nombres de las columnas a título
+
+    st.dataframe(df_seleccionado.reset_index(drop=True))
 
 
 #%%
@@ -248,6 +268,16 @@ st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
 #%%
+import plotly.io as pio
+
+# Asume que estás utilizando el template 'ggplot2'
+template_name = 'seaborn'
+template = pio.templates[template_name]
+
+# Extraer la secuencia de colores
+colors_from_template = template.layout.colorway
+
+#%%
 # Ingresos
 st.write(f"### Ingresos en {comuna_seleccionada}")
 casen_ingresos = casen_csv[casen_csv['Category'] == 'INGRESOS']
@@ -271,9 +301,16 @@ fig_ingresos = px.bar(
     barmode='group',
     title=f"Distribución de Ingresos en {comuna_seleccionada}",
     labels={'Monto': 'Monto de Ingreso', 'Año': 'Año'},
+    color_discrete_sequence=colors_from_template  # Aplica los colores del template
 )
+
 fig_ingresos.update_layout(
-    yaxis_tickformat=".0f"
+    yaxis_tickformat=".0f",
+    template=template_name  # Asegúrate de seguir usando el mismo template
+)
+fig_ingresos.update_xaxes(
+    tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
+    dtick=1  # Esto fuerza que cada tick sea un año
 )
 df_casen_ingresos_comuna = casen_ingresos_comuna[['Año','Ingreso Autónomo','Ingreso Monetario','Ingresos del trabajo','Ingreso Total']].reset_index(drop=True)
 df_casen_ingresos_comuna = df_casen_ingresos_comuna.style.format(
@@ -322,6 +359,10 @@ fig_participacion_laboral = px.bar(
 fig_participacion_laboral.update_layout(
     yaxis_tickformat=".2%",
     yaxis_title='Porcentaje de Participación'
+)
+fig_participacion_laboral.update_xaxes(
+    tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
+    dtick=1  # Esto fuerza que cada tick sea un año
 )
 fig_participacion_laboral.update_traces(texttemplate='%{text}', textposition='outside')
 st.plotly_chart(fig_participacion_laboral, use_container_width=False)

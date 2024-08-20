@@ -84,10 +84,8 @@ lista_comunas = [
 #%%
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Tasas de violencia")
-st.sidebar.write("Selección de Comuna")
-
 default_index = lista_comunas.index("Región Metropolitana") if "Región Metropolitana" in lista_comunas else 0
-comuna_seleccionada = st.sidebar.multiselect("Comuna:", lista_comunas, default=[lista_comunas[default_index]])
+comuna_seleccionada = st.sidebar.multiselect("Selecciona Comuna o Región:", lista_comunas, default=[lista_comunas[default_index]])
 
 # Trabajo del DF
 filtro_comuna = [comuna.upper() for comuna in comuna_seleccionada]  # Convertir a mayúsculas
@@ -133,6 +131,17 @@ else:
 # Ordenar por 'Comuna'
 violencia_2023_comuna['Comuna'] = pd.Categorical(violencia_2023_comuna['Comuna'], categories=[c.upper() for c in lista_comunas], ordered=True)
 violencia_2023_comuna = violencia_2023_comuna.sort_values('Comuna')
+violencia_2023_comuna['Comuna'] = violencia_2023_comuna['Comuna'].str.lower().str.title()
+labels_intrafamiliar = {
+    'Tasa de denuncia de violencia intrafamiliar': 'Tasa de denuncia (cada 1000 habitantes)', 
+    'Comuna': 'Comuna',
+    'comuna_rm_intra': 'Tasa de violencia sobre la RM'
+}
+labels_delitos = {
+    'Tasa de denuncia de delitos de mayor connotación': 'Tasa de denuncia (cada 1000 habitantes)', 
+    'Comuna': 'Comuna',
+    'comuna_rm_delit': 'Tasa de violencia sobre la RM'
+}
 
 #%%
 import streamlit as st
@@ -140,8 +149,8 @@ import pandas as pd
 
 st.write(f"## Visor de tasas de violencia para {comunas_formateadas}")
 tabla_violencia=violencia_2023_comuna[['Comuna','Tasa de denuncia de violencia intrafamiliar','Tasa de denuncia de delitos de mayor connotación']].reset_index(drop=True)
-tabla_violencia['Tasa de denuncia de violencia intrafamiliar'] = tabla_violencia['Tasa de denuncia de violencia intrafamiliar'].apply(lambda x: f"{x:,.2f}".replace('.',',').replace(',',''))
-tabla_violencia['Tasa de denuncia de delitos de mayor connotación'] = tabla_violencia['Tasa de denuncia de delitos de mayor connotación'].apply(lambda x: f"{x:,.2f}".replace('.',',').replace(',',''))
+tabla_violencia['Tasa de denuncia de violencia intrafamiliar'] = tabla_violencia['Tasa de denuncia de violencia intrafamiliar'].apply(lambda x: f"{x:,.2f}".replace(',','').replace('.',','))
+tabla_violencia['Tasa de denuncia de delitos de mayor connotación'] = tabla_violencia['Tasa de denuncia de delitos de mayor connotación'].apply(lambda x: f"{x:,.2f}".replace(',','').replace('.',','))
 
 st.write(tabla_violencia)
 
@@ -205,7 +214,8 @@ fig_violencia_delit.update_layout(
         categoryorder='array',
         categoryarray=list(violencia_2023_comuna['Comuna'])
     ),
-    showlegend=False
+    showlegend=False,
+    
 )
 fig_violencia_delit.add_shape(
     type="line",
@@ -213,7 +223,7 @@ fig_violencia_delit.add_shape(
     x1=1,
     y0=violencia_delit_rm,
     y1=violencia_delit_rm,
-    line=dict(color="red", width=2, dash="dash"),
+    line=dict(color="black", width=2, dash="dash"),
     xref='paper',
     yref='y'
 )

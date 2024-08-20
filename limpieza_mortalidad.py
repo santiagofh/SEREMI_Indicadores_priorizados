@@ -24,8 +24,8 @@ mapeo_comunas = {
     'SAN BERNARDO': 'San Bernardo', 'SAN JOAQUÍN': 'San Joaquín', 'SAN JOSÉ DE MAIPO': 'San José de Maipo',
     'SAN MIGUEL': 'San Miguel', 'SAN PEDRO': 'San Pedro', 'SAN RAMÓN': 'San Ramón', 'SANTIAGO': 'Santiago',
     'TALAGANTE': 'Talagante', 'TILTIL': 'Tiltil', 'VITACURA': 'Vitacura', 'ÑUÑOA': 'Ñuñoa',
-    'REGIÓN METROPOLITAN': 'Todas las comunas', 'REGIÓN METROPOLITANA': 'Todas las comunas',
-    'REGIÓN METROPOLITANA ': 'Todas las comunas', 'Pedro\xa0Aguirre Cerda': 'Pedro Aguirre Cerda'
+    'REGIÓN METROPOLITAN': 'Región Metropolitana', 'REGIÓN METROPOLITANA': 'Región Metropolitana',
+    'REGIÓN METROPOLITANA ': 'Región Metropolitana', 'Pedro\xa0Aguirre Cerda': 'Pedro Aguirre Cerda'
 }
 
 # Función para leer todas las hojas de un archivo y devolver un diccionario

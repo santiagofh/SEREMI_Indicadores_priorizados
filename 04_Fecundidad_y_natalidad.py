@@ -7,21 +7,66 @@ df_fec = pd.read_csv('data_clean/tasa_fecundidad.csv')
 
 # Listado comunas y años
 lista_comunas = [
-    'Todas las comunas', 'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia', 'Colina', 
-    'Conchalí', 'Curacaví', 'El Bosque', 'El Monte', 'Estación Central', 'Huechuraba', 'Independencia', 
-    'Isla de Maipo', 'La Cisterna', 'La Florida', 'La Granja', 'La Pintana', 'La Reina', 'Lampa', 
-    'Las Condes', 'Lo Barnechea', 'Lo Espejo', 'Lo Prado', 'Macul', 'Maipú', 'María Pinto', 'Melipilla', 
-    'Padre Hurtado', 'Paine', 'Pedro Aguirre Cerda', 'Peñaflor', 'Peñalolén', 'Pirque', 'Providencia', 
-    'Pudahuel', 'Puente Alto', 'Quilicura', 'Quinta Normal', 'Recoleta', 'Renca', 'San Bernardo', 
-    'San Joaquín', 'San José de Maipo', 'San Miguel', 'San Pedro', 'San Ramón', 'Santiago', 'Talagante', 
-    'Tiltil', 'Vitacura', 'Ñuñoa', 'Región Metropolitana'
+    'Región Metropolitana', 
+    'Alhué', 
+    'Buin', 
+    'Calera de Tango', 
+    'Cerrillos', 
+    'Cerro Navia', 
+    'Colina', 
+    'Conchalí', 
+    'Curacaví', 
+    'El Bosque', 
+    'El Monte', 
+    'Estación Central', 
+    'Huechuraba', 
+    'Independencia', 
+    'Isla de Maipo',
+    'La Cisterna',
+    'La Florida',
+    'La Granja',
+    'La Pintana',
+    'La Reina',
+    'Lampa', 
+    'Las Condes',
+    'Lo Barnechea',
+    'Lo Espejo',
+    'Lo Prado',
+    'Macul',
+    'Maipú',
+    'María Pinto',
+    'Melipilla',
+    'Ñuñoa',
+    'Padre Hurtado',
+    'Paine',
+    'Pedro Aguirre Cerda',
+    'Peñaflor',
+    'Peñalolén',
+    'Pirque',
+    'Providencia', 
+    'Pudahuel',
+    'Puente Alto',
+    'Quilicura',
+    'Quinta Normal',
+    'Recoleta',
+    'Renca',
+    'San Bernardo', 
+    'San Joaquín',
+    'San José de Maipo',
+    'San Miguel',
+    'San Pedro',
+    'San Ramón',
+    'Santiago',
+    'Talagante', 
+    'Tiltil',
+    'Vitacura'
 ]
 lista_años = ['Todos los años', '2013-2015', '2016-2018', '2019-2021']
 
 # Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=0)
-select_year = st.sidebar.selectbox("Año:", lista_años, index=0)
+select_year = st.sidebar.selectbox("Período:", lista_años, index=0)
 
 # Título e introducción
 st.title('Tasas de Fecundidad por Grupo de Edad en la Región Metropolitana')
@@ -48,13 +93,13 @@ df_filtrado = filtrar_datos_grafico(df_fec, comuna_seleccionada, select_year)
 # Comprobación de los datos filtrados
 st.write("### Tabla de datos de fecundidad")
 dict_col = {
+    'año': 'Año',
     'comuna': 'Comuna',
     'tasas_10_14': '10-14 años',
     'tasas_15_19': '15-19 años',
     'tasas_20_34': '20-34 años',
-    'tasas_35_mas': '35+ años',
-    'tasa_general': 'Tasa General',
-    'año': 'Año'
+    'tasas_35_mas': '35 años o más',
+    'tasa_general': 'Tasa General'
 }
 df_filtrado = df_filtrado[list(dict_col.keys())].reset_index(drop=True)
 st.write(df_filtrado.rename(columns=dict_col))
@@ -79,13 +124,13 @@ df_long['Grupo de Edad'] = df_long['Grupo de Edad'].replace({
 # Crear el gráfico con Plotly Express
 fig = px.line(df_long, x='Grupo de Edad', y='Tasa de Fecundidad', color='año', line_group='año',
               title="Tasas de Fecundidad por Grupo de Edad",
-              labels={"value": "Tasa de Fecundidad", "variable": "Grupo de Edad"},
+              labels={"value": "Tasa de Fecundidad", "variable": "Grupo de Edad", 'Grupo de Edad':'Grupo de Edad (años)'},
               markers=True,
               line_shape='spline')  # Añadir esta opción para líneas suaves
 
 
 # Configuración adicional del gráfico
-fig.update_layout(xaxis_title='Grupo de Edad', yaxis_title='Tasa de Fecundidad',
+fig.update_layout(xaxis_title='Grupo de Edad (años)', yaxis_title='Tasa de Fecundidad',
                   legend_title="Año", 
                   hovermode='x unified')
 

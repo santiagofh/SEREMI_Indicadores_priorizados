@@ -4,14 +4,15 @@ import plotly.express as px
 import numpy as np
 
 lista_comunas = [
-    'Todas las comunas', 'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia', 'Colina', 
-    'Conchalí', 'Curacaví', 'El Bosque', 'El Monte', 'Estación Central', 'Huechuraba', 'Independencia', 
-    'Isla de Maipo', 'La Cisterna', 'La Florida', 'La Granja', 'La Pintana', 'La Reina', 'Lampa', 
-    'Las Condes', 'Lo Barnechea', 'Lo Espejo', 'Lo Prado', 'Macul', 'Maipú', 'María Pinto', 'Melipilla', 
-    'Padre Hurtado', 'Paine', 'Pedro Aguirre Cerda', 'Peñaflor', 'Peñalolén', 'Pirque', 'Providencia', 
-    'Pudahuel', 'Puente Alto', 'Quilicura', 'Quinta Normal', 'Recoleta', 'Renca', 'San Bernardo', 
-    'San Joaquín', 'San José de Maipo', 'San Miguel', 'San Pedro', 'San Ramón', 'Santiago', 'Talagante', 
-    'Tiltil', 'Vitacura', 'Ñuñoa'
+    'Región Metropolitana', 'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia',
+    'Colina', 'Conchalí', 'Curacaví', 'El Bosque', 'El Monte', 'Estación Central',
+    'Huechuraba', 'Independencia', 'Isla de Maipo', 'La Cisterna', 'La Florida', 'La Granja',
+    'La Pintana', 'La Reina', 'Lampa', 'Las Condes', 'Lo Barnechea', 'Lo Espejo',
+    'Lo Prado', 'Macul', 'Maipú', 'María Pinto', 'Melipilla', 'Ñuñoa', 'Padre Hurtado',
+    'Paine', 'Pedro Aguirre Cerda', 'Peñaflor', 'Peñalolén', 'Pirque', 'Providencia',
+    'Pudahuel', 'Puente Alto', 'Quilicura', 'Quinta Normal', 'Recoleta', 'Renca',
+    'San Bernardo', 'San Joaquín', 'San José de Maipo', 'San Miguel', 'San Pedro',
+    'San Ramón', 'Santiago', 'Talagante', 'Tiltil', 'Vitacura'
 ]
 
 # Función para hacer los nombres más amigables
@@ -57,10 +58,10 @@ comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=0)
 st.sidebar.write("Selección de Género")
 genero_seleccionado = st.sidebar.radio('Selecciona el género:', ('Ambos', 'Hombres', 'Mujeres'))
 
-# Selección única de Mortalidad
-st.sidebar.write("Selección de Mortalidades")
-mortalidad_seleccionada_humana = st.sidebar.selectbox('Selecciona la mortalidad:', mortalidades_ordenadas)
-mortalidad_seleccionada = mortalidad_dict[mortalidad_seleccionada_humana]
+# Selección única de Causa de Mortalidad
+st.sidebar.write("Selección de Causa")
+causa_seleccionada_humana = st.sidebar.selectbox('Selecciona la causa de mortalidad:', mortalidades_ordenadas)
+mortalidad_seleccionada = mortalidad_dict[causa_seleccionada_humana]
 
 # TITULO INTRODUCCION
 st.write('# Región Metropolitana y sus comunas: Mortalidad')
@@ -73,28 +74,46 @@ filtered_df = filtered_df[filtered_df['COMUNA DE RESIDENCIA'] == comuna_seleccio
 if genero_seleccionado != 'Ambos':
     filtered_df = filtered_df[filtered_df['Sexo'] == genero_seleccionado]
 
-# Filtrar para "Todas las comunas"
+# Filtrar para "Región Metropolitana"
 if genero_seleccionado == 'Ambos':
-    df_todas_comunas = df_mortalidad[(df_mortalidad['Mortalidad'] == mortalidad_seleccionada) & (df_mortalidad['COMUNA DE RESIDENCIA'] == 'Todas las comunas')]
+    df_todas_comunas = df_mortalidad[(df_mortalidad['Mortalidad'] == mortalidad_seleccionada) & (df_mortalidad['COMUNA DE RESIDENCIA'] == 'Región Metropolitana')]
 else:
-    df_todas_comunas = df_mortalidad[(df_mortalidad['Mortalidad'] == mortalidad_seleccionada) & (df_mortalidad['COMUNA DE RESIDENCIA'] == 'Todas las comunas') & (df_mortalidad['Sexo'] == genero_seleccionado)]
+    df_todas_comunas = df_mortalidad[(df_mortalidad['Mortalidad'] == mortalidad_seleccionada) & (df_mortalidad['COMUNA DE RESIDENCIA'] == 'Región Metropolitana') & (df_mortalidad['Sexo'] == genero_seleccionado)]
 
 df_todas_comunas['Comuna_Sexo'] = 'Región Metropolitana (' + df_todas_comunas['Sexo'] + ')'
 
 # Crear una columna combinada para color
 filtered_df['Comuna_Sexo'] = filtered_df['COMUNA DE RESIDENCIA'] + ' (' + filtered_df['Sexo'] + ')'
 
-# Concatenar con el DataFrame de todas las comunas
+# Concatenar con el DataFrame de Región Metropolitana
 filtered_df = pd.concat([filtered_df, df_todas_comunas], ignore_index=True)
 filtered_df = filtered_df.drop_duplicates(subset=['Mortalidad','Sexo','COMUNA DE RESIDENCIA'])
-# Mostrar el DataFrame filtrado
+
+# Corregir nombres de las columnas de años
+filtered_df.columns = filtered_df.columns.str.replace('.0', '', regex=False)
+
+# Seleccionar solo las columnas de años
+Años = [col for col in filtered_df.columns if col.isdigit()]
+
+# Aplicar el formato a las columnas de años
+def format_number(value):
+    if pd.isna(value):
+        return ""
+    return f"{value:,.2f}".replace(",", ".").replace(".", ",")
+
+filtered_df[Años] = filtered_df[Años].applymap(format_number)
+
+# Eliminar la columna 'Mortalidad'
+filtered_df = filtered_df.drop(columns=['Mortalidad'])
+
+# Mostrar el DataFrame filtrado con el título de la causa de mortalidad
+st.write(f"### {causa_seleccionada_humana} en {comuna_seleccionada}")
 st.write(filtered_df)
 
 # Crear un gráfico de líneas
-Años = [col for col in filtered_df.columns if col.endswith('.0')]
-df_long = filtered_df.melt(id_vars=['Mortalidad', 'COMUNA DE RESIDENCIA', 'Sexo', 'Comuna_Sexo'], value_vars=Años, var_name='Año', value_name='Tasa de Mortalidad Ajustada')
+df_long = filtered_df.melt(id_vars=['COMUNA DE RESIDENCIA', 'Sexo', 'Comuna_Sexo'], value_vars=Años, var_name='Año', value_name='Tasa de Mortalidad Ajustada')
 
-fig = px.line(df_long, x='Año', y='Tasa de Mortalidad Ajustada', color='Comuna_Sexo', line_group='Comuna_Sexo', title=f'{mortalidad_seleccionada_humana}')
+fig = px.line(df_long, x='Año', y='Tasa de Mortalidad Ajustada', color='Comuna_Sexo', line_group='Comuna_Sexo', title=f'{causa_seleccionada_humana}')
 
 # Mostrar el gráfico
 st.plotly_chart(fig)

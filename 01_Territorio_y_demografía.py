@@ -342,10 +342,10 @@ data = {
         "Población rural (proyección 2024)",
         "Índice De Dependencia 2024",
         "Índice De Renovación O Vejez 2024",
-        "Tasa bruta de natalidad 2020 (por 1.000 hab.)",
-        "Tasa específica de Fecundidad por edad",
-        "Tasa bruta de reproducción",
-        "Indice de desarrollo humano (IDH)",
+        # "Tasa bruta de natalidad 2020 (por 1.000 hab.)",
+        # "Tasa específica de Fecundidad por edad",
+        # "Tasa bruta de reproducción",
+        # "Indice de desarrollo humano (IDH)",
         "Personas nacidas en el extranjero",
         "% Pueblos Indigenas/Originarios"
     ],
@@ -365,10 +365,10 @@ data = {
         formatted_values["pop_proy_rur_comuna"],
         formatted_values["indice_dependencia"],
         formatted_values["indice_renovacion_vejez"],
-        "",
-        "",
-        "",
-        "",
+        # "",
+        # "",
+        # "",
+        # "",
         formatted_values["poblacion_nacida_fuera_de_chile_2022"],
         formatted_values["poblacion_pertenece_pueblos_2022"]
     ],
@@ -388,10 +388,10 @@ data = {
         "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
         "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
         "Estimaciones y proyecciones 2002-2035. Instituto Nacional de Estadísticas (INE).",
-        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
-        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
-        "Tablero de estadísticas de nacimientos y natalidad. DEIS",
-        "Informe universidad Autonoma",
+        # "Tablero de estadísticas de nacimientos y natalidad. DEIS",
+        # "Tablero de estadísticas de nacimientos y natalidad. DEIS",
+        # "Tablero de estadísticas de nacimientos y natalidad. DEIS",
+        # "Informe universidad Autonoma",
         "CASEN 2022",
         "CASEN 2022"
     ],
@@ -409,12 +409,12 @@ data = {
         "",
         "",
         "",
-        "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false",
-        "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false",
-        "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false",
-        "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false",
-        "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false",
-        "https://repositorio.uautonoma.cl/bitstream/handle/20.500.12728/6742/V11_digital_final.pdf?sequence=1&isAllowed=y",
+        "",
+        "",
+        # "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false",
+        # "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false",
+        # "https://informesdeis.minsal.cl/SASVisualAnalytics/?reportUri=%2Freports%2Freports%2Fa39b6235-6172-4b09-a8b1-ab5f87c72ea0&sectionIndex=1&sso_guest=true&sas-welcome=false",
+        # "https://repositorio.uautonoma.cl/bitstream/handle/20.500.12728/6742/V11_digital_final.pdf?sequence=1&isAllowed=y",
         "",
         ""
     ]
@@ -427,7 +427,7 @@ columns_config = {
     "Indicador": st.column_config.TextColumn("Indicador"),
     "Valor": st.column_config.TextColumn("Valor"),
     "Fuente de dato": st.column_config.TextColumn("Fuente de dato"),
-    "Enlace": st.column_config.LinkColumn("Enlace", width=300)
+    # "Enlace": st.column_config.LinkColumn("Enlace", width=300)
 }
 
 # Mostrar el DataFrame en Streamlit con configuración de columnas
@@ -440,19 +440,19 @@ st.dataframe(df_indicadores, column_config=columns_config)
 ##  Población censada y proyectada
 st.markdown('## Indicadores de población')
 cols = st.columns(4)
-cols[0].metric("Población censada 2017", formatted_values["pop_censada"])
-cols[1].metric(f"Población pryectada{select_year[-4:]}", formatted_values["pop_proy_total"])
+cols[0].metric("Pob. censada 2017", formatted_values["pop_censada"])
+cols[1].metric(f"Pob. proyectada {select_year[-4:]}", formatted_values["pop_proy_total"])
 
 cols = st.columns(4)
 cols[0].metric("Total hombres (2017)", formatted_values["pop_h"])
 cols[1].metric("Total mujeres (2017)", formatted_values["pop_m"])
-cols[2].metric("\% hombres (2017)", formatted_values["pop_h_percentaje"])
-cols[3].metric("\% mujeres (2017)", formatted_values["pop_m_percentaje"])
+cols[2].metric("\% Hombres (2017)", formatted_values["pop_h_percentaje"])
+cols[3].metric("\% Mujeres (2017)", formatted_values["pop_m_percentaje"])
 
 cols[0].metric(f"Total hombres ({select_year[-4:]})", formatted_values["pop_proy_h"])
 cols[1].metric(f"Total mujeres ({select_year[-4:]})", formatted_values["pop_proy_m"])
-cols[2].metric(f"\% hombres ({select_year[-4:]})", formatted_values["pop_proy_h_percentaje"])
-cols[3].metric(f"\% mujeres ({select_year[-4:]})", formatted_values["pop_proy_m_percentaje"])
+cols[2].metric(f"\% Hombres ({select_year[-4:]})", formatted_values["pop_proy_h_percentaje"])
+cols[3].metric(f"\% Mujeres ({select_year[-4:]})", formatted_values["pop_proy_m_percentaje"])
 
 st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.gob.cl/estadisticas/sociales/demografia-y-vitales/proyecciones-de-poblacion)_')
 
@@ -632,7 +632,7 @@ max_population = grouped_data['Population'].max()
 fig.update_layout(
     sliders=sliders,
     title=f"Pirámide Poblacional de {comuna_seleccionada} por Año",
-    xaxis_title="Población",
+    # xaxis_title="Población",
     yaxis_title="Rango Etario",
     showlegend=False,
     xaxis=dict(range=[max_population, 0]),  # Invertir el eje X para Hombres
@@ -665,7 +665,7 @@ fig_migrantes = px.bar(
     y='Porcentaje',
     color='Origen',
     text=df_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
-    title=f'Porcentaje de población nacida fuera de Chile en {comuna_seleccionada}',
+    title=f'Porcentaje de población de {comuna_seleccionada}, nacida fuera de Chile',
     labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
     # width=800,  # Ajustar el ancho del gráfico
     # height=600  # Ajustar la altura del gráfico si es necesario
@@ -676,6 +676,7 @@ fig_migrantes.update_xaxes(
     tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
     dtick=1  # Esto fuerza que cada tick sea un año
 )
+fig_migrantes.update_traces(width=0.9)  
 # Centrar el gráfico en Streamlit
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_migrantes, use_container_width=False)
@@ -724,7 +725,7 @@ fig_etnias.update_xaxes(
     tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
     dtick=1  # Esto fuerza que cada tick sea un año
 )
-
+fig_etnias.update_traces(width=0.9)  
 # Centrar el gráfico en Streamlit
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_etnias, use_container_width=False)

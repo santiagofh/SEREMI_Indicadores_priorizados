@@ -6,7 +6,7 @@ import streamlit_authenticator as stauth
 
 #%%
 
-st.title("Análisis de Comunas en Región Metropolitana: Indice de prioridad social (IPS)")
+st.title("Región Metropolitana y sus comunas: Indice de prioridad social (IPS)")
 st.write("""
     Bienvenido al dashboard de análisis de comunas en la Región Metropolitana. 
     Aquí puedes encontrar información sobre los indicadores de prioridad social de cada comuna.

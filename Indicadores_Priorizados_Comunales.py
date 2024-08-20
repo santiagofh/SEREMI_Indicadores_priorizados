@@ -53,13 +53,18 @@ if authentication_status:
         "Menu principal":[
             st.Page(home, default=True, title="Pagina de inicio", icon=":material/home:")
         ],
-        "Indicadores" : [
+        "Indicadores demograficos y ambientales" : [
             st.Page("01_Territorio_y_demografía.py", title="Territorio y demografía", icon=":material/public:"),
             st.Page("02_Ambiental.py", title="Ambiental", icon=":material/eco:"),
-            st.Page("03_Socioeconomico.py", title="Socioeconomico", icon=":material/attach_money:"),
-            st.Page("03_Socioeconomico_violencia.py", title="Socioeconomico - Tasas de violencia", icon=":material/attach_money:"),
             st.Page("04_Fecundidad_y_natalidad.py", title="Fecundidad y natalidad", icon=":material/pregnant_woman:"),
+        ],
+        "Indices sociales y seguridad" : [
+            st.Page("03_Socioeconomico.py", title="Socioeconomico", icon=":material/attach_money:"),
+            st.Page("03_Socioeconomico_violencia.py", title="Tasas de violencia", icon=":material/attach_money:"),
             st.Page("04_Indicadores_sociales.py", title="Indice Prioridad Social", icon=":material/monitoring:"),
+        ],
+        "Indicadores" : [
+            # st.Page("04_Fecundidad_y_natalidad.py", title="Fecundidad y natalidad", icon=":material/pregnant_woman:"),
             st.Page("05_Sistema_Salud.py", title="Sistema Salud", icon=":material/health_and_safety:"),
             # st.Page("06_Estilos_de_vida‍.py", title="Estilos de vida‍", icon=":material/close:"),
             # st.Page("07_Morbilidad.py", title="Morbilidad", icon=":material/close:"),
