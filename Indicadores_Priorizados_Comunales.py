@@ -63,7 +63,7 @@ if authentication_status:
         ],
         "Indices sociales y seguridad" : [
             st.Page("03_Socioeconomico.py", title="Socioeconomico", icon=":material/attach_money:"),
-            st.Page("03_Socioeconomico_violencia.py", title="Tasas de violencia", icon=":material/attach_money:"),
+            st.Page("03_Socioeconomico_violencia.py", title="Violencia", icon=":material/attach_money:"),
             st.Page("04_Indicadores_sociales.py", title="Indice Prioridad Social", icon=":material/monitoring:"),
         ],
         "Indicadores de Salud" : [
