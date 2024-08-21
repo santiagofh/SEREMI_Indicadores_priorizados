@@ -47,7 +47,7 @@ def home():
 def ira_era():
     st.page_link("https://ira-era-rm.streamlit.app/", label="Dashboard de atenciones de urgencia - Enfermedades Respiratorias", icon="🌎")
 def prais():
-    st.page_link("https://lookerstudio.google.com/reporting/394316c8-9431-44ce-b38a-a1fc1c3b6d97/page/LELkD?s=pDwtKUp4lEE", label="Dashboard de atenciones de urgencia - Enfermedades Respiratorias", icon="🌎")
+    st.page_link("https://lookerstudio.google.com/reporting/394316c8-9431-44ce-b38a-a1fc1c3b6d97/page/LELkD?s=pDwtKUp4lEE", label="Dashboard PRAIS", icon="🌎")
 
 #%%
 if authentication_status:
