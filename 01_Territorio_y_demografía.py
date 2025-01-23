@@ -632,11 +632,10 @@ max_population = grouped_data['Population'].max()
 fig.update_layout(
     sliders=sliders,
     title=f"Pirámide Poblacional de {comuna_seleccionada} por Año",
-    # xaxis_title="Población",
     yaxis_title="Rango Etario",
     showlegend=False,
-    xaxis=dict(range=[max_population, 0]),  # Invertir el eje X para Hombres
-    xaxis2=dict(range=[0, max_population]),  # Mantener el eje X para Mujeres
+    xaxis=dict(range=[max_population, 0]), 
+    xaxis2=dict(range=[0, max_population]), 
 )
 
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
@@ -646,7 +645,6 @@ st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.g
 
 
 #%%
-# Población nacida fuera de Chile
 if comuna_seleccionada =='Región Metropolitana':
     st.write(f'## Porcentaje de población de la {comuna_seleccionada}, nacida fuera de Chile')
 else:
@@ -667,17 +665,14 @@ fig_migrantes = px.bar(
     text=df_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
     title=f'Porcentaje de población de {comuna_seleccionada}, nacida fuera de Chile',
     labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
-    # width=800,  # Ajustar el ancho del gráfico
-    # height=600  # Ajustar la altura del gráfico si es necesario
 )
 fig_migrantes.update_traces(texttemplate='%{text}', textposition='outside')
 fig_migrantes.update_yaxes(range=[0, 110],ticksuffix="%")
 fig_migrantes.update_xaxes(
-    tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
-    dtick=1  # Esto fuerza que cada tick sea un año
+    tickmode='linear', 
+    dtick=1 
 )
 fig_migrantes.update_traces(width=0.9)  
-# Centrar el gráfico en Streamlit
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_migrantes, use_container_width=False)
 st.markdown("</div>", unsafe_allow_html=True)
@@ -691,19 +686,16 @@ else:
     st.write(f'## Porcentaje de población de {comuna_seleccionada}, perteneciente a un pueblo originario')
 
 
-# Calcular los porcentajes
 casen_etnias_comuna['Total'] = casen_etnias_comuna['Pertenece a algún pueblo originario'] + casen_etnias_comuna['No pertenece a ningún pueblo originario']
 casen_etnias_comuna['Pertenece'] = (casen_etnias_comuna['Pertenece a algún pueblo originario'] / casen_etnias_comuna['Total']) * 100
 casen_etnias_comuna['No pertenece'] = (casen_etnias_comuna['No pertenece a ningún pueblo originario'] / casen_etnias_comuna['Total']) * 100
 
-# Transformar los datos para adecuarlos al gráfico
 df_etnias_melted = casen_etnias_comuna.melt(id_vars=['Año'], value_vars=['Pertenece', 'No pertenece'],
                                             var_name='Origen', value_name='Porcentaje')
 
 df_etnias_melted['Orden'] = df_etnias_melted['Origen'].apply(lambda x: 1 if "No pertenece" in x else 2)
 df_etnias_melted = df_etnias_melted.sort_values(by=['Año', 'Orden'])
 
-# Crear el gráfico de barras
 fig_etnias = px.bar(
     df_etnias_melted, 
     x='Año', 
@@ -712,18 +704,14 @@ fig_etnias = px.bar(
     text=df_etnias_melted['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x)),
     title=f'Porcentaje de población en {comuna_seleccionada}, perteneciente a un pueblo originario',
     labels={'Porcentaje': 'Porcentaje', 'Origen': 'Origen'},
-    # width=800,  # Ajustar el ancho del gráfico
-    # height=600  # Ajustar la altura del gráfico si es necesario
 )
 
-# Ajustar el layout para que las etiquetas de texto incluyan el símbolo de porcentaje
 fig_etnias.update_traces(texttemplate='%{text}', textposition='outside')
 
-# Ajustar el rango del eje Y
 fig_etnias.update_layout(yaxis=dict(range=[0, 110]))
 fig_etnias.update_xaxes(
     tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
-    dtick=1  # Esto fuerza que cada tick sea un año
+    dtick=1  
 )
 fig_etnias.update_traces(width=0.9)  
 # Centrar el gráfico en Streamlit

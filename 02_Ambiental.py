@@ -24,10 +24,8 @@ st.write('Este tablero interactivo presenta indicadores ambientales priorizados 
 def obtener_datos_calidad_aire():
     url = "https://airechile.mma.gob.cl/comunas/santiago"
     try:
-        response = requests.get(url, verify=False)  # Desactivar verificación SSL
+        response = requests.get(url, verify=False)  
         soup = BeautifulSoup(response.content, 'html.parser')
-
-        # Extraer el contenido del panel completo
         try:
             panel = soup.find('div', {'class': 'panel panel-medidas'})
             if panel:

@@ -1,11 +1,7 @@
 import pandas as pd
-
-# Cargar el archivo de Excel y limpiar las columnas vacías
 path = 'data_raw/Tasas trienales de fecundidad por comuna en la RM.xlsx'
 df = pd.read_excel(path, skiprows=4)
 df = df.dropna(axis=1, how='all')
-
-# Renombrar las columnas usando los diccionarios
 dic_col_tasas_2013_2015 = {
     'Comuna': 'comuna',
     '10 a 14 años': 'tasas_10_14',
@@ -32,8 +28,6 @@ dic_col_tasas_2019_2021 = {
     '35 y más años.2': 'tasas_35_mas',
     'Tasa comunal general.2': 'tasa_general',
 }
-
-# Crear una lista de DataFrames con los diferentes periodos
 df_2013_2015 = df[['Comuna', '10 a 14 años', '15 a 19 años', '20 a 34 años', '35 y más años', 'Tasa comunal general']].rename(columns=dic_col_tasas_2013_2015)
 df_2013_2015['año'] = '2013-2015'
 
@@ -43,7 +37,6 @@ df_2016_2018['año'] = '2016-2018'
 df_2019_2021 = df[['Comuna.2', '10 a 14 años.2', '15 a 19 años.2', '20 a 34 años.2', '35 y más años.2', 'Tasa comunal general.2']].rename(columns=dic_col_tasas_2019_2021)
 df_2019_2021['año'] = '2019-2021'
 
-# Concatenar los DataFrames en uno solo
 df_final = pd.concat([df_2013_2015, df_2016_2018, df_2019_2021])
 replacements = {
     'Tasa Regional 2013-2015': 'Región Metropolitana',
@@ -52,15 +45,11 @@ replacements = {
 }
 df_final['comuna'] = df_final['comuna'].replace(replacements)
 
-# Eliminar filas irrelevantes basadas en palabras clave específicas y filas completamente vacías
 df_final = df_final[~df_final['comuna'].str.contains('50 a 54 años', na=False)]
 df_final = df_final.dropna(subset=['comuna'])
 
-# Ordenar el DataFrame por comuna y por año
 df_sorted = df_final.sort_values(by=['comuna', 'año'])
 
-
-# Mostrar el DataFrame ordenado
 print(df_sorted.head())
 
 df_sorted.to_csv('data_clean/tasa_fecundidad.csv')

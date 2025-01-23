@@ -160,8 +160,6 @@ categoria_seleccionada_upper = {v: k for k, v in traducciones.items()}[categoria
 if categoria_seleccionada_upper:
     st.write(f"### {categoria_seleccionada}")
     df_seleccionado = df_dict[categoria_seleccionada_upper]
-
-    # Asegurarse de que la columna "Año" sea de tipo entero
     df_seleccionado['Año'] = df_seleccionado['Año'].apply(lambda x: str(int(float(x))))
     
     df_seleccionado.columns = df_seleccionado.columns.str.title()  # Convertir los nombres de las columnas a título
@@ -268,12 +266,8 @@ st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen
 
 #%%
 import plotly.io as pio
-
-# Asume que estás utilizando el template 'ggplot2'
 template_name = 'seaborn'
 template = pio.templates[template_name]
-
-# Extraer la secuencia de colores
 colors_from_template = template.layout.colorway
 
 #%%
@@ -300,16 +294,16 @@ fig_ingresos = px.bar(
     barmode='group',
     title=f"Distribución de Ingresos en {comuna_seleccionada}",
     labels={'Monto': 'Monto de Ingreso', 'Año': 'Año'},
-    color_discrete_sequence=colors_from_template  # Aplica los colores del template
+    color_discrete_sequence=colors_from_template  
 )
 
 fig_ingresos.update_layout(
     yaxis_tickformat=".0f",
-    template=template_name  # Asegúrate de seguir usando el mismo template
+    template=template_name  
 )
 fig_ingresos.update_xaxes(
-    tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
-    dtick=1  # Esto fuerza que cada tick sea un año
+    tickmode='linear',  
+    dtick=1  
 )
 df_casen_ingresos_comuna = casen_ingresos_comuna[['Año','Ingreso Autónomo','Ingreso Monetario','Ingresos del trabajo','Ingreso Total']].reset_index(drop=True)
 df_casen_ingresos_comuna = df_casen_ingresos_comuna.style.format(
@@ -352,16 +346,16 @@ fig_participacion_laboral = px.bar(
     title=f"Tasas de participación laboral en {comuna_seleccionada}",
     labels={'Porcentaje': 'Porcentaje de Participación', 'Año': 'Año'},
     text=casen_tasas_participacion_comuna_long['Porcentaje'].apply(lambda x: '{0:1.2f}%'.format(x*100)),
-    width=800,  # Ajustar el ancho del gráfico
-    height=600  # Ajustar la altura del gráfico si es necesario
+    width=800,  
+    height=600  
 )
 fig_participacion_laboral.update_layout(
     yaxis_tickformat=".2%",
     yaxis_title='Porcentaje de Participación'
 )
 fig_participacion_laboral.update_xaxes(
-    tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
-    dtick=1  # Esto fuerza que cada tick sea un año
+    tickmode='linear',  
+    dtick=1 
 )
 fig_participacion_laboral.update_traces(texttemplate='%{text}', textposition='outside')
 st.plotly_chart(fig_participacion_laboral, use_container_width=False)
