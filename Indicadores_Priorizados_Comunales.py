@@ -50,7 +50,7 @@ pages = {
         # st.Page("06_Estilos_de_vida‍.py", title="Estilos de vida‍", icon=":material/close:"),
         # st.Page("07_Morbilidad.py", title="Morbilidad", icon=":material/close:"),
         # st.Page("08_Estratificacion.py", title="Estratificacion", icon=":material/close:"),
-        st.Page("09_Mortalidad.py", title="_Mortalidad", icon=":material/deceased:"),
+        st.Page("09_Mortalidad.py", title="Mortalidad", icon=":material/deceased:"),
         st.Page(ira_era, title="Visor de Atenciones de urgencias - Respiratorias", icon=":material/health_and_safety:")
     ],
     "PRAIS":[
