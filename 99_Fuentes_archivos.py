@@ -10,6 +10,3 @@ import pandas as pd
 df = pd.DataFrame(links)
 st.write('## Tabla de Enlaces de Descarga')
 st.table(df)
-st.write('## Enlaces de Descarga Clicables')
-for link in links:
-    st.markdown(f"- [{link['Nombre']}]({link['URL']}) ({link['Categoría']})")
