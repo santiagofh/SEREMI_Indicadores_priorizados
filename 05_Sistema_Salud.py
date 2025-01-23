@@ -11,14 +11,11 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
 import streamlit_authenticator as stauth
-
 #%%
-# LECTURA DE ARCHIVOS
 fonasa=pd.read_csv('data_clean/fonasa_2024.csv')
 casen_csv = pd.read_csv('data_clean/casen_17_22.csv')
 casen_csv.rename(columns={'Ponlación nacida en Chile':'Población nacida en Chile'}, inplace=True)
 #%%
-# Listado comunas
 lista_comunas = [
     'Región Metropolitana', 
     'Alhué', 
@@ -76,12 +73,10 @@ lista_comunas = [
 ]
 
 #%%
-# TITULO INTRODUCCION
 st.write('# Región Metropolitana y sus comunas: Sistema de Salud')
 st.write('Este tablero interactivo presenta indicadores de Sistema de Salud de la Región Metropolitana de Santiago y sus comunas.')
 
 #%%
-# Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 st.sidebar.write("Selección de Comuna")
 default_index = lista_comunas.index("Todas las comunas") if "Todas las comunas" in lista_comunas else 0
@@ -92,7 +87,6 @@ filtro_comuna = comuna_seleccionada
 #%%
 
 import statsmodels.api as sm
-# Afiliación a Sistemas de Previsión
 st.write(f"### Afiliación a Sistemas de Previsión en {comuna_seleccionada}")
 column_rename_map = {
     'fonasa': 'FONASA',
@@ -147,21 +141,18 @@ fig_bar = px.bar(
     color_discrete_map=color_map
 )
 
-# Realizar la regresión lineal para FONASA
 casen_prevision_salud_comuna['Año'] = casen_prevision_salud_comuna['Año'].astype(int)
 X = casen_prevision_salud_comuna[['Año']]
-X = sm.add_constant(X)  # Agregar una constante (intercepto) al modelo
+X = sm.add_constant(X) 
 y = casen_prevision_salud_comuna['FONASA']
 model = sm.OLS(y, X).fit()
 predictions = model.predict(X)
 
-# Obtener los parámetros del modelo
 intercept = model.params['const']
 slope = model.params['Año']
 r_squared = model.rsquared
 formula = f"y = {intercept:.2f} + {slope:.2f}*x"
 
-# Añadir la línea de tendencia al gráfico de barras
 fig_trend = px.scatter(
     casen_prevision_salud_comuna,
     x='Año',
@@ -185,7 +176,6 @@ st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allo
 st.plotly_chart(fig, use_container_width=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Mostrar la fórmula de la regresión lineal y el R cuadrado debajo del gráfico
 st.write(f"**Fórmula de la regresión lineal para FONASA:** {formula}")
 st.write(f"**R² (coeficiente de determinación):** {r_squared:.2f}")
 st.write("El R² es una medida de qué tan bien los valores observados son replicados por el modelo, basado en la proporción de la variabilidad total de los resultados que puede ser explicada por el modelo.")
@@ -193,15 +183,9 @@ st.write("El R² es una medida de qué tan bien los valores observados son repli
 st.write('_Fuente: Elaboración propia a partir de encusta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 #%%
-# Gráfico de Sexo
 
-# Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()
-
-# Asegurarse de que los valores en la columna 'COMUNA' de 'fonasa' estén en mayúsculas
 fonasa['COMUNA'] = fonasa['COMUNA'].str.upper()
-
-# Filtrar datos si no es "TODAS LAS COMUNAS"
 if filtro_comuna != "REGIÓN METROPOLITANA":
     df_sexo = fonasa[(fonasa['Category'] == 'SEXO') & (fonasa['COMUNA'] == filtro_comuna)]
 else:
@@ -213,15 +197,8 @@ df_sexo = df_sexo.dropna(axis=1)
 
 
 # %%
-# Gráfico de Sexo
-
-# Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()
-
-# Asegurarse de que los valores en la columna 'COMUNA' de 'fonasa' estén en mayúsculas
 fonasa['COMUNA'] = fonasa['COMUNA'].str.upper()
-
-# Filtrar datos si no es "TODAS LAS COMUNAS"
 if filtro_comuna != "REGIÓN METROPOLITANA":
     df_tramo = fonasa[(fonasa['Category'] == 'TRAMO FONASA') & (fonasa['COMUNA'] == filtro_comuna)]
 else:
@@ -232,16 +209,8 @@ df_tramo = df_tramo.drop(columns=['CODIGO'], errors='ignore')
 df_tramo = df_tramo.dropna(axis=1)
 
 # %%
-# %%
-# Gráfico de Sexo
-
-# Convertir filtro_comuna a mayúsculas
 filtro_comuna = filtro_comuna.upper()
-
-# Asegurarse de que los valores en la columna 'COMUNA' de 'fonasa' estén en mayúsculas
 fonasa['COMUNA'] = fonasa['COMUNA'].str.upper()
-
-# Filtrar datos si no es "TODAS LAS COMUNAS"
 if filtro_comuna != "REGIÓN METROPOLITANA":
     df_edad = fonasa[(fonasa['Category'] == 'TRAMO EDAD') & (fonasa['COMUNA'] == filtro_comuna)]
 else:
@@ -254,31 +223,23 @@ df_edad = df_edad.rename(columns={'00 a 02 años':'Menor de 2'})
 df_edad.columns = df_edad.columns.str.replace('años', '').str.strip()
 
 # %%
-# Convertir columnas numéricas a float o int
-# Convertir columnas numéricas a float o int
 for col in df_sexo.columns:
-    if pd.api.types.is_numeric_dtype(df_sexo[col]):  # Verifica si la columna es numérica
+    if pd.api.types.is_numeric_dtype(df_sexo[col]):  
         df_sexo[col] = df_sexo[col].astype(float)
-
-# Convertir columnas numéricas a float o int para df_tramo
 for col in df_tramo.columns:
-    if pd.api.types.is_numeric_dtype(df_tramo[col]):  # Verifica si la columna es numérica
+    if pd.api.types.is_numeric_dtype(df_tramo[col]): 
         df_tramo[col] = df_tramo[col].astype(float)
-
-# Convertir columnas numéricas a float o int para df_edad
 for col in df_edad.columns:
-    if pd.api.types.is_numeric_dtype(df_edad[col]):  # Verifica si la columna es numérica
+    if pd.api.types.is_numeric_dtype(df_edad[col]): 
         df_edad[col] = df_edad[col].astype(float)
  
 def format_number(value):
     if isinstance(value, (int, float)):
         return f"{value:.0f}".replace(",", "")
     return value
-
 df_sexo_formatted = df_sexo.applymap(format_number)
 df_tramo_formatted = df_tramo.applymap(format_number)
 df_edad_formatted = df_edad.applymap(format_number)
-
 # st.write(f"### Poblacion de beneficiarios FONASA clasificados por sexo en {comuna_seleccionada} 2024")
 # st.write(df_sexo_formatted)
 # st.write(f"### Poblacion de beneficiarios FONASA por Tramo en {comuna_seleccionada} 2024")
@@ -287,13 +248,10 @@ df_edad_formatted = df_edad.applymap(format_number)
 # st.write(df_edad_formatted)
 
 #%%
-# Convertir las columnas numéricas a float
 for df in [fonasa, casen_csv]:
     for col in df.columns:
         if pd.api.types.is_numeric_dtype(df[col]):
             df[col] = df[col].astype(float)
-
-# Filtrar y mostrar los DataFrames
 
 if filtro_comuna != "REGIÓN METROPOLITANA":
     df_sexo = fonasa[(fonasa['Category'] == 'SEXO') & (fonasa['COMUNA'] == filtro_comuna)]
@@ -304,20 +262,15 @@ else:
     df_tramo = fonasa[fonasa['Category'] == 'TRAMO FONASA']
     df_edad = fonasa[fonasa['Category'] == 'TRAMO EDAD']
 
-# Limpiar columnas no deseadas
 for df in [df_sexo, df_tramo, df_edad]:
     df.drop(columns=['Category', 'CODIGO'], errors='ignore', inplace=True)
     df.dropna(axis=1, inplace=True)
 
-# Renombrar columnas y eliminar la palabra 'años'
 df_edad = df_edad.rename(columns={'00 a 02 años': 'Menor de 2'})
 df_edad.columns = df_edad.columns.str.replace('años', '').str.strip()
 
-# Aplicar el formato a los DataFrames con 0 decimales
 def format_dataframe(df):
-    # Seleccionar solo las columnas numéricas
     numeric_columns = df.select_dtypes(include=[np.number]).columns
-    # Aplicar el formato solo a las columnas numéricas
     return df.style.format({col: "{:,.0f}".format for col in numeric_columns}, thousands='.', decimal=',')
 
 df_sexo_formatted = format_dataframe(df_sexo)
@@ -326,7 +279,6 @@ df_edad_formatted = format_dataframe(df_edad)
 #%%
 
 #%%
-# Mostrar los DataFrames
 st.write(f"### Poblacion de beneficiarios FONASA clasificados por sexo en {comuna_seleccionada} 2024")
 st.dataframe(df_sexo_formatted)
 

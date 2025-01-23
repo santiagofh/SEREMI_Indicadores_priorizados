@@ -13,7 +13,6 @@ import streamlit_authenticator as stauth
 
 
 #%%
-# Path o rutas para archivos
 paths = {
     "censo17": 'data_clean/CENSO17_Poblacion_rm.csv',
     "geo": 'data_clean/Comunas_RM.geojson',
@@ -23,14 +22,12 @@ paths = {
 }
 
 #%%
-# LECTURA DE ARCHIVOS
 ine17 = pd.read_csv(paths["ine_proy"])
 ine17_urb_rur = pd.read_csv(paths["ine_proy_urb_rur"])
 censo17 = pd.read_csv(paths["censo17"])
 gdf = gpd.read_file(paths["geo"])
 casen = pd.read_csv(paths["casen_mideso"])
 
-# Listado comunas
 lista_comunas = [
     'Región Metropolitana', 
     'Alhué', 
@@ -88,22 +85,18 @@ lista_comunas = [
 ]
 
 #%%
-
-# Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=lista_comunas.index("Región Metropolitana"))
 current_year = datetime.now().year
 select_year_int = st.sidebar.slider("Año:", min_value=2002, max_value=2035, value=current_year)
 select_year = f'Poblacion {select_year_int}'
 
-# TITULO INTRODUCCION
 st.write('# Región Metropolitana y sus comunas: Territorio y demografía')
 st.write('A continuación, se presenta un análisis detallado de la distribución territorial y demográfica de las comunas de la Región Metropolitana, incluyendo proyecciones de población, densidad poblacional, y otros indicadores clave que permiten una visión integral del desarrollo y cambios en la población regional.')
 def filtrar_comuna(df, column_name, comuna):
     return df.loc[df[column_name].str.upper() == comuna.upper()]
 
 #%%
-# Asegúrate de que las columnas de nombre de comuna sean strings
 gdf['NOM_COMUNA'] = gdf['NOM_COMUNA'].astype(str)
 ine17['Nombre Comuna'] = ine17['Nombre Comuna'].astype(str)
 ine17_urb_rur['Nombre Comuna'] = ine17_urb_rur['Nombre Comuna'].astype(str)
@@ -111,7 +104,6 @@ censo17['NOMBRE COMUNA'] = censo17['NOMBRE COMUNA'].astype(str)
 casen['Comuna'] = casen['Comuna'].astype(str)
 
 #%%
-# Filtra por comuna seleccionada
 comuna_seleccionada_upper = comuna_seleccionada.upper()
 gdf_comuna = gdf if comuna_seleccionada == 'Región Metropolitana' else filtrar_comuna(gdf, 'NOM_COMUNA', comuna_seleccionada_upper)
 ine17_comuna = filtrar_comuna(ine17, 'Nombre Comuna', comuna_seleccionada_upper)
@@ -120,29 +112,20 @@ ine17_urb_rur_comuna = filtrar_comuna(ine17_urb_rur, 'Nombre Comuna', comuna_sel
 casen_comuna = filtrar_comuna(casen, 'Comuna', comuna_seleccionada_upper)
 
 #%%
-# Región
 gdf_rm = gdf
 ine17_rm = filtrar_comuna(ine17, 'Nombre Comuna', 'Región Metropolitana')
 censo17_rm = filtrar_comuna(censo17, 'NOMBRE COMUNA', 'Región Metropolitana')
 ine17_urb_rur_rm = filtrar_comuna(ine17_urb_rur, 'Nombre Comuna', 'Región Metropolitana')
 
 #%%
-# Calculo de Casen REGION
-
-#%%
-# Calculo de pop y densidad
-## Calculo de pop y densidad: Comuna
 pop_proy_total = (ine17_comuna[select_year]).sum()
 area_comuna = gdf_comuna.Superf_KM2.sum() if not gdf_comuna.empty else 0
 densidad_pop = pop_proy_total / area_comuna if area_comuna > 0 else 0
-
-## Calculo de pop y densidad: Región
 pop_proy_total_rm = (ine17_rm[select_year]).sum()
 area_rm = gdf_rm.Superf_KM2.sum() if not gdf_comuna.empty else 0
 densidad_pop_rm = pop_proy_total_rm / area_rm if area_comuna > 0 else 0
 
 #%%
-# Load and prepare data
 year_column = f'Poblacion {current_year}'
 censo17_comuna_pop = censo17_comuna.loc[censo17_comuna.EDAD.isin(['Total Comuna', 'Total Región'])]
 censo17_comuna_edad = censo17_comuna.loc[~censo17_comuna.EDAD.isin(['Total Comuna', 'Total Región'])]
@@ -212,10 +195,8 @@ pop_65_mas = ine17_comuna.loc[ine17_comuna['Edad'] >= 65, select_year].sum()
 indice_dependencia = ((pop_0_14 + pop_65_mas) / pop_15_64) * 100
 indice_renovacion_vejez = (pop_65_mas / pop_0_14) * 100
 
-# Calcula la Tasa Bruta de Natalidad 2020
 poblacion_2020 = ine17_comuna['Poblacion 2020'].sum()
 
-# Calcula la Tasa Específica de Fecundidad por Edad
 def age_group(age):
     if age >= 50:
         return "50 O MAS AÑOS"
@@ -240,10 +221,7 @@ poblacion_2020_grupo_etario = ine17_comuna[ine17_comuna['Sexo (1=Hombre 2=Mujer)
 poblacion_2020_grupo_etario['GRUPO_ETARIO_MADRE'] = poblacion_2020_grupo_etario['Edad'].apply(age_group)
 poblacion_2020_grupo_etario = poblacion_2020_grupo_etario.groupby('GRUPO_ETARIO_MADRE')['Poblacion 2020'].sum().reset_index()
 
-# Población nacida fuera de Chile y Pueblos originarios del 2022
 poblacion_total_2022 = casen[casen['Año'] == 2022]['Población nacida fuera de Chile'].sum()
-
-# Filtrar datos del 2022
 
 casen_migrantes = casen.loc[casen['Category'] == 'MIGRANTES']
 rename_migrantes = {
@@ -278,7 +256,6 @@ casen_etnias_comuna = casen_etnias_comuna.groupby('Año').agg(
 
 casen_etnias_2022 = casen_etnias_comuna[casen_etnias_comuna['Año'] == 2022]
 
-# Calcular los porcentajes
 poblacion_nacida_fuera_de_chile_2022 = casen_migrantes_2022['Población nacida fuera de Chile'].values[0]
 poblacion_nacida_fuera_de_chile_2022_percent = (poblacion_nacida_fuera_de_chile_2022)
 
@@ -324,7 +301,6 @@ formatted_values = {
 }
 
 #%%
-# Crear el DataFrame con los datos formateados
 data = {
     "Indicador": [
         "Población proyectada año 2024",
@@ -421,8 +397,6 @@ data = {
 }
 
 df_indicadores = pd.DataFrame(data)
-
-# Configuración de columnas
 columns_config = {
     "Indicador": st.column_config.TextColumn("Indicador"),
     "Valor": st.column_config.TextColumn("Valor"),
@@ -430,14 +404,9 @@ columns_config = {
     # "Enlace": st.column_config.LinkColumn("Enlace", width=300)
 }
 
-# Mostrar el DataFrame en Streamlit con configuración de columnas
 st.dataframe(df_indicadores, column_config=columns_config)
 
-
-
 #%%
-# Indicadores territoriales y de población
-##  Población censada y proyectada
 st.markdown('## Indicadores de población')
 cols = st.columns(4)
 cols[0].metric("Pob. censada 2017", formatted_values["pop_censada"])
@@ -457,7 +426,6 @@ cols[3].metric(f"\% Mujeres ({select_year[-4:]})", formatted_values["pop_proy_m_
 st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.gob.cl/estadisticas/sociales/demografia-y-vitales/proyecciones-de-poblacion)_')
 
 #%%
-# Mapa
 st.write(f"## Visualizar mapa de {comuna_seleccionada}")
 
 def get_zoom_level(area):
@@ -487,7 +455,6 @@ else:
     st.write("No se encontró la comuna seleccionada en los datos geográficos.")
 
 #%%
-# Datos adicionales de la comuna
 cols = st.columns(2)
 cols[0].metric("Área total de la comuna (2024)", formatted_values["area_comuna"])
 cols[1].metric(f"Densidad poblacional de la comuna ({select_year[-4:]})", formatted_values["densidad_pop_comuna"])
@@ -497,7 +464,6 @@ cols[1].metric("Porcentaje área rural (censo 2017)", formatted_values["pop_rur_
 st.write('_Fuente: Elaboración propia a partir de datos geográficos nacionales (https://www.ine.gob.cl/herramientas/portal-de-mapas/geodatos-abiertos)_')
 
 #%%
-# Poblacion proyectada
 if comuna_seleccionada =='Región Metropolitana':
     st.write(f'## Poblacion proyectada de la {comuna_seleccionada}')
 else:
@@ -538,7 +504,6 @@ st.plotly_chart(fig)
 st.write('_Fuente: Elaboración propia a partir de INE 2017_ _(https://www.ine.gob.cl/estadisticas/sociales/demografia-y-vitales/proyecciones-de-poblacion)_')
 
 #%%
-# Piramide poblacional
 if comuna_seleccionada =='Región Metropolitana':
     st.write(f'## Piramide poblacional de la {comuna_seleccionada}')
 else:
@@ -714,12 +679,9 @@ fig_etnias.update_xaxes(
     dtick=1  
 )
 fig_etnias.update_traces(width=0.9)  
-# Centrar el gráfico en Streamlit
 st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
 st.plotly_chart(fig_etnias, use_container_width=False)
 st.markdown("</div>", unsafe_allow_html=True)
-
-# Fuente de los datos
 st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2022_')
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 

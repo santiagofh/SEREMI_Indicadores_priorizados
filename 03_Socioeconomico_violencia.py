@@ -13,16 +13,13 @@ import numpy as np
 import streamlit_authenticator as stauth
 
 #%%
-# Path o rutas para archivos
 paths = {
     "violencia": 'data_clean/tasa_violencia_2023.csv',
 }
 
 #%%
-# LECTURA DE ARCHIVOS
 violencia_2023 = pd.read_csv(paths["violencia"])
 #%%
-# Listado comunas
 lista_comunas = [
     'Región Metropolitana', 
     'Alhué', 
@@ -80,19 +77,16 @@ lista_comunas = [
 ]
 
 #%%
-# INICIO DE LA PAGINA
 #%%
-# Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Tasas de violencia por 100.000 habitantes")
 default_index = lista_comunas.index("Región Metropolitana") if "Región Metropolitana" in lista_comunas else 0
 comuna_seleccionada = st.sidebar.multiselect("Selecciona Comuna o Región:", lista_comunas, default=[lista_comunas[default_index]])
 
-# Trabajo del DF
-filtro_comuna = [comuna.upper() for comuna in comuna_seleccionada]  # Convertir a mayúsculas
+filtro_comuna = [comuna.upper() for comuna in comuna_seleccionada]  
 
 def format_comunas(comunas):
     if not comunas:
-        return None  # Retorna None si la lista está vacía
+        return None 
     elif len(comunas) == 1:
         return comunas[0]
     elif len(comunas) == 2:
@@ -102,12 +96,11 @@ def format_comunas(comunas):
 
 if not comuna_seleccionada:
     st.error("Por favor, selecciona al menos una comuna.")
-    st.stop()  # Detiene la ejecución del código de Streamlit en este punto
+    st.stop()  
 
-# Formatear las comunas seleccionadas
 comunas_formateadas = format_comunas(comuna_seleccionada)
 
-violencia_2023['Comuna'] = violencia_2023['Comuna'].str.upper()  # Asegúrate de que la columna 'Comuna' esté en mayúsculas
+violencia_2023['Comuna'] = violencia_2023['Comuna'].str.upper() 
 violencia_intra_rm = violencia_2023['Tasa de denuncia de violencia intrafamiliar'].loc[violencia_2023['Comuna'] == 'REGIÓN METROPOLITANA'].iloc[0]
 violencia_delit_rm = violencia_2023['Tasa de denuncia de delitos de mayor connotación'].loc[violencia_2023['Comuna'] == 'REGIÓN METROPOLITANA'].iloc[0]
 
@@ -127,8 +120,6 @@ if 'REGIÓN METROPOLITANA' in filtro_comuna:
 else:
     violencia_2023_comuna = violencia_2023.loc[violencia_2023['Comuna'].isin(filtro_comuna) |
                                                (violencia_2023['Comuna'] == 'REGIÓN METROPOLITANA')]
-
-# Ordenar por 'Comuna'
 violencia_2023_comuna['Comuna'] = pd.Categorical(violencia_2023_comuna['Comuna'], categories=[c.upper() for c in lista_comunas], ordered=True)
 violencia_2023_comuna = violencia_2023_comuna.sort_values('Comuna')
 violencia_2023_comuna['Comuna'] = violencia_2023_comuna['Comuna'].str.lower().str.title()

@@ -13,7 +13,6 @@ import numpy as np
 import streamlit_authenticator as stauth
 
 #%%
-# Path o rutas para archivos
 paths = {
     "censo17": 'data_clean/CENSO17_Poblacion_rm.csv',
     "geo": 'data_clean/Comunas_RM.geojson',
@@ -23,7 +22,6 @@ paths = {
 }
 
 #%%
-# LECTURA DE ARCHIVOS
 ine17 = pd.read_csv(paths["ine_proy"])
 censo17 = pd.read_csv(paths["censo17"])
 gdf = gpd.read_file(paths["geo"])
@@ -31,7 +29,6 @@ defunciones = pd.read_csv(paths["defunciones"])
 casen_csv = pd.read_csv(paths["casen_csv"])
 casen_csv.rename(columns={'Ponlación nacida en Chile':'Población nacida en Chile'}, inplace=True)
 #%%
-# Listado comunas
 lista_comunas = [
     'Región Metropolitana', 
     'Alhué', 
@@ -88,23 +85,19 @@ lista_comunas = [
     'Vitacura'
 ]
 #%%
-# INICIO DE LA PAGINA
 #%%
-# Sidebar
 st.sidebar.write("## Tablero Interactivo de Comunas: Indicadores priorizados")
 st.sidebar.write("Selección de Comuna")
 default_index = lista_comunas.index("Región Metropolitana") if "Región Metropolitana" in lista_comunas else 0
 comuna_seleccionada = st.sidebar.selectbox("Comuna:", lista_comunas, index=default_index)
 
 #%%
-# Filtrar DataFrame según comuna seleccionada
 filtro_comuna = comuna_seleccionada
 
 #%%
 import streamlit as st
 import pandas as pd
 
-# Diccionario para traducir las categorías al español
 traducciones = {
     'POBREZA DE INGRESOS': 'Pobreza de Ingresos', 
     'POBREZA MULTIDIMENSIONAL': 'Pobreza Multidimensional', 
@@ -131,38 +124,27 @@ filtro_comuna = filtro_comuna.upper()
 casen_comuna = casen_csv.loc[casen_csv['Comuna'] == filtro_comuna]
 categorias = list(traducciones.keys())
 
-# Crear un diccionario para almacenar los DataFrames filtrados
 df_dict = {}
 
 for categoria in categorias:
     df_filtrado = casen_comuna.loc[casen_comuna['Category'] == categoria].dropna(axis=1, how='all')
-    df_filtrado['Comuna'] = df_filtrado['Comuna'].str.title()  # Convertir Comuna a title case
-    df_filtrado['Category'] = df_filtrado['Category'].map(traducciones)  # Traducir valores de Category a español
-    
-    # Asegurarse de que la columna "Año" sea de tipo entero
+    df_filtrado['Comuna'] = df_filtrado['Comuna'].str.title()  
+    df_filtrado['Category'] = df_filtrado['Category'].map(traducciones)  
     df_filtrado['Año'] = df_filtrado['Año'].apply(lambda x: str(int(float(x))))
-
-    # Formatear números con coma como separador decimal en las columnas numéricas
     df_filtrado = df_filtrado.applymap(lambda x: '{:,.2f}'.format(x).replace(",", "X").replace(".", ",").replace("X", ".") if isinstance(x, (float, int)) else x)
-    
-    # Renombrar la columna "Category" a "Categoría"
     df_filtrado.rename(columns={'Category': 'Categoría'}, inplace=True)
     
     df_dict[categoria] = df_filtrado
 
-# Menú desplegable para seleccionar la categoría (en español)
 categoria_seleccionada = st.selectbox("Seleccione la categoría de indicadores socioeconómicos:", [traducciones[cat] for cat in categorias])
-
-# Convertir la categoría seleccionada a mayúsculas para el filtrado
 categoria_seleccionada_upper = {v: k for k, v in traducciones.items()}[categoria_seleccionada]
 
-# Mostrar la tabla correspondiente a la categoría seleccionada
 if categoria_seleccionada_upper:
     st.write(f"### {categoria_seleccionada}")
     df_seleccionado = df_dict[categoria_seleccionada_upper]
     df_seleccionado['Año'] = df_seleccionado['Año'].apply(lambda x: str(int(float(x))))
     
-    df_seleccionado.columns = df_seleccionado.columns.str.title()  # Convertir los nombres de las columnas a título
+    df_seleccionado.columns = df_seleccionado.columns.str.title()
 
     st.dataframe(df_seleccionado.reset_index(drop=True))
 
@@ -170,7 +152,6 @@ if categoria_seleccionada_upper:
 
 
 st.write(f"## Graficos socioeconomicos en: {comuna_seleccionada}")
-
 st.write(f"### Pobreza de ingresos para {comuna_seleccionada}")
 
 
@@ -179,7 +160,6 @@ casen_pobrezai_comuna = casen_pobrezai[casen_pobrezai['Comuna'] == filtro_comuna
 casen_pobrezai_comuna['Pobres'] = casen_pobrezai_comuna['Pobres'] / 100
 casen_pobrezai_comuna['No pobres'] = casen_pobrezai_comuna['No pobres'] / 100
 
-# Crear gráfico de puntos con líneas
 fig_pobreza_ingresos = px.scatter(
     casen_pobrezai_comuna, 
     x='Año',
@@ -189,18 +169,15 @@ fig_pobreza_ingresos = px.scatter(
     text=casen_pobrezai_comuna['Pobres'].apply(lambda x: '{0:1.2f}%'.format(x*100)),
 )
 
-# Añadir líneas
 fig_pobreza_ingresos.update_traces(mode='lines+markers+text', textposition='top center')
 
-# Ajustar la escala del eje y
 fig_pobreza_ingresos.update_layout(
     yaxis_tickformat=",.2%",
-    yaxis_range=[0, 1],  # La escala del eje y de 0 a 1 (100% en términos porcentuales)
+    yaxis_range=[0, 1], 
     yaxis_title='Porcentaje de Pobreza de Ingresos'
 )
 
-# Configurar el gráfico en Streamlit
-col1, col2 = st.columns([2, 2])  # Ajusta el ancho de las columnas según sea necesario
+col1, col2 = st.columns([2, 2]) 
 df_casen_pobrezai=casen_pobrezai_comuna[['Año','Pobres','No pobres']].reset_index(drop=True)
 
 df_casen_pobrezai[['Pobres', 'No pobres']] = df_casen_pobrezai[['Pobres', 'No pobres']] * 100
@@ -220,7 +197,6 @@ st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen
 
 #%%
 
-# Pobreza multidimensiona
 st.write(f"### Pobreza de multidimensional para {comuna_seleccionada}")
 
 
@@ -228,7 +204,6 @@ casen_pobrezam = casen_csv.loc[casen_csv.Category == 'POBREZA MULTIDIMENSIONAL']
 casen_pobrezam_comuna = casen_pobrezam[casen_pobrezam['Comuna'] == filtro_comuna]
 casen_pobrezam_comuna['Pobres'] = casen_pobrezam_comuna['Pobres'] / 100
 casen_pobrezam_comuna['No pobres'] = casen_pobrezam_comuna['No pobres'] / 100
-# Crear gráfico de puntos con líneas
 fig_pobreza_ingresos = px.scatter(
     casen_pobrezam_comuna, 
     x='Año',
@@ -237,14 +212,11 @@ fig_pobreza_ingresos = px.scatter(
     labels={'Pobres': 'Porcentaje de Pobreza de Ingresos', 'Año': 'Año'},
     text=casen_pobrezam_comuna['Pobres'].apply(lambda x: '{0:1.2f}%'.format(x*100)),
 )
-
-# Añadir líneas
 fig_pobreza_ingresos.update_traces(mode='lines+markers+text', textposition='top center')
 
-# Ajustar la escala del eje y
 fig_pobreza_ingresos.update_layout(
     yaxis_tickformat=",.2%",
-    yaxis_range=[0, 1],  # La escala del eje y de 0 a 1 (100% en términos porcentuales)
+    yaxis_range=[0, 1],
     yaxis_title='Porcentaje de Pobreza de Ingresos'
 )
 
@@ -271,7 +243,6 @@ template = pio.templates[template_name]
 colors_from_template = template.layout.colorway
 
 #%%
-# Ingresos
 st.write(f"### Ingresos en {comuna_seleccionada}")
 casen_ingresos = casen_csv[casen_csv['Category'] == 'INGRESOS']
 casen_ingresos_comuna = casen_ingresos[casen_ingresos['Comuna'] == filtro_comuna]
@@ -324,7 +295,6 @@ st.write('_Fuente: Elaboración propia a partir de encuesta CASEN 2017, 2020 y 2
 st.write('_https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen_')
 
 #%%
-# Participación laboral
 st.write(f"### Participación laboral en {comuna_seleccionada}")
 casen_tasas_participacion = casen_csv.loc[casen_csv.Category == 'TASAS PARTICIPACIÓN LABORAL']
 casen_tasas_participacion_comuna = casen_tasas_participacion[casen_tasas_participacion['Comuna'] == filtro_comuna]
