@@ -675,7 +675,7 @@ fig_etnias.update_traces(texttemplate='%{text}', textposition='outside')
 
 fig_etnias.update_layout(yaxis=dict(range=[0, 110]))
 fig_etnias.update_xaxes(
-    tickmode='linear',  # Esto asegura que los ticks se muestran de forma lineal
+    tickmode='linear',
     dtick=1  
 )
 fig_etnias.update_traces(width=0.9)  
