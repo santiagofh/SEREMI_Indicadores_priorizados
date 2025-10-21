@@ -142,6 +142,8 @@ st.write(f"## Visor de tasas de violencia por 100.000 habitantes para {comunas_f
 tabla_violencia=violencia_2023_comuna[['Comuna','Tasa de denuncia de violencia intrafamiliar','Tasa de denuncia de delitos de mayor connotación']].reset_index(drop=True)
 tabla_violencia['Tasa de denuncia de violencia intrafamiliar'] = tabla_violencia['Tasa de denuncia de violencia intrafamiliar'].apply(lambda x: f"{x:,.2f}".replace(',','').replace('.',','))
 tabla_violencia['Tasa de denuncia de delitos de mayor connotación'] = tabla_violencia['Tasa de denuncia de delitos de mayor connotación'].apply(lambda x: f"{x:,.2f}".replace(',','').replace('.',','))
+st.write(f"_Fuente: Estadísticas Oficiales de Violencia Intrafamiliar (VIF), fecha de corte: 2022, Ministerio del Interior y Seguridad Pública, Subsecretaría de Prevención del Delito, https://cead.spd.gov.cl/_")
+
 
 st.write(tabla_violencia)
 
