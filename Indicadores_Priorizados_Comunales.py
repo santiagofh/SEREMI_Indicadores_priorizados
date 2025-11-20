@@ -27,7 +27,8 @@ def ira_era():
     st.page_link("https://ira-era-rm.streamlit.app/", label="Dashboard de atenciones de urgencia - Enfermedades Respiratorias", icon="🌎")
 def prais():
     st.page_link("https://lookerstudio.google.com/reporting/394316c8-9431-44ce-b38a-a1fc1c3b6d97/page/LELkD?s=pDwtKUp4lEE", label="Dashboard PRAIS", icon="🌎")
-
+def cancer():
+    st.page_link("https://lookerstudio.google.com/u/0/reporting/41f188fb-83e9-4d72-8ba4-b9146f1c4ddc/page/p_hs1cfjcmwd?s=nIClU0QhzGc", label="Dashboard Cancer", icon="🌎")
 #%%
 
 pages = {
@@ -51,6 +52,7 @@ pages = {
         # st.Page("07_Morbilidad.py", title="Morbilidad", icon=":material/close:"),
         # st.Page("08_Estratificacion.py", title="Estratificacion", icon=":material/close:"),
         st.Page("09_Mortalidad.py", title="Mortalidad", icon=":material/deceased:"),
+        st.Page(cancer, title="Monitoreo de Cancer en la RM", icon=":material/health_and_safety:"),
         st.Page(ira_era, title="Visor de Atenciones de urgencias - Respiratorias", icon=":material/health_and_safety:")
     ],
     "PRAIS":[
